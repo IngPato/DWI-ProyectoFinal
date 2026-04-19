@@ -16,11 +16,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RolesService {
-    
+
     @Autowired
     private RolesRepository rolesRepository;
-    
-    public List<ModelRoles> listaRolesActivos(){
+
+    public List<ModelRoles> listaRolesActivos() {
         return rolesRepository.findByEstadoRol(1);
     }
 }
+  
