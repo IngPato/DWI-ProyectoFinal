@@ -104,7 +104,6 @@ class UsuarioRestControllerTest {
         request.setUsername("admin01");
         request.setCorreo("admin01@clinica.com");
         request.setPassword("123456");
-        request.setEstado(1);
 
         UsuarioResponse response = new UsuarioResponse();
         response.setIdusuario(1);
@@ -135,7 +134,6 @@ class UsuarioRestControllerTest {
         request.setUsername("usuarioEditado");
         request.setCorreo("editado@clinica.com");
         request.setPassword("654321");
-        request.setEstado(1);
 
         UsuarioResponse response = new UsuarioResponse();
         response.setIdusuario(1);

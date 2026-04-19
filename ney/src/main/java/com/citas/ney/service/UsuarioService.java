@@ -64,7 +64,7 @@ public class UsuarioService {
         usuario.setUsername(request.getUsername());
         usuario.setCorreo(request.getCorreo());
         usuario.setPasswordHash(request.getPassword());
-        usuario.setEstadoUsario(request.getEstado() != null ? request.getEstado() : 1);
+        usuario.setEstadoUsario(1);
         usuario.setFechaCreacion(LocalDateTime.now());
 
         ModelUsuario guardado = usuarioRepository.save(usuario);
@@ -90,10 +90,6 @@ public class UsuarioService {
 
         if (request.getPassword() != null && !request.getPassword().trim().isEmpty()) {
             usuario.setPasswordHash(request.getPassword());
-        }
-
-        if (request.getEstado() != null) {
-            usuario.setEstadoUsario(request.getEstado());
         }
 
         ModelUsuario actualizado = usuarioRepository.save(usuario);
