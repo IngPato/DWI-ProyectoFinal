@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/roles")
 @CrossOrigin(origins = "*")
-public class RolesController {
+public class RolesRestController {
 
     @Autowired
     private RolesService rolesService;

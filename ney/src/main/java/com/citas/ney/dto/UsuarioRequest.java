@@ -14,12 +14,9 @@ public class UsuarioRequest {
     private String username;
     private String correo;
     private String password;
-    private Integer estado;
 
     public UsuarioRequest() {
     }
-    
-    
 
     public Integer getIdRol() {
         return idRol;
@@ -53,13 +50,4 @@ public class UsuarioRequest {
         this.password = password;
     }
 
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
-    }
-    
-    
 }
