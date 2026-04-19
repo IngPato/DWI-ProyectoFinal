@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author kevin
  */
 @RestController
-@RequestMapping(name = "/api/roles")
+@RequestMapping("/api/roles")
 @CrossOrigin(origins = "*")
 public class RolesController {
 

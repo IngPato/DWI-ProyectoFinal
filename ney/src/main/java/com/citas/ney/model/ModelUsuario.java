@@ -23,6 +23,7 @@ public class ModelUsuario {
 
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
+    
     private ModelRoles rol;
 
     @Column(name = "username", length = 50, nullable = false, unique = true)

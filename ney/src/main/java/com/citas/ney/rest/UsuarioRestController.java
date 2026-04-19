@@ -4,9 +4,9 @@
  */
 package com.citas.ney.rest;
 
-import com.citas.ney.DTO.UsuarioEstadoRequest;
-import com.citas.ney.DTO.UsuarioRequest;
-import com.citas.ney.DTO.UsuarioResponse;
+import com.citas.ney.dto.UsuarioEstadoRequest;
+import com.citas.ney.dto.UsuarioRequest;
+import com.citas.ney.dto.UsuarioResponse;
 import com.citas.ney.service.UsuarioService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

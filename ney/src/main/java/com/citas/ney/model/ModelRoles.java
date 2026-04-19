@@ -4,6 +4,7 @@
  */
 package com.citas.ney.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import java.util.List;
@@ -32,6 +33,7 @@ public class ModelRoles {
     private Integer estadoRol;
 
     @OneToMany(mappedBy = "rol")
+    @JsonIgnore
     private List<ModelUsuario> usuarios;
 
     public ModelRoles() {

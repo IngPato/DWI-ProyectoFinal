@@ -4,9 +4,9 @@
  */
 package com.citas.ney.service;
 
-import com.citas.ney.DTO.UsuarioEstadoRequest;
-import com.citas.ney.DTO.UsuarioRequest;
-import com.citas.ney.DTO.UsuarioResponse;
+import com.citas.ney.dto.UsuarioEstadoRequest;
+import com.citas.ney.dto.UsuarioRequest;
+import com.citas.ney.dto.UsuarioResponse;
 import com.citas.ney.model.ModelRoles;
 import com.citas.ney.model.ModelUsuario;
 import com.citas.ney.repository.RolesRepository;
@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,6 +29,8 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RolesRepository rolesRepository;
+   /* @Autowired
+    private PasswordEncoder passwordEncoder;*/
 
     private UsuarioResponse convertirAresponse(ModelUsuario usuario) {
         UsuarioResponse response = new UsuarioResponse();
@@ -108,6 +111,5 @@ public class UsuarioService {
 
         return convertirAresponse(actualizado);
     }
-    
 
 }
