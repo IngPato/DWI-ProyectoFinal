@@ -32,7 +32,6 @@ public class UsuarioService {
 
     /* @Autowired
     private PasswordEncoder passwordEncoder;*/
-
     private UsuarioResponse convertirAresponse(ModelUsuario usuario) {
         UsuarioResponse response = new UsuarioResponse();
         response.setIdusuario(usuario.getIdusuario());
