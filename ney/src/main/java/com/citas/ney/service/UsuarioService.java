@@ -41,5 +41,6 @@ public class UsuarioService {
         List<ModelUsuario> usuarios = usuarioRepository.findByEstadoUsario(1);
         return usuarios.stream().map(this::convertirAresponse).collect(Collectors.toList());
     }
+    
 
 }
