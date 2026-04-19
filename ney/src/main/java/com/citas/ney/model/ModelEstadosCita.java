@@ -7,7 +7,7 @@ package com.citas.ney.model;
 import jakarta.persistence.*;
 import java.util.List;
 
-
+ 
 /**
  *
  * @author kevin

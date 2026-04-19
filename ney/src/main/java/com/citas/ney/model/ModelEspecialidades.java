@@ -13,6 +13,7 @@ import java.util.List;
  */
 
 
+
 @Entity
 @Table(name = "especialidades")
 public class ModelEspecialidades {

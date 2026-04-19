@@ -24,7 +24,3 @@ public class RolesService {
         return rolesRepository.findByEstadoRol(1);
     }
 }
-<<<<<<< HEAD
-  
-=======
->>>>>>> jeanpierre

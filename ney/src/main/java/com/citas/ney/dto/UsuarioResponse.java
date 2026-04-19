@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  *
  * @author kevin
  */
+
 public class UsuarioResponse {
     private Integer idusuario;
     private Integer idRol;

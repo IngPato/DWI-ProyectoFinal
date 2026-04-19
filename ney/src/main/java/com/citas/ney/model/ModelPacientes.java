@@ -4,11 +4,11 @@
  */
 package com.citas.ney.model;
 
-<<<<<<< HEAD
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-=======
->>>>>>> jeanpierre
+
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,10 +29,7 @@ public class ModelPacientes {
 
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-<<<<<<< HEAD
     @JsonIgnoreProperties({"paciente", "medico", "passwordHash"})
-=======
->>>>>>> jeanpierre
     private ModelUsuario usuario;
 
     @Column(name = "nombres_paciente", length = 80, nullable = false)
@@ -69,10 +66,7 @@ public class ModelPacientes {
     private String grupoSanguineoPaciente;
 
     @OneToMany(mappedBy = "paciente")
-<<<<<<< HEAD
     @JsonIgnore
-=======
->>>>>>> jeanpierre
     private List<ModelCitas> citas;
 
     public ModelPacientes() {

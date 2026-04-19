@@ -19,3 +19,4 @@ public class EstadoCitaService {
         return repository.save(estado);
     }
 }
+ 
