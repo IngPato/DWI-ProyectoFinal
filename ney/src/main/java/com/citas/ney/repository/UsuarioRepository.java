@@ -19,10 +19,6 @@ public interface UsuarioRepository extends JpaRepository<ModelUsuario, Integer> 
 
     List<ModelUsuario> findByEstadoUsario(Integer estadoUsario);
 
-    Optional<ModelUsuario> findByUsername(String username);
-
-    Optional<ModelUsuario> findByCorreo(String correo);
-
     boolean existsByUsername(String username);
 
     boolean existsByCorreo(String correo);

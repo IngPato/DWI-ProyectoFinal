@@ -29,7 +29,8 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RolesRepository rolesRepository;
-   /* @Autowired
+
+    /* @Autowired
     private PasswordEncoder passwordEncoder;*/
 
     private UsuarioResponse convertirAresponse(ModelUsuario usuario) {
@@ -110,6 +111,11 @@ public class UsuarioService {
         ModelUsuario actualizado = usuarioRepository.save(usuario);
 
         return convertirAresponse(actualizado);
+    }
+
+    public void eliminarUsuario(Integer id) {
+        ModelUsuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuarioRepository.delete(usuario);
     }
 
 }
