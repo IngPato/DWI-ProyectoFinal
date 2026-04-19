@@ -8,7 +8,6 @@ package com.citas.ney.rest;
  *
  * @author kevin
  */
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.citas.ney.dto.UsuarioEstadoRequest;
@@ -81,6 +80,21 @@ class UsuarioRestControllerTest {
         MvcResult result = mockMvc.perform(req).andReturn();
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+    }
+
+    @Test
+    public void testListarUsuariosActivosVacio() throws Exception {
+        when(usuarioService.listaUsuariosActivos()).thenReturn(new ArrayList<>());
+
+        URI uri = new URI("/api/usuarios/activos");
+        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
+                .get(uri)
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(req).andReturn();
+
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertEquals("[]", result.getResponse().getContentAsString());
     }
 
     @Test
