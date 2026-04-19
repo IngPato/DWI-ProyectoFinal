@@ -75,14 +75,14 @@ public class UsuarioService {
     public UsuarioResponse actualizarUsuario(Integer id, UsuarioRequest request) {
         ModelUsuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        if (!usuario.getUsername().equals(request.getUsername()) && usuarioRepository.existsByUsername(request.getUsername())) {
+        if (usuario.getUsername().equals(request.getUsername()) && usuarioRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("El usuario ya existe");
         }
-        if (!usuario.getCorreo().equals(request.getCorreo()) && usuarioRepository.existsByCorreo(request.getCorreo())) {
+        if (usuario.getCorreo().equals(request.getCorreo()) && usuarioRepository.existsByCorreo(request.getCorreo())) {
             throw new RuntimeException("El correo ya existe");
         }
 
-        ModelRoles rol = rolesRepository.findById(id).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+        ModelRoles rol = rolesRepository.findById(request.getIdRol()).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
         usuario.setRol(rol);
         usuario.setUsername(request.getUsername());
