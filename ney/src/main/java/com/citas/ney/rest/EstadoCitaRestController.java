@@ -26,15 +26,12 @@ public class EstadoCitaRestController {
         return service.guardar(estado);
     }
 
-    // --- LOS 2 MÉTODOS NUEVOS PARA QUE PASEN LAS PRUEBAS ---
-
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody ModelEstadosCita estado) {
         try {
-            // Se actualiza el registro completo
+            estado.setIdestadosCita(id);
             return ResponseEntity.ok(service.guardar(estado));
         } catch (Exception e) {
-            // Si el ID no existe (Tu Caso 8), atrapamos el error y devolvemos 400 Bad Request
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
@@ -42,7 +39,6 @@ public class EstadoCitaRestController {
     @PatchMapping("/{id}/estado")
     public ResponseEntity<?> cambiarEstado(@PathVariable Integer id, @RequestBody Map<String, Integer> request) {
         try {
-            // Eliminación Lógica: Solo cambiamos el estado
             ModelEstadosCita estado = new ModelEstadosCita();
             return ResponseEntity.ok(service.guardar(estado));
         } catch (Exception e) {

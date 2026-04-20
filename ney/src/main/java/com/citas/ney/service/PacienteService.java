@@ -88,12 +88,11 @@ public class PacienteService {
         ModelPacientes actualizado = pacienteRepository.save(paciente);
         return convertirAResponse(actualizado);
     }
-
+    
     @Transactional
     public void eliminarPaciente(Integer id) {
         ModelPacientes paciente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
-
         pacienteRepository.delete(paciente);
     }
 }
