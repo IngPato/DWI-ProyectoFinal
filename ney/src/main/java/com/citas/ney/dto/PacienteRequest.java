@@ -20,7 +20,6 @@ public class PacienteRequest {
     private String sexoPaciente;
     private String telefonoPaciente;
     private String direccionPaciente;
-    private Integer estadoPaciente;
     private String grupoSanguineoPaciente;
     private LocalDateTime fechaRegistroPaciente;
 
@@ -99,15 +98,7 @@ public class PacienteRequest {
     public void setDireccionPaciente(String direccionPaciente) {
         this.direccionPaciente = direccionPaciente;
     }
-
-    public Integer getEstadoPaciente() {
-        return estadoPaciente;
-    }
-
-    public void setEstadoPaciente(Integer estadoPaciente) {
-        this.estadoPaciente = estadoPaciente;
-    }
-
+    
     public String getGrupoSanguineoPaciente() {
         return grupoSanguineoPaciente;
     }

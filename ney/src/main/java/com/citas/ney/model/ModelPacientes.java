@@ -27,9 +27,8 @@ public class ModelPacientes {
     @Column(name = "idpacientes")
     private Integer idpacientes;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-    @JsonIgnoreProperties({"paciente", "medico", "passwordHash"})
     private ModelUsuario usuario;
 
     @Column(name = "nombres_paciente", length = 80, nullable = false)
@@ -66,7 +65,6 @@ public class ModelPacientes {
     private String grupoSanguineoPaciente;
 
     @OneToMany(mappedBy = "paciente")
-    @JsonIgnore
     private List<ModelCitas> citas;
 
     public ModelPacientes() {

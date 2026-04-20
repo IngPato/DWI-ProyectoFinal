@@ -99,7 +99,7 @@ class PacienteRestControllerTest {
     @Test
     public void testCambiarEstadoPaciente() throws Exception {
         PacienteEstadoRequest request = new PacienteEstadoRequest();
-        request.setEstado(0);
+        request.setEstadoPaciente(0);
 
         PacienteResponse response = new PacienteResponse();
         response.setIdpacientes(1);

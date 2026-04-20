@@ -9,17 +9,18 @@ package com.citas.ney.dto;
  * @author GPatr
  */
 public class PacienteEstadoRequest {
-    private Integer estado;
+    private Integer estadoPaciente;
 
     public PacienteEstadoRequest() {
     }
 
-    public Integer getEstado() {
-        return estado;
+    public Integer getEstadoPaciente() {
+        return estadoPaciente;
     }
 
-    public void setEstado(Integer estado) {
-        this.estado = estado;
+    public void setEstadoPaciente(Integer estadoPaciente) {
+        this.estadoPaciente = estadoPaciente;
     }
+
 }
 

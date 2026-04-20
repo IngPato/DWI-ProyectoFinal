@@ -22,7 +22,7 @@ public class ModelMedicos {
     @Column(name = "idmedicos")
     private Integer idmedicos;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_usuario", unique = true)
     private ModelUsuario usuario;
 
