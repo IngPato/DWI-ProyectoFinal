@@ -2,90 +2,38 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.citas.ney.model;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
-import jakarta.persistence.*;
+package com.citas.ney.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-
 /**
  *
- * @author kevin
+ * @author GPatr
  */
-@Entity
-@Table(name = "pacientes")
-public class ModelPacientes {
+public class PacienteRequest {
+    private Integer idusuario;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idpacientes")
-    private Integer idpacientes;
-
-    @OneToOne
-    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-    @JsonIgnoreProperties({"paciente", "medico", "passwordHash"})
-    private ModelUsuario usuario;
-
-    @Column(name = "nombres_paciente", length = 80, nullable = false)
     private String nombresPaciente;
-
-    @Column(name = "apellidos_paciente", length = 80, nullable = false)
     private String apellidosPaciente;
-
-    @Column(name = "tipo_documento_paciente", length = 20)
     private String tipoDocumentoPaciente;
-
-    @Column(name = "numero_documento_paciente", length = 20, unique = true)
     private String numeroDocumentoPaciente;
-
-    @Column(name = "fecha_nacimiento_paciente")
     private LocalDate fechaNacimientoPaciente;
-
-    @Column(name = "sexo_paciente", length = 20)
     private String sexoPaciente;
-
-    @Column(name = "telefono_paciente", length = 20)
     private String telefonoPaciente;
-
-    @Column(name = "direccion_paciente", length = 150)
     private String direccionPaciente;
-
-    @Column(name = "fecha_registro_paciente")
+    private Integer estadoPaciente;
+    private String grupoSanguineoPaciente;
     private LocalDateTime fechaRegistroPaciente;
 
-    @Column(name = "estado_paciente", columnDefinition = "TINYINT(1)")
-    private Integer estadoPaciente;
+    public PacienteRequest() {}
 
-    @Column(name = "grupo_sanguineo_paciente", length = 45)
-    private String grupoSanguineoPaciente;
+    // getters y setters
 
-    @OneToMany(mappedBy = "paciente")
-    @JsonIgnore
-    private List<ModelCitas> citas;
-
-    public ModelPacientes() {
+    public Integer getIdusuario() {
+        return idusuario;
     }
 
-    public Integer getIdpacientes() {
-        return idpacientes;
-    }
-
-    public void setIdpacientes(Integer idpacientes) {
-        this.idpacientes = idpacientes;
-    }
-
-    public ModelUsuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(ModelUsuario usuario) {
-        this.usuario = usuario;
+    public void setIdusuario(Integer idusuario) {
+        this.idusuario = idusuario;
     }
 
     public String getNombresPaciente() {
@@ -152,14 +100,6 @@ public class ModelPacientes {
         this.direccionPaciente = direccionPaciente;
     }
 
-    public LocalDateTime getFechaRegistroPaciente() {
-        return fechaRegistroPaciente;
-    }
-
-    public void setFechaRegistroPaciente(LocalDateTime fechaRegistroPaciente) {
-        this.fechaRegistroPaciente = fechaRegistroPaciente;
-    }
-
     public Integer getEstadoPaciente() {
         return estadoPaciente;
     }
@@ -176,13 +116,12 @@ public class ModelPacientes {
         this.grupoSanguineoPaciente = grupoSanguineoPaciente;
     }
 
-    public List<ModelCitas> getCitas() {
-        return citas;
+    public LocalDateTime getFechaRegistroPaciente() {
+        return fechaRegistroPaciente;
     }
 
-    public void setCitas(List<ModelCitas> citas) {
-        this.citas = citas;
+    public void setFechaRegistroPaciente(LocalDateTime fechaRegistroPaciente) {
+        this.fechaRegistroPaciente = fechaRegistroPaciente;
     }
-
-
+    
 }

@@ -8,6 +8,7 @@ package com.citas.ney.dto;
  *
  * @author kevin
  */
+
 public class UsuarioRequest {
 
     private Integer idRol;
