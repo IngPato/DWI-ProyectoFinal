@@ -32,7 +32,6 @@ class EspecialidadRestControllerTest {
     @MockitoBean
     private EspecialidadService especialidadService;
 
-    // 1. Listar activos con datos
     @Test
     public void testListarEspecialidadesConDatos() throws Exception {
         List<ModelEspecialidades> lista = new ArrayList<>();
@@ -44,7 +43,6 @@ class EspecialidadRestControllerTest {
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
-    // 2. Listar vacío
     @Test
     public void testListarVacio() throws Exception {
         when(especialidadService.listarTodas()).thenReturn(new ArrayList<>());
@@ -52,7 +50,6 @@ class EspecialidadRestControllerTest {
         assertEquals("[]", result.getResponse().getContentAsString());
     }
 
-    // 3. Registrar correctamente
     @Test
     public void testRegistrarCorrectamente() throws Exception {
         ModelEspecialidades e = new ModelEspecialidades();
@@ -64,7 +61,6 @@ class EspecialidadRestControllerTest {
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
-    // 4. Actualizar correctamente
     @Test
     public void testActualizarCorrectamente() throws Exception {
         ModelEspecialidades e = new ModelEspecialidades();
@@ -76,7 +72,6 @@ class EspecialidadRestControllerTest {
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
-    // 7. Eliminar correctamente
     @Test
     public void testEliminarCorrectamente() throws Exception {
         doNothing().when(especialidadService).eliminar(1);

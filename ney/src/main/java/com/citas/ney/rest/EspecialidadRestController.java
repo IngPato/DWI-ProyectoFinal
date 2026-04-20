@@ -25,11 +25,9 @@ public class EspecialidadRestController {
         return service.guardar(especialidad);
     }
 
-    // --- MÉTODO NUEVO PARA ACTUALIZAR (PUT) ---
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody ModelEspecialidades especialidad) {
         try {
-            // Le asignamos el ID que viene en la URL al objeto antes de guardarlo
             especialidad.setIdespecialidades(id);
             return ResponseEntity.ok(service.guardar(especialidad));
         } catch (Exception e) {
@@ -37,7 +35,6 @@ public class EspecialidadRestController {
         }
     }
 
-    // --- TU MÉTODO ELIMINAR MEJORADO CON MANEJO DE ERRORES ---
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
         try {

@@ -86,6 +86,8 @@ public class PacienteService {
     public void eliminarPaciente(Integer id) {
         ModelPacientes paciente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+        ModelUsuario usuario = usuarioRepository.findById(paciente.getUsuario().getIdusuario()).orElseThrow(()-> new RuntimeException("usuario no encontrado"));
+        usuarioRepository.delete(usuario);
         pacienteRepository.delete(paciente);
     }
 }
