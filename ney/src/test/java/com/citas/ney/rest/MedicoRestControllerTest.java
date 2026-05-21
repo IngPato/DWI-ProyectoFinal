@@ -105,7 +105,7 @@ class MedicoRestControllerTest {
         request.setIdRol(2);
         request.setIdespecialidad(1);
 
-        when(medicosService.registrarNuevoMedico(any())).thenReturn("");
+        when(medicosService.registrarNuevoMedico(any())).thenReturn("12354");
 
         MvcResult result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/medicos")
@@ -115,7 +115,8 @@ class MedicoRestControllerTest {
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         assertTrue(result.getResponse().getContentAsString().contains("\"success\":true"));
-        assertTrue(result.getResponse().getContentAsString().contains("Medico creado con exito"));
+        assertTrue(result.getResponse().getContentAsString().contains("Médico creado con éxito"));
+        assertTrue(result.getResponse().getContentAsString().contains("12354"));
     }
 
     @Test
@@ -131,7 +132,8 @@ class MedicoRestControllerTest {
         request.setIdRol(2);
         request.setIdespecialidad(1);
 
-        when(medicosService.registrarNuevoMedico(any())).thenReturn("");
+        when(medicosService.registrarNuevoMedico(any()))
+                .thenThrow(new RuntimeException("Rol no existe"));
 
         MvcResult result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/medicos")
@@ -141,7 +143,7 @@ class MedicoRestControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
         assertTrue(result.getResponse().getContentAsString().contains("\"success\":false"));
-        assertTrue(result.getResponse().getContentAsString().contains("no se pudo crear el nuevo medico"));
+        assertTrue(result.getResponse().getContentAsString().contains("No se pudo crear el nuevo médico"));
     }
 
     @Test
