@@ -4,11 +4,13 @@
  */
 package com.citas.ney.rest;
 
+import com.citas.ney.dto.ApiResponse;
+import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.HorarioMedicoRequest;
 import com.citas.ney.dto.HorarioMedicoResponse;
 import com.citas.ney.service.HorarioMedicoService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,34 +29,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/app/horarioMedico")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class HorarioMedicoRestController {
 
-    @Autowired
-    private HorarioMedicoService horarioMedicoService;
+    private final HorarioMedicoService horarioMedicoService;
 
     @GetMapping("/activos")
-    public ResponseEntity<List<HorarioMedicoResponse>> listarHorarioMedicosActivos() {
-        return ResponseEntity.ok(horarioMedicoService.listarHorarioMedico());
+    public ResponseEntity<ApiResponse<List<HorarioMedicoResponse>>> listarHorarioMedicosActivos() {
+        return horarioMedicoService.listarHorarioMedico().size() != 0
+                ? ResponseEntity.ok(ApiResponse.ok("horarios encontrados", horarioMedicoService.listarHorarioMedico()))
+                : ResponseEntity.badRequest().body(ApiResponse.error("Horarios no encontrados"));
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarHorarioMedico(@RequestBody HorarioMedicoRequest request) {
+    public ResponseEntity<ApiResponse<?>> registrarHorarioMedico(@RequestBody HorarioMedicoRequest request) {
         return horarioMedicoService.registrarHorarioMedico(request) == true
-                ? ResponseEntity.ok("Horario registrado correctamente")
-                : ResponseEntity.badRequest().body("No se pudo registrar el horario");
+                ? ResponseEntity.ok(ApiResponse.ok("Horario registrado correctamente"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("No se pudo registrar el horario"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarHorarioMedico(@PathVariable Integer id, @RequestBody HorarioMedicoRequest request) {
+    public ResponseEntity<ApiResponse<?>> actualizarHorarioMedico(@PathVariable Integer id, @RequestBody HorarioMedicoRequest request) {
         return horarioMedicoService.actualizarHoramioMedico(id, request) == true
-                ? ResponseEntity.ok("Horario actualizado correctamente")
-                : ResponseEntity.ok("No se pudo actualizar el horario");
+                ? ResponseEntity.ok(ApiResponse.ok("Horario actualizado correctamente"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("No se pudo actualizar el horario"));
     }
 
     @PatchMapping("/{id}/estado")
-    public ResponseEntity<?> actualizarEstado(@PathVariable Integer id, @PathVariable Integer estado) {
-        return horarioMedicoService.cambiarEstadoHorarioMedico(id, estado) == true
-                ? ResponseEntity.ok("Estado de horario cambiado correctamente")
-                : ResponseEntity.ok("No se pudo cambiar el estado");
+    public ResponseEntity<ApiResponse<?>> actualizarEstado(@PathVariable Integer id, @RequestBody EstadoRequest estado) {
+        return horarioMedicoService.cambiarEstadoHorarioMedico(id, estado.getEstado()) == true
+                ? ResponseEntity.ok(ApiResponse.ok("Estado de horario cambiado correctamente"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("No se pudo cambiar el estado"));
     }
 }

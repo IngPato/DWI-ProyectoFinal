@@ -5,7 +5,6 @@
 package com.citas.ney.rest;
 
 import com.citas.ney.dto.ApiResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ApiResponse<Object>> manejarRuntimeException(RuntimeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResponse<>(false, ex.getMessage(), null));
+    public ResponseEntity<ApiResponse> manejarRuntimeException(RuntimeException ex) {
+        return ResponseEntity.status(400)
+                .body(new ApiResponse(false, ex.getMessage(), null));
     }
 }

@@ -6,11 +6,17 @@ package com.citas.ney.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
  * @author kevin
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class HorarioMedicoResponse {
 
     private Integer idhorariosMedico;
@@ -20,64 +26,4 @@ public class HorarioMedicoResponse {
     private LocalTime horaFin;
     private Integer cupo;
     private Integer estado;
-
-    public HorarioMedicoResponse() {
-    }
-
-    public Integer getIdhorariosMedico() {
-        return idhorariosMedico;
-    }
-
-    public void setIdhorariosMedico(Integer idhorariosMedico) {
-        this.idhorariosMedico = idhorariosMedico;
-    }
-
-    public Integer getIdmedico() {
-        return idmedico;
-    }
-
-    public void setIdmedico(Integer idmedico) {
-        this.idmedico = idmedico;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public LocalTime getHoraInicio() {
-        return horaInicio;
-    }
-
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
-    }
-
-    public LocalTime getHoraFin() {
-        return horaFin;
-    }
-
-    public void setHoraFin(LocalTime horaFin) {
-        this.horaFin = horaFin;
-    }
-
-    public Integer getCupo() {
-        return cupo;
-    }
-
-    public void setCupo(Integer cupo) {
-        this.cupo = cupo;
-    }
-
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
-    }
-
 }

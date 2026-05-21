@@ -4,24 +4,14 @@
  */
 package com.citas.ney.rest;
 
-import com.citas.ney.dto.UsuarioEstadoRequest;
+import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.UsuarioRequest;
 import com.citas.ney.dto.UsuarioResponse;
 import com.citas.ney.service.UsuarioService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -30,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/usuarios")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class UsuarioRestController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     @GetMapping("/activos")
     public ResponseEntity<List<UsuarioResponse>> ListarUsuariosActivos() {
@@ -51,13 +41,7 @@ public class UsuarioRestController {
     }
 
     @PatchMapping("/{id}/estado")
-    public ResponseEntity<UsuarioResponse> cambiarEstadoUsuario(@PathVariable Integer id, @RequestBody UsuarioEstadoRequest request) {
+    public ResponseEntity<UsuarioResponse> cambiarEstadoUsuario(@PathVariable Integer id, @RequestBody EstadoRequest request) {
         return ResponseEntity.ok(usuarioService.cambiarEstadoUsuario(id, request));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarusuario(@PathVariable Integer id) {
-        usuarioService.eliminarUsuario(id);
-        return ResponseEntity.ok("Usuario eliminado correctamente");
     }
 }

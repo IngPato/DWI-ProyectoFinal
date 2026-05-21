@@ -4,7 +4,7 @@
  */
 package com.citas.ney.service;
 
-import com.citas.ney.dto.UsuarioEstadoRequest;
+import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.UsuarioRequest;
 import com.citas.ney.dto.UsuarioResponse;
 import com.citas.ney.model.ModelRoles;
@@ -14,8 +14,8 @@ import com.citas.ney.repository.UsuarioRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,15 +23,13 @@ import org.springframework.stereotype.Service;
  * @author kevin
  */
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private RolesRepository rolesRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final RolesRepository rolesRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    /* @Autowired
-    private PasswordEncoder passwordEncoder;*/
     private UsuarioResponse convertirAresponse(ModelUsuario usuario) {
         UsuarioResponse response = new UsuarioResponse();
         response.setIdusuario(usuario.getIdusuario());
@@ -63,7 +61,7 @@ public class UsuarioService {
         usuario.setRol(rol);
         usuario.setUsername(request.getUsername());
         usuario.setCorreo(request.getCorreo());
-        usuario.setPasswordHash(request.getPassword());
+        usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setEstadoUsario(1);
         usuario.setFechaCreacion(LocalDateTime.now());
 
@@ -75,13 +73,6 @@ public class UsuarioService {
     public UsuarioResponse actualizarUsuario(Integer id, UsuarioRequest request) {
         ModelUsuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        if (usuario.getUsername().equals(request.getUsername()) && usuarioRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("El usuario ya existe");
-        }
-        if (usuario.getCorreo().equals(request.getCorreo()) && usuarioRepository.existsByCorreo(request.getCorreo())) {
-            throw new RuntimeException("El correo ya existe");
-        }
-
         ModelRoles rol = rolesRepository.findById(request.getIdRol()).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
         usuario.setRol(rol);
@@ -91,12 +82,10 @@ public class UsuarioService {
         if (request.getPassword() != null && !request.getPassword().trim().isEmpty()) {
             usuario.setPasswordHash(request.getPassword());
         }
-
-        ModelUsuario actualizado = usuarioRepository.save(usuario);
-        return convertirAresponse(actualizado);
+        return convertirAresponse(usuarioRepository.save(usuario));
     }
 
-    public UsuarioResponse cambiarEstadoUsuario(Integer id, UsuarioEstadoRequest request) {
+    public UsuarioResponse cambiarEstadoUsuario(Integer id, EstadoRequest request) {
 
         ModelUsuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -106,11 +95,6 @@ public class UsuarioService {
         ModelUsuario actualizado = usuarioRepository.save(usuario);
 
         return convertirAresponse(actualizado);
-    }
-
-    public void eliminarUsuario(Integer id) {
-        ModelUsuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        usuarioRepository.delete(usuario);
     }
 
 }

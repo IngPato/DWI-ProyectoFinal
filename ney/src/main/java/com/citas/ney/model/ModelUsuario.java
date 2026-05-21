@@ -23,7 +23,6 @@ public class ModelUsuario {
 
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
-    
     private ModelRoles rol;
 
     @Column(name = "username", length = 50, nullable = false, unique = true)
@@ -41,10 +40,10 @@ public class ModelUsuario {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private ModelPacientes paciente;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private ModelMedicos medico;
 
     public ModelUsuario() {

@@ -3,15 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.citas.ney.rest;
-import com.citas.ney.dto.PacienteEstadoRequest;
-import com.citas.ney.dto.PacienteRequest;
+
+import com.citas.ney.dto.ApiResponse;
 import com.citas.ney.dto.PacienteResponse;
+import com.citas.ney.dto.RegistrarPacienteRequest;
 import com.citas.ney.service.PacienteService;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 /**
  *
  * @author GPatr
@@ -19,29 +22,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/pacientes")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class PacienteController {
 
-    @Autowired
-    private PacienteService pacienteService;
-    
-    @GetMapping("/activos")
-    public ResponseEntity<List<PacienteResponse>> listarActivos() {
-        return ResponseEntity.ok(pacienteService.listarPacientesActivos());
+    private final PacienteService pacienteService;
+
+    @GetMapping
+    public Page<PacienteResponse> listarPacientePaginados(
+            @RequestParam(required = false) String filtro,
+            @PageableDefault(size = 10, sort = "idpacientes") Pageable pageable) {
+        return pacienteService.listarPacientesActivosPaginados(filtro, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<PacienteResponse> registrar(@RequestBody PacienteRequest request) {
-        return new ResponseEntity<>(pacienteService.registrarPaciente(request), HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<?>> crearNuevopaciente(@RequestBody RegistrarPacienteRequest pacienteRequest) {
+        return pacienteService.registrarPaciente(pacienteRequest) == true
+                ? ResponseEntity.ok(ApiResponse.ok("Paciente creado con exito"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("no se pudo crear el paciente"));
     }
-
-    @PatchMapping("/{id}/estado")
-    public ResponseEntity<PacienteResponse> cambiarEstado(@PathVariable Integer id, @RequestBody PacienteEstadoRequest request) {
-        return ResponseEntity.ok(pacienteService.cambiarEstado(id, request));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Integer id) {
-        pacienteService.eliminarPaciente(id);
-        return ResponseEntity.ok("Paciente eliminado correctamente");
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> actualizarPaciente(@PathVariable Integer id, @RequestBody RegistrarPacienteRequest pacienteRequest){
+        return pacienteService.actualizarPaciente(id, pacienteRequest)==true
+                ? ResponseEntity.ok(ApiResponse.ok("Paciente actualizado con exito"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("no se pudo actualziar el paciente"));
     }
 }

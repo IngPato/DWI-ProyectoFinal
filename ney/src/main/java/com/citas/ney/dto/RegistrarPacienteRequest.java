@@ -5,39 +5,29 @@
 package com.citas.ney.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  *
- * @author GPatr
+ * @author kevin
  */
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class PacienteResponse {
+public class RegistrarPacienteRequest {
 
     private Integer idusuario;
-    private String usuarioPaciente;
-    private String correoPaciente;
-    private LocalDateTime fechaCreacion;
 
     private String nombresPaciente;
     private String apellidosPaciente;
     private String tipoDocumentoPaciente;
     private String numeroDocumentoPaciente;
     private LocalDate fechaNacimientoPaciente;
-    private String grupoSanguineoPaciente;
     private String sexoPaciente;
-    private String direccionPaciente;
     private String telefonoPaciente;
-    private Integer estadoPaciente;
+    private String direccionPaciente;
+    private String grupoSanguineoPaciente;
 
-   
 }

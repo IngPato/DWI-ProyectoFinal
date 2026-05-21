@@ -22,7 +22,7 @@ public class ModelMedicos {
     @Column(name = "idmedicos")
     private Integer idmedicos;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne()
     @JoinColumn(name = "id_usuario", unique = true)
     private ModelUsuario usuario;
 
@@ -41,9 +41,6 @@ public class ModelMedicos {
 
     @Column(name = "telefono_medico", length = 20)
     private String telefonoMedico;
-
-    @Column(name = "estado_medico", columnDefinition = "TINYINT(1)")
-    private Integer estadoMedico;
 
     @OneToMany(mappedBy = "medico")
     private List<ModelHorariosMedico> horarios;
@@ -108,14 +105,6 @@ public class ModelMedicos {
 
     public void setTelefonoMedico(String telefonoMedico) {
         this.telefonoMedico = telefonoMedico;
-    }
-
-    public Integer getEstadoMedico() {
-        return estadoMedico;
-    }
-
-    public void setEstadoMedico(Integer estadoMedico) {
-        this.estadoMedico = estadoMedico;
     }
 
     public List<ModelHorariosMedico> getHorarios() {

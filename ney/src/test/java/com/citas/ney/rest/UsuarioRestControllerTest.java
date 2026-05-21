@@ -1,27 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.citas.ney.rest;
- 
-/**
- *
- * @author kevin
- */
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.citas.ney.dto.UsuarioEstadoRequest;
+import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.UsuarioRequest;
 import com.citas.ney.dto.UsuarioResponse;
 import com.citas.ney.service.UsuarioService;
-import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -30,12 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import tools.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class UsuarioRestControllerTest {
 
     @Autowired
@@ -48,61 +38,54 @@ class UsuarioRestControllerTest {
     private UsuarioService usuarioService;
 
     @Test
-    public void testListarUsuariosActivos() throws Exception {
+    public void testListarUsuariosActivosConDatos() throws Exception {
+
         List<UsuarioResponse> lista = new ArrayList<>();
 
-        UsuarioResponse u1 = new UsuarioResponse();
-        u1.setIdusuario(1);
-        u1.setIdRol(1);
-        u1.setNombreRol("ADMIN");
-        u1.setUsername("admin01");
-        u1.setCorreo("admin01@clinica.com");
-        u1.setEstado(1);
+        UsuarioResponse usuario = new UsuarioResponse();
+        usuario.setIdusuario(1);
+        usuario.setIdRol(1);
+        usuario.setNombreRol("ADMIN");
+        usuario.setUsername("admin01");
+        usuario.setCorreo("admin01@gmail.com");
+        usuario.setEstado(1);
+        usuario.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 10, 30));
 
-        UsuarioResponse u2 = new UsuarioResponse();
-        u2.setIdusuario(2);
-        u2.setIdRol(2);
-        u2.setNombreRol("PACIENTE");
-        u2.setUsername("paciente01");
-        u2.setCorreo("paciente01@clinica.com");
-        u2.setEstado(1);
-
-        lista.add(u1);
-        lista.add(u2);
+        lista.add(usuario);
 
         when(usuarioService.listaUsuariosActivos()).thenReturn(lista);
 
-        URI uri = new URI("/api/usuarios/activos");
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
-                .get(uri)
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(req).andReturn();
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/usuarios/activos"))
+                .andReturn();
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertTrue(result.getResponse().getContentAsString().contains("admin01"));
+        assertTrue(result.getResponse().getContentAsString().contains("admin01@gmail.com"));
+        assertTrue(result.getResponse().getContentAsString().contains("ADMIN"));
+        assertTrue(result.getResponse().getContentAsString().contains("\"estado\":1"));
     }
 
     @Test
     public void testListarUsuariosActivosVacio() throws Exception {
+
         when(usuarioService.listaUsuariosActivos()).thenReturn(new ArrayList<>());
 
-        URI uri = new URI("/api/usuarios/activos");
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
-                .get(uri)
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(req).andReturn();
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/usuarios/activos"))
+                .andReturn();
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         assertEquals("[]", result.getResponse().getContentAsString());
     }
 
     @Test
-    public void testRegistrarUsuario() throws Exception {
+    public void testRegistrarUsuarioCorrectamenteAdmin() throws Exception {
+
         UsuarioRequest request = new UsuarioRequest();
         request.setIdRol(1);
         request.setUsername("admin01");
-        request.setCorreo("admin01@clinica.com");
+        request.setCorreo("admin01@gmail.com");
         request.setPassword("123456");
 
         UsuarioResponse response = new UsuarioResponse();
@@ -110,56 +93,126 @@ class UsuarioRestControllerTest {
         response.setIdRol(1);
         response.setNombreRol("ADMIN");
         response.setUsername("admin01");
-        response.setCorreo("admin01@clinica.com");
+        response.setCorreo("admin01@gmail.com");
         response.setEstado(1);
+        response.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 10, 30));
 
-        when(usuarioService.registrarUsuario(any(UsuarioRequest.class))).thenReturn(response);
+        when(usuarioService.registrarUsuario(any())).thenReturn(response);
 
-        URI uri = new URI("/api/usuarios");
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
-                .post(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(req).andReturn();
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/usuarios")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn();
 
         assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus());
+        assertTrue(result.getResponse().getContentAsString().contains("admin01"));
+        assertTrue(result.getResponse().getContentAsString().contains("admin01@gmail.com"));
+        assertTrue(result.getResponse().getContentAsString().contains("ADMIN"));
+        assertTrue(result.getResponse().getContentAsString().contains("\"estado\":1"));
     }
 
     @Test
-    public void testActualizarUsuario() throws Exception {
+    public void testRegistrarUsuarioCorrectamenteRecepcionista() throws Exception {
+
         UsuarioRequest request = new UsuarioRequest();
         request.setIdRol(2);
-        request.setUsername("usuarioEditado");
-        request.setCorreo("editado@clinica.com");
-        request.setPassword("654321");
+        request.setUsername("recepcion01");
+        request.setCorreo("recepcion01@gmail.com");
+        request.setPassword("123456");
+
+        UsuarioResponse response = new UsuarioResponse();
+        response.setIdusuario(2);
+        response.setIdRol(2);
+        response.setNombreRol("RECEPCIONISTA");
+        response.setUsername("recepcion01");
+        response.setCorreo("recepcion01@gmail.com");
+        response.setEstado(1);
+        response.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 11, 0));
+
+        when(usuarioService.registrarUsuario(any())).thenReturn(response);
+
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/usuarios")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn();
+
+        assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus());
+        assertTrue(result.getResponse().getContentAsString().contains("recepcion01"));
+        assertTrue(result.getResponse().getContentAsString().contains("recepcion01@gmail.com"));
+        assertTrue(result.getResponse().getContentAsString().contains("RECEPCIONISTA"));
+        assertTrue(result.getResponse().getContentAsString().contains("\"estado\":1"));
+    }
+
+    @Test
+    public void testActualizarUsuarioCorrectamenteConPassword() throws Exception {
+
+        UsuarioRequest request = new UsuarioRequest();
+        request.setIdRol(1);
+        request.setUsername("adminActualizado");
+        request.setCorreo("adminactualizado@gmail.com");
+        request.setPassword("nuevaClave123");
 
         UsuarioResponse response = new UsuarioResponse();
         response.setIdusuario(1);
-        response.setIdRol(2);
-        response.setNombreRol("PACIENTE");
-        response.setUsername("usuarioEditado");
-        response.setCorreo("editado@clinica.com");
+        response.setIdRol(1);
+        response.setNombreRol("ADMIN");
+        response.setUsername("adminActualizado");
+        response.setCorreo("adminactualizado@gmail.com");
         response.setEstado(1);
+        response.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 10, 30));
 
-        when(usuarioService.actualizarUsuario(eq(1), any(UsuarioRequest.class))).thenReturn(response);
+        when(usuarioService.actualizarUsuario(eq(1), any())).thenReturn(response);
 
-        URI uri = new URI("/api/usuarios/1");
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
-                .put(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(req).andReturn();
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/usuarios/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn();
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertTrue(result.getResponse().getContentAsString().contains("adminActualizado"));
+        assertTrue(result.getResponse().getContentAsString().contains("adminactualizado@gmail.com"));
+        assertTrue(result.getResponse().getContentAsString().contains("ADMIN"));
     }
 
     @Test
-    public void testCambiarEstadoUsuario() throws Exception {
-        UsuarioEstadoRequest request = new UsuarioEstadoRequest();
+    public void testActualizarUsuarioCorrectamenteSinPassword() throws Exception {
+
+        UsuarioRequest request = new UsuarioRequest();
+        request.setIdRol(2);
+        request.setUsername("recepcionActualizado");
+        request.setCorreo("recepcionactualizado@gmail.com");
+        request.setPassword("");
+
+        UsuarioResponse response = new UsuarioResponse();
+        response.setIdusuario(2);
+        response.setIdRol(2);
+        response.setNombreRol("RECEPCIONISTA");
+        response.setUsername("recepcionActualizado");
+        response.setCorreo("recepcionactualizado@gmail.com");
+        response.setEstado(1);
+        response.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 11, 0));
+
+        when(usuarioService.actualizarUsuario(eq(2), any())).thenReturn(response);
+
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/usuarios/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn();
+
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertTrue(result.getResponse().getContentAsString().contains("recepcionActualizado"));
+        assertTrue(result.getResponse().getContentAsString().contains("recepcionactualizado@gmail.com"));
+        assertTrue(result.getResponse().getContentAsString().contains("RECEPCIONISTA"));
+    }
+
+    @Test
+    public void testCambiarEstadoUsuarioAInactivo() throws Exception {
+
+        EstadoRequest request = new EstadoRequest();
         request.setEstado(0);
 
         UsuarioResponse response = new UsuarioResponse();
@@ -167,35 +220,48 @@ class UsuarioRestControllerTest {
         response.setIdRol(1);
         response.setNombreRol("ADMIN");
         response.setUsername("admin01");
-        response.setCorreo("admin01@clinica.com");
+        response.setCorreo("admin01@gmail.com");
         response.setEstado(0);
+        response.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 10, 30));
 
-        when(usuarioService.cambiarEstadoUsuario(eq(1), any(UsuarioEstadoRequest.class))).thenReturn(response);
+        when(usuarioService.cambiarEstadoUsuario(eq(1), any())).thenReturn(response);
 
-        URI uri = new URI("/api/usuarios/1/estado");
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
-                .patch(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(req).andReturn();
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/usuarios/1/estado")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn();
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertTrue(result.getResponse().getContentAsString().contains("admin01"));
+        assertTrue(result.getResponse().getContentAsString().contains("\"estado\":0"));
     }
 
     @Test
-    public void testEliminarUsuario() throws Exception {
-        doNothing().when(usuarioService).eliminarUsuario(1);
+    public void testCambiarEstadoUsuarioAActivo() throws Exception {
 
-        URI uri = new URI("/api/usuarios/1");
-        MockHttpServletRequestBuilder req = MockMvcRequestBuilders
-                .delete(uri)
-                .accept(MediaType.TEXT_PLAIN);
+        EstadoRequest request = new EstadoRequest();
+        request.setEstado(1);
 
-        MvcResult result = mockMvc.perform(req).andReturn();
+        UsuarioResponse response = new UsuarioResponse();
+        response.setIdusuario(1);
+        response.setIdRol(1);
+        response.setNombreRol("ADMIN");
+        response.setUsername("admin01");
+        response.setCorreo("admin01@gmail.com");
+        response.setEstado(1);
+        response.setFechaCreacion(LocalDateTime.of(2026, 5, 20, 10, 30));
+
+        when(usuarioService.cambiarEstadoUsuario(eq(1), any())).thenReturn(response);
+
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/usuarios/1/estado")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn();
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
-        assertEquals("Usuario eliminado correctamente", result.getResponse().getContentAsString());
+        assertTrue(result.getResponse().getContentAsString().contains("admin01"));
+        assertTrue(result.getResponse().getContentAsString().contains("\"estado\":1"));
     }
 }

@@ -8,19 +8,7 @@ package com.citas.ney.dto;
  *
  * @author kevin
  */
-public class UsuarioEstadoRequest {
-
-    private Integer estado;
-
-    public UsuarioEstadoRequest() {
-    }
-
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
-    }
-
-}
+public record LoginRequest(
+        String login,
+        String password
+) {}

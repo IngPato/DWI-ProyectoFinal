@@ -5,13 +5,8 @@
 package com.citas.ney.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -28,7 +23,7 @@ public class ModelPacientes {
     private Integer idpacientes;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
+    @JoinColumn(name = "id_usuario", nullable = true, unique = true)
     private ModelUsuario usuario;
 
     @Column(name = "nombres_paciente", length = 80, nullable = false)
@@ -54,12 +49,6 @@ public class ModelPacientes {
 
     @Column(name = "direccion_paciente", length = 150)
     private String direccionPaciente;
-
-    @Column(name = "fecha_registro_paciente")
-    private LocalDateTime fechaRegistroPaciente;
-
-    @Column(name = "estado_paciente", columnDefinition = "TINYINT(1)")
-    private Integer estadoPaciente;
 
     @Column(name = "grupo_sanguineo_paciente", length = 45)
     private String grupoSanguineoPaciente;
@@ -150,22 +139,6 @@ public class ModelPacientes {
         this.direccionPaciente = direccionPaciente;
     }
 
-    public LocalDateTime getFechaRegistroPaciente() {
-        return fechaRegistroPaciente;
-    }
-
-    public void setFechaRegistroPaciente(LocalDateTime fechaRegistroPaciente) {
-        this.fechaRegistroPaciente = fechaRegistroPaciente;
-    }
-
-    public Integer getEstadoPaciente() {
-        return estadoPaciente;
-    }
-
-    public void setEstadoPaciente(Integer estadoPaciente) {
-        this.estadoPaciente = estadoPaciente;
-    }
-
     public String getGrupoSanguineoPaciente() {
         return grupoSanguineoPaciente;
     }
@@ -181,6 +154,4 @@ public class ModelPacientes {
     public void setCitas(List<ModelCitas> citas) {
         this.citas = citas;
     }
-
-
 }

@@ -1,47 +1,53 @@
 package com.citas.ney.rest;
 
+import com.citas.ney.dto.ApiResponse;
+import com.citas.ney.dto.EspecialidadResponse;
+import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.model.ModelEspecialidades;
 import com.citas.ney.service.EspecialidadService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/especialidades")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class EspecialidadRestController {
-    
-    @Autowired
-    private EspecialidadService service;
 
-    @GetMapping
-    public List<ModelEspecialidades> listar() {
-        return service.listarTodas();
+    private final EspecialidadService especialidadService;
+
+    @GetMapping("/activos")
+    public ResponseEntity<ApiResponse<List<EspecialidadResponse>>> listarActivos() {
+        List<EspecialidadResponse> lista = especialidadService.listarTodoEspecialidadActivos();
+        if (lista != null) {
+            return ResponseEntity.ok(ApiResponse.ok("Especialidades encontrada", lista));
+        } else {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Especialidades no encontrada"));
+        }
     }
 
     @PostMapping
-    public ModelEspecialidades crear(@RequestBody ModelEspecialidades especialidad) {
-        return service.guardar(especialidad);
+    public ResponseEntity<ApiResponse<?>> registrarEspecialidad(@RequestBody ModelEspecialidades request) {
+        return especialidadService.registrar(request) == true
+                ? ResponseEntity.ok(ApiResponse.ok("Especialidad Registrada con exito"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("Error de registro de Especialidad"));
+
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody ModelEspecialidades especialidad) {
-        try {
-            especialidad.setIdespecialidades(id);
-            return ResponseEntity.ok(service.guardar(especialidad));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al actualizar: " + e.getMessage());
-        }
+    @PutMapping("{id}")
+    public ResponseEntity<ApiResponse<?>> actualizarEspecialidad(@PathVariable Integer id, @RequestBody ModelEspecialidades request) {
+        return especialidadService.actualizar(id, request) == true
+                ? ResponseEntity.ok(ApiResponse.ok("Especialidad Actualizada con exito"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("Error de actualizacion de especialidad"));
+
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Integer id) {
-        try {
-            service.eliminar(id);
-            return ResponseEntity.ok("Especialidad eliminada correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al eliminar (quizás el ID no existe): " + e.getMessage());
-        }
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<ApiResponse<?>> cambiarEstado(@PathVariable Integer id, @RequestBody EstadoRequest request) {
+        return especialidadService.cambiarEstadoEspecialidad(id, request) == true
+                ? ResponseEntity.ok(ApiResponse.ok("Estado actualizado correctamente"))
+                : ResponseEntity.badRequest().body(ApiResponse.error("No se pudo cambiar el estado"));
     }
 }
