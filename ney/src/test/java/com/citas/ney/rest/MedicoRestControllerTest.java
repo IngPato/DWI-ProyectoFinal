@@ -105,7 +105,7 @@ class MedicoRestControllerTest {
         request.setIdRol(2);
         request.setIdespecialidad(1);
 
-        when(medicosService.registrarNuevoMedico(any())).thenReturn(true);
+        when(medicosService.registrarNuevoMedico(any())).thenReturn("");
 
         MvcResult result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/medicos")
@@ -131,7 +131,7 @@ class MedicoRestControllerTest {
         request.setIdRol(2);
         request.setIdespecialidad(1);
 
-        when(medicosService.registrarNuevoMedico(any())).thenReturn(false);
+        when(medicosService.registrarNuevoMedico(any())).thenReturn("");
 
         MvcResult result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/medicos")

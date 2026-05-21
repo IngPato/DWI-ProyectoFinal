@@ -30,4 +30,6 @@ public interface MedicosRepository extends JpaRepository<ModelMedicos, Integer> 
            )
            """)
     Page<ModelMedicos> buscarMedicosActivosPaginado(@Param("filtro") String buscar, Pageable pageable);
+    
+    boolean existsByCmpMedico(String cmpMedico);
 }

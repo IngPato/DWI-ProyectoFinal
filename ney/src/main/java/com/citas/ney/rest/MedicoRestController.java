@@ -42,12 +42,18 @@ public class MedicoRestController {
         return medicosService.litarMedicosActivos(filtro, pageable);
 
     }
-    
+
     @PostMapping
     public ResponseEntity<ApiResponse<?>> crearNuevoMedico(@RequestBody MedicoRequest request) {
-        return medicosService.registrarNuevoMedico(request) == true
-                ? ResponseEntity.ok(ApiResponse.ok("Medico creado con exito"))
-                : ResponseEntity.badRequest().body(ApiResponse.error("no se pudo crear el nuevo medico"));
+        try {
+            String contrasenaGenerada = medicosService.registrarNuevoMedico(request);
+            return ResponseEntity.ok(
+                    ApiResponse.ok("Médico creado con éxito. Contraseña generada: " + contrasenaGenerada)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.error("No se pudo crear el nuevo médico: " + e.getMessage()));
+        }
     }
 
     @PutMapping("/{id}")

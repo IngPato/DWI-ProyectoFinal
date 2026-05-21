@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -53,7 +54,7 @@ public class MedicosService {
         return medicos.map(this::convertirMedico);
     }
 
-    public boolean registrarNuevoMedico(MedicoRequest request) {
+    /*public boolean registrarNuevoMedico(MedicoRequest request) {
         try {
             if (request != null) {
                 ModelUsuario usuario = new ModelUsuario();
@@ -83,6 +84,57 @@ public class MedicosService {
             }
         } catch (Exception e) {
             return false;
+        }
+    }*/
+    @Transactional
+    public String registrarNuevoMedico(MedicoRequest request) {
+
+        if (request == null) {
+            throw new RuntimeException("No hay datos para registrar");
+        }
+        if (usuarioRepository.existsByCorreo(request.getCorreo())) {
+            throw new RuntimeException("El correo ya está registrado");
+        }
+
+        if (usuarioRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("El username ya está registrado");
+        }
+        if (medicosRepository.existsByCmpMedico(request.getCmpMedico())) {
+            throw new RuntimeException("El CMP ya está registrado");
+        }
+        try {
+            String contrasena = PasswordGenerator.generarPassword(8);
+
+            ModelRoles rol = rolesRepository.findById(request.getIdRol())
+                    .orElseThrow(() -> new RuntimeException("Rol no existe"));
+
+            ModelEspecialidades especialidad = especialidadRepository.findById(request.getIdespecialidad())
+                    .orElseThrow(() -> new RuntimeException("Especialidad no existe"));
+
+            ModelUsuario usuario = new ModelUsuario();
+            usuario.setUsername(request.getUsername());
+            usuario.setCorreo(request.getCorreo());
+            usuario.setPasswordHash(passwordEncoder.encode(contrasena));
+            usuario.setFechaCreacion(LocalDateTime.now());
+            usuario.setEstadoUsario(1);
+            usuario.setRol(rol);
+
+            ModelMedicos medico = new ModelMedicos();
+            medico.setNombresMedico(request.getNombresMedico());
+            medico.setApellidosMedico(request.getApellidosMedico());
+            medico.setCmpMedico(request.getCmpMedico());
+            medico.setTelefonoMedico(request.getTelefonoMedico());
+            medico.setEspecialidad(especialidad);
+
+            medico.setUsuario(usuario);
+            usuario.setMedico(medico);
+
+            usuarioRepository.save(usuario);
+
+            return contrasena;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al registrar médico: " + e.getMessage());
         }
     }
 
