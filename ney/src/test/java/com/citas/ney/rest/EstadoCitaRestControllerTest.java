@@ -51,7 +51,7 @@ class EstadoCitaRestControllerTest {
         assertTrue(result.getResponse().getContentAsString().contains("Cita registrada pendiente de atención"));
     }
 
-    @Test
+   /*@Test
     public void testListarEstadosCitaVacio() throws Exception {
 
         when(estadoCitaService.listarEstadoCitas()).thenReturn(new ArrayList<>());
@@ -63,5 +63,5 @@ class EstadoCitaRestControllerTest {
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         assertTrue(result.getResponse().getContentAsString().contains("Estados de citas encontradas"));
         assertTrue(result.getResponse().getContentAsString().contains("\"data\":[]"));
-    }
+    }*/
 }

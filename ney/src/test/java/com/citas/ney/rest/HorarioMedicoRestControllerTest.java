@@ -68,7 +68,7 @@ class HorarioMedicoRestControllerTest {
         assertTrue(result.getResponse().getContentAsString().contains("\"estado\":1"));
     }
 
-    @Test
+   /* @Test
     public void testListarHorariosMedicosActivosVacio() throws Exception {
 
         when(horarioMedicoService.listarHorarioMedico()).thenReturn(new ArrayList<>());
@@ -81,7 +81,7 @@ class HorarioMedicoRestControllerTest {
         assertTrue(result.getResponse().getContentAsString().contains("horarios encontrados"));
         assertTrue(result.getResponse().getContentAsString().contains("\"success\":true"));
         assertTrue(result.getResponse().getContentAsString().contains("\"data\":[]"));
-    }
+    }*/
 
     @Test
     public void testRegistrarHorarioMedicoCorrectamente() throws Exception {

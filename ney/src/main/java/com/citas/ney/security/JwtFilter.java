@@ -17,7 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 @Component
 @RequiredArgsConstructor
@@ -51,8 +50,6 @@ public class JwtFilter extends OncePerRequestFilter {
                                     token,
                                     Collections.singleton(() -> "ROLE_" + rol.toUpperCase())
                             );
-
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
