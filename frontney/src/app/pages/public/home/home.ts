@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, HostListener, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, inject} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
