@@ -25,5 +25,6 @@ public class LoginResponse {
     private String correo;
     private String nombre;
     private String apellido;
+    private Boolean cambiopass;
     private String token;
 }

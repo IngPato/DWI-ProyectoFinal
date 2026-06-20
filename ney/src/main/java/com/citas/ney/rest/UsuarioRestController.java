@@ -32,7 +32,7 @@ public class UsuarioRestController {
 
     @PostMapping
     public ResponseEntity<UsuarioResponse> registrarUsuario(@RequestBody UsuarioRequest request) {
-        return new ResponseEntity<>(usuarioService.registrarUsuario(request), HttpStatus.CREATED);
+        return ResponseEntity.ok(usuarioService.registrarUsuario(request));
     }
 
     @PutMapping("/{id}")

@@ -5,6 +5,7 @@
 package com.citas.ney.repository;
 
 import com.citas.ney.model.ModelMedicos;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,4 +33,5 @@ public interface MedicosRepository extends JpaRepository<ModelMedicos, Integer> 
     Page<ModelMedicos> buscarMedicosActivosPaginado(@Param("filtro") String buscar, Pageable pageable);
     
     boolean existsByCmpMedico(String cmpMedico);
+    Optional<ModelMedicos> findByCmpMedico(String cmpMedico);
 }

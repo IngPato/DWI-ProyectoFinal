@@ -1,0 +1,659 @@
+@if (alertaMensaje) {
+  <div
+    class="alert alerta-medico shadow"
+    [class.mostrar]="alertaVisible"
+    [ngClass]="'alert-' + alertaTipo"
+    role="alert">
+    <i class="fa-solid fa-circle-info me-2"></i>
+    {{ alertaMensaje }}
+  </div>
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-clinica fixed-top shadow-sm">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#resumen">
+      <span class="logo-medico">
+        <i class="fa-solid fa-hospital"></i>
+      </span>
+      <div>
+        <strong>Clínica Neill Roman Robles</strong>
+        <small class="d-block text-white-50">Panel del Médico</small>
+      </div>
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarMedico">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMedico">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#resumen">
+            <i class="fa-solid fa-chart-pie me-1"></i>
+            Resumen
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#citas">
+            <i class="fa-solid fa-calendar-check me-1"></i>
+            Citas
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#horarios">
+            <i class="fa-solid fa-clock me-1"></i>
+            Horarios
+          </a>
+        </li>
+
+        <li class="nav-item ms-lg-3">
+          <button
+            type="button"
+            class="btn btn-light btn-sm rounded-pill px-4"
+            (click)="cerrarSesion()">
+            <i class="fa-solid fa-right-from-bracket me-1"></i>
+            Cerrar sesión
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="medico-wrapper bg-light">
+
+  <section id="resumen" class="mb-4">
+    <div class="container-fluid">
+      <div class="hero-medico rounded-4 shadow-sm">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-8">
+            <span class="badge bg-white text-clinica rounded-pill mb-3">
+              <i class="fa-solid fa-user-doctor me-2"></i>
+              Gestión médica profesional
+            </span>
+
+            <h1 class="fw-bold text-white mb-2">
+              Bienvenido, <span>Dr. {{ nombreCompletoMedico }}</span>
+            </h1>
+
+            <p class="text-white-50 mb-0">
+              Desde este panel puedes revisar tus citas asignadas, administrar tus horarios,
+              consultar datos básicos de pacientes y actualizar el estado de atención.
+            </p>
+          </div>
+
+          <div class="col-lg-4 text-lg-end">
+            <button
+              type="button"
+              class="btn btn-light btn-lg rounded-pill px-4"
+              data-bs-toggle="modal"
+              data-bs-target="#modalHorario">
+              <i class="fa-solid fa-calendar-plus me-2"></i>
+              Agregar horario
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-4">
+    <div class="container-fluid">
+      <div class="row g-4">
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Citas asignadas</p>
+                  <h3 class="fw-bold mb-0">{{ totalCitas }}</h3>
+                </div>
+                <div class="stat-icon bg-primary-subtle text-primary">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Pendientes</p>
+                  <h3 class="fw-bold mb-0">{{ citasPendientes }}</h3>
+                </div>
+                <div class="stat-icon bg-warning-subtle text-warning">
+                  <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Confirmadas</p>
+                  <h3 class="fw-bold mb-0">{{ citasConfirmadas }}</h3>
+                </div>
+                <div class="stat-icon bg-success-subtle text-success">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Atendidas</p>
+                  <h3 class="fw-bold mb-0">{{ citasAtendidas }}</h3>
+                </div>
+                <div class="stat-icon bg-info-subtle text-info">
+                  <i class="fa-solid fa-stethoscope"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-4">
+    <div class="container-fluid">
+      <div class="row g-4">
+
+        <div class="col-lg-8">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-header bg-white border-0 rounded-top-4 p-4">
+              <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-calendar-day text-success me-2"></i>
+                Citas de hoy
+              </h4>
+              <p class="text-muted mb-0">Pacientes programados para la atención del día.</p>
+            </div>
+
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="ps-4">Hora</th>
+                      <th>Paciente</th>
+                      <th>Especialidad</th>
+                      <th>Motivo</th>
+                      <th>Estado</th>
+                      <th class="text-end pe-4">Acción</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @for (cita of citasHoy; track cita.idcitas) {
+                      <tr>
+                        <td class="ps-4">{{ cita.hora_cita }}</td>
+                        <td>{{ cita.paciente }}</td>
+                        <td>{{ cita.especialidad }}</td>
+                        <td>{{ cita.motivo }}</td>
+                        <td>
+                          <span class="badge" [ngClass]="claseEstado(cita.estado)">
+                            {{ cita.estado }}
+                          </span>
+                        </td>
+                        <td class="text-end pe-4">
+                          <button
+                            class="btn btn-sm btn-outline-primary rounded-pill"
+                            type="button"
+                            (click)="abrirDetalleCita(cita)">
+                            <i class="fa-solid fa-user-check me-1"></i>
+                            Atender
+                          </button>
+                        </td>
+                      </tr>
+                    } @empty {
+                      <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                          No tiene citas programadas para hoy.
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-header bg-white border-0 rounded-top-4 p-4">
+              <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-id-card-clip text-success me-2"></i>
+                Mi perfil médico
+              </h4>
+              <p class="text-muted mb-0">Información registrada en el sistema.</p>
+            </div>
+
+            <div class="card-body p-4">
+              <div class="profile-box mb-3">
+                <div class="profile-avatar">{{ inicialesMedico }}</div>
+                <div>
+                  <h5 class="fw-bold mb-0">{{ nombreCompletoMedico }}</h5>
+                  <small class="text-muted">CMP: {{ medico.cmp }}</small>
+                </div>
+              </div>
+
+              <div class="list-group list-group-flush">
+                <div class="list-group-item px-0 d-flex justify-content-between">
+                  <span class="text-muted">Especialidad</span>
+                  <strong>{{ medico.especialidad }}</strong>
+                </div>
+
+                <div class="list-group-item px-0 d-flex justify-content-between">
+                  <span class="text-muted">Teléfono</span>
+                  <strong>{{ medico.telefono }}</strong>
+                </div>
+
+                <div class="list-group-item px-0 d-flex justify-content-between">
+                  <span class="text-muted">Usuario</span>
+                  <strong>{{ medico.username }}</strong>
+                </div>
+
+                <div class="list-group-item px-0 d-flex justify-content-between">
+                  <span class="text-muted">Estado</span>
+                  <span class="badge bg-success rounded-pill">{{ medico.estado }}</span>
+                </div>
+              </div>
+
+              <div class="alert alert-success rounded-4 mt-3 mb-0">
+                Este perfil está relacionado con la tabla <strong>medicos</strong> y la tabla <strong>usuario</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="citas" class="mb-4">
+    <div class="container-fluid">
+      <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header bg-white border-0 rounded-top-4 p-4">
+          <div class="row align-items-center g-3">
+            <div class="col-lg-6">
+              <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-notes-medical text-success me-2"></i>
+                Mis citas médicas
+              </h4>
+              <p class="text-muted mb-0">
+                Citas asignadas al médico autenticado.
+              </p>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar paciente o motivo"
+                    [(ngModel)]="buscarCita">
+                </div>
+
+                <div class="col-md-6">
+                  <select class="form-select" [(ngModel)]="filtroEstado">
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Confirmada">Confirmada</option>
+                    <option value="Atendida">Atendida</option>
+                    <option value="Cancelada">Cancelada</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-4">Fecha</th>
+                  <th>Hora</th>
+                  <th>Paciente</th>
+                  <th>Documento</th>
+                  <th>Especialidad</th>
+                  <th>Motivo</th>
+                  <th>Estado</th>
+                  <th class="text-end pe-4">Acción</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (cita of citasFiltradas; track cita.idcitas) {
+                  <tr>
+                    <td class="ps-4">{{ formatearFecha(cita.fecha_cita) }}</td>
+                    <td>{{ cita.hora_cita }}</td>
+                    <td>{{ cita.paciente }}</td>
+                    <td>{{ cita.documento }}</td>
+                    <td>{{ cita.especialidad }}</td>
+                    <td>{{ cita.motivo }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="claseEstado(cita.estado)">
+                        {{ cita.estado }}
+                      </span>
+                    </td>
+                    <td class="text-end pe-4">
+                      <button
+                        class="btn btn-sm btn-outline-primary rounded-pill"
+                        type="button"
+                        (click)="abrirDetalleCita(cita)">
+                        <i class="fa-solid fa-eye me-1"></i>
+                        Ver detalle
+                      </button>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                      No se encontraron citas con los filtros seleccionados.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="horarios">
+    <div class="container-fluid">
+      <div class="card border-0 rounded-4 shadow-sm">
+        <div class="card-header bg-white border-0 rounded-top-4 p-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+              <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-clock text-success me-2"></i>
+                Mis horarios disponibles
+              </h4>
+              <p class="text-muted mb-0">
+                Horarios registrados en la tabla horarios_medico.
+              </p>
+            </div>
+
+            <button
+              class="btn btn-clinica rounded-pill px-4"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#modalHorario">
+              <i class="fa-solid fa-plus me-2"></i>
+              Nuevo horario
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-4">Fecha</th>
+                  <th>Hora inicio</th>
+                  <th>Hora fin</th>
+                  <th>Estado</th>
+                  <th class="text-end pe-4">Acción</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (horario of horariosMedico; track horario.idhorarios_medico) {
+                  <tr>
+                    <td class="ps-4">{{ formatearFecha(horario.fecha) }}</td>
+                    <td>{{ horario.hora_inicio }}</td>
+                    <td>{{ horario.hora_fin }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="claseHorario(horario.estado)">
+                        {{ textoHorario(horario.estado) }}
+                      </span>
+                    </td>
+                    <td class="text-end pe-4">
+                      <button
+                        class="btn btn-sm btn-outline-danger rounded-pill"
+                        type="button"
+                        (click)="cambiarEstadoHorario(horario.idhorarios_medico)">
+                        <i class="fa-solid fa-rotate me-1"></i>
+                        Cambiar estado
+                      </button>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                      No hay horarios registrados.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal fade" id="modalDetalleCita" tabindex="-1" aria-labelledby="tituloDetalleCita" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+
+      <div class="modal-header bg-clinica text-white rounded-top-4">
+        <div>
+          <h4 class="modal-title fw-bold" id="tituloDetalleCita">
+            <i class="fa-solid fa-file-medical me-2"></i>
+            Detalle de la cita
+          </h4>
+          <p class="mb-0 small opacity-75">Información del paciente y estado de atención.</p>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form [formGroup]="actualizarEstadoForm" (ngSubmit)="actualizarEstadoCita()">
+        <div class="modal-body bg-light">
+          @if (citaSeleccionada) {
+            <div class="card border-0 rounded-4 shadow-sm mb-3">
+              <div class="card-body">
+                <h5 class="fw-bold text-clinica mb-3">Datos del paciente</h5>
+
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <small class="text-muted">Paciente</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.paciente }}</p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <small class="text-muted">Documento</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.documento }}</p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <small class="text-muted">Teléfono</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.telefono }}</p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <small class="text-muted">Especialidad</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.especialidad }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card border-0 rounded-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="fw-bold text-clinica mb-3">Datos de la cita</h5>
+
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <small class="text-muted">Fecha</small>
+                    <p class="fw-semibold mb-0">{{ formatearFecha(citaSeleccionada.fecha_cita) }}</p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <small class="text-muted">Hora</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.hora_cita }}</p>
+                  </div>
+
+                  <div class="col-12">
+                    <small class="text-muted">Motivo</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.motivo }}</p>
+                  </div>
+
+                  <div class="col-12">
+                    <small class="text-muted">Observación</small>
+                    <p class="fw-semibold mb-0">{{ citaSeleccionada.observacion }}</p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="detalleEstado" class="form-label">Actualizar estado</label>
+                    <select
+                      class="form-select form-select-lg"
+                      id="detalleEstado"
+                      formControlName="detalleEstado">
+                      <option value="Pendiente">Pendiente</option>
+                      <option value="Confirmada">Confirmada</option>
+                      <option value="Atendida">Atendida</option>
+                      <option value="Cancelada">Cancelada</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer bg-white border-0 rounded-bottom-4">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-clinica rounded-pill px-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+            Guardar estado
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalHorario" tabindex="-1" aria-labelledby="tituloHorario" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+
+      <div class="modal-header bg-clinica text-white rounded-top-4">
+        <div>
+          <h4 class="modal-title fw-bold" id="tituloHorario">
+            <i class="fa-solid fa-calendar-plus me-2"></i>
+            Registrar horario
+          </h4>
+          <p class="mb-0 small opacity-75">Agrega una disponibilidad médica.</p>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form [formGroup]="horarioForm" (ngSubmit)="registrarHorario()">
+        <div class="modal-body bg-light">
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="fechaHorario" class="form-label">Fecha</label>
+              <input
+                type="date"
+                class="form-control form-control-lg"
+                id="fechaHorario"
+                formControlName="fechaHorario"
+                [class.is-invalid]="campoInvalidoHorario('fechaHorario')">
+              @if (campoInvalidoHorario('fechaHorario')) {
+                <div class="invalid-feedback">Seleccione una fecha.</div>
+              }
+            </div>
+
+            <div class="col-md-6">
+              <label for="horaInicio" class="form-label">Hora inicio</label>
+              <input
+                type="time"
+                class="form-control form-control-lg"
+                id="horaInicio"
+                formControlName="horaInicio"
+                [class.is-invalid]="campoInvalidoHorario('horaInicio')">
+              @if (campoInvalidoHorario('horaInicio')) {
+                <div class="invalid-feedback">Ingrese la hora de inicio.</div>
+              }
+            </div>
+
+            <div class="col-md-6">
+              <label for="horaFin" class="form-label">Hora fin</label>
+              <input
+                type="time"
+                class="form-control form-control-lg"
+                id="horaFin"
+                formControlName="horaFin"
+                [class.is-invalid]="campoInvalidoHorario('horaFin')">
+              @if (campoInvalidoHorario('horaFin')) {
+                <div class="invalid-feedback">Ingrese la hora de fin.</div>
+              }
+            </div>
+
+            <div class="col-12">
+              <label for="estadoHorario" class="form-label">Estado</label>
+              <select
+                class="form-select form-select-lg"
+                id="estadoHorario"
+                formControlName="estadoHorario">
+                <option value="1">Disponible</option>
+                <option value="0">No disponible</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="alert alert-success rounded-4 mt-4 mb-0">
+            El <strong>id_medico</strong> debe obtenerse desde la sesión activa del usuario médico.
+          </div>
+        </div>
+
+        <div class="modal-footer bg-white border-0 rounded-bottom-4">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-clinica rounded-pill px-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+            Guardar horario
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

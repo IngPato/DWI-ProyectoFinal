@@ -15,11 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UsuarioRequest {
-
-    private Integer idRol;
-    private String username;
-    private String correo;
-    private String password;
-    private Boolean cambiarContraseña;
+public class CambioContrasenaRequest {
+    private Integer idusuario;
+    private String nuevacontrasena;
 }

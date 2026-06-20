@@ -10,6 +10,7 @@ import com.citas.ney.model.ModelPacientes;
 import com.citas.ney.model.ModelUsuario;
 import com.citas.ney.repository.PacienteRepository;
 import com.citas.ney.repository.UsuarioRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -115,6 +116,15 @@ public class PacienteService {
             throw new RuntimeException("error: " + e);
         }
 
+    }
+
+    public Boolean validardnipaciente(String dni) {
+        return pacienteRepository.existsByNumeroDocumentoPaciente(dni);
+    }
+
+    public Integer validarPaciente(String dni, LocalDate fechaNacimientoPaciente) {
+        ModelPacientes paciente = pacienteRepository.findByNumeroDocumentoPacienteAndFechaNacimientoPaciente(dni, fechaNacimientoPaciente).get();
+        return paciente.getUsuario().getIdusuario();
     }
 
 }

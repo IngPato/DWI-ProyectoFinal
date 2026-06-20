@@ -44,7 +44,7 @@ public class AuthService {
             return new ApiResponse<>(false, "Credenciales inválidas.", null);
         }
 
-         ModelUsuario usuario = usuarioRepository
+        ModelUsuario usuario = usuarioRepository
                 .findByUsernameOrCorreo(request.login(), request.login())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
 
@@ -61,6 +61,7 @@ public class AuthService {
         response.setRol(rol);
         response.setUsername(usuario.getUsername());
         response.setCorreo(usuario.getCorreo());
+        response.setCambiopass(usuario.getCambiarContraseña());
         response.setToken(token);
 
         switch (rol) {

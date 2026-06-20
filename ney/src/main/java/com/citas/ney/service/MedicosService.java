@@ -161,4 +161,8 @@ public class MedicosService {
             throw new RuntimeException("Error: " + e);
         }
     }
+    public Integer validarMedico(String cmpMedico){
+       ModelMedicos medicos= medicosRepository.findByCmpMedico(cmpMedico).get();
+       return medicos.getUsuario().getIdusuario();
+    }
 }

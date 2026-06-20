@@ -4,6 +4,7 @@
  */
 package com.citas.ney.service;
 
+import com.citas.ney.dto.CambioContrasenaRequest;
 import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.UsuarioRequest;
 import com.citas.ney.dto.UsuarioResponse;
@@ -64,6 +65,7 @@ public class UsuarioService {
         usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setEstadoUsario(1);
         usuario.setFechaCreacion(LocalDateTime.now());
+        usuario.setCambiarContraseña(request.getCambiarContraseña());
 
         ModelUsuario guardado = usuarioRepository.save(usuario);
         return convertirAresponse(guardado);
@@ -95,6 +97,40 @@ public class UsuarioService {
         ModelUsuario actualizado = usuarioRepository.save(usuario);
 
         return convertirAresponse(actualizado);
+    }
+
+    public boolean existeususario(String usuario, String correo) {
+        if (!usuario.equals(null)) {
+            if (usuarioRepository.existsByUsername(usuario) != true) {
+                if (!correo.equals(null)) {
+                    if (usuarioRepository.existsByCorreo(correo) == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean cambioContraseña(CambioContrasenaRequest request) {
+        try {
+            ModelUsuario usuario = usuarioRepository.findById(request.getIdusuario()).orElseThrow(() -> new RuntimeException("usuario no existe"));
+            usuario.setPasswordHash(passwordEncoder.encode(request.getNuevacontrasena()));
+            usuario.setCambiarContraseña(Boolean.FALSE);
+            usuarioRepository.save(usuario);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("error al actualizar contraseña");
+        }
+
     }
 
 }

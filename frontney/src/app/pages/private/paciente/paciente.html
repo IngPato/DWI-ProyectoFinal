@@ -1,0 +1,677 @@
+@if (alertaMensaje) {
+<div class="alert alerta-paciente shadow" [class.mostrar]="alertaVisible" [ngClass]="'alert-' + alertaTipo"
+    role="alert">
+    <i class="fa-solid fa-circle-info me-2"></i>
+    {{ alertaMensaje }}
+</div>
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-clinica shadow-sm fixed-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#resumen">
+            <span class="logo-paciente">
+                <i class="fa-solid fa-hospital"></i>
+            </span>
+            <div>
+                <strong>Clínica Neill Roman Robles</strong>
+                <small class="d-block text-white-50">Panel del Paciente</small>
+            </div>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPaciente">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarPaciente">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#resumen">
+                        <i class="fa-solid fa-chart-pie me-1"></i>
+                        Resumen
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#mis-citas">
+                        <i class="fa-solid fa-calendar-check me-1"></i>
+                        Mis citas
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#perfil">
+                        <i class="fa-solid fa-user me-1"></i>
+                        Mi perfil
+                    </a>
+                </li>
+
+                <li class="nav-item ms-lg-3">
+                    <button type="button" class="btn btn-light rounded-pill px-4 btn-sm" (click)="cerrarSesion()">
+                        <i class="fa-solid fa-right-from-bracket me-1"></i>
+                        Cerrar sesión
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="patient-wrapper bg-light">
+
+    <section id="resumen" class="mb-4">
+        <div class="container-fluid">
+            <div class="patient-hero rounded-4 shadow-sm">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="badge bg-white text-clinica rounded-pill mb-3">
+                            <i class="fa-solid fa-shield-heart me-2"></i>
+                            Bienvenido al sistema de citas médicas
+                        </span>
+
+                        <h1 class="fw-bold text-white mb-2">
+                            Hola, <span>{{ nombreCompletoPaciente }}</span>
+                        </h1>
+
+                        <p class="text-white-50 mb-0">
+                            Desde este panel puedes solicitar nuevas citas, revisar tus citas programadas,
+                            consultar el estado de atención y actualizar tu información personal.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+                        <button type="button" class="btn btn-light btn-lg rounded-pill px-4" data-bs-toggle="modal"
+                            data-bs-target="#modalNuevaCita">
+                            <i class="fa-solid fa-calendar-plus me-2"></i>
+                            Nueva cita médica
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <div class="container-fluid">
+            <div class="row g-4">
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-muted mb-1">Citas registradas</p>
+                                    <h3 class="fw-bold mb-0">{{ totalCitas }}</h3>
+                                </div>
+                                <div class="stat-icon bg-success-subtle text-success">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-muted mb-1">Pendientes</p>
+                                    <h3 class="fw-bold mb-0">{{ citasPendientes }}</h3>
+                                </div>
+                                <div class="stat-icon bg-warning-subtle text-warning">
+                                    <i class="fa-solid fa-hourglass-half"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-muted mb-1">Confirmadas</p>
+                                    <h3 class="fw-bold mb-0">{{ citasConfirmadas }}</h3>
+                                </div>
+                                <div class="stat-icon bg-primary-subtle text-primary">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-muted mb-1">Atendidas</p>
+                                    <h3 class="fw-bold mb-0">{{ citasAtendidas }}</h3>
+                                </div>
+                                <div class="stat-icon bg-info-subtle text-info">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <div class="container-fluid">
+            <div class="row g-4">
+
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-0 rounded-top-4 p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="fw-bold mb-1">
+                                        <i class="fa-solid fa-calendar-day text-success me-2"></i>
+                                        Próxima cita
+                                    </h4>
+                                    <p class="text-muted mb-0">Información de tu atención más cercana.</p>
+                                </div>
+
+                                @if (proximaCita) {
+                                <span class="badge rounded-pill px-3 py-2" [ngClass]="claseEstado(proximaCita.estado)">
+                                    {{ proximaCita.estado }}
+                                </span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="card-body p-4">
+                            @if (proximaCita) {
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <small class="text-muted">Especialidad</small>
+                                    <p class="fw-semibold mb-0">{{ proximaCita.especialidad }}</p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <small class="text-muted">Médico</small>
+                                    <p class="fw-semibold mb-0">{{ proximaCita.medico }}</p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <small class="text-muted">Fecha</small>
+                                    <p class="fw-semibold mb-0">{{ proximaCita.fecha }}</p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <small class="text-muted">Hora</small>
+                                    <p class="fw-semibold mb-0">{{ proximaCita.hora }}</p>
+                                </div>
+
+                                <div class="col-12">
+                                    <small class="text-muted">Motivo de la cita</small>
+                                    <p class="fw-semibold mb-0">{{ proximaCita.motivo }}</p>
+                                </div>
+                            </div>
+                            } @else {
+                            <p class="text-muted mb-0">Aún no tienes citas próximas registradas.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5" id="perfil">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-0 rounded-top-4 p-4">
+                            <h4 class="fw-bold mb-1">
+                                <i class="fa-solid fa-address-card text-success me-2"></i>
+                                Mi información
+                            </h4>
+                            <p class="text-muted mb-0">Datos registrados como paciente.</p>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="profile-box mb-3">
+                                <div class="profile-avatar">
+                                    {{ inicialesPaciente }}
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0">{{ nombreCompletoPaciente }}</h5>
+                                    <small class="text-muted">
+                                        {{ paciente.tipoDocumento }}: {{ paciente.numeroDocumento }}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted">Teléfono</span>
+                                    <strong>{{ paciente.telefono || 'No registrado' }}</strong>
+                                </div>
+
+                                <div class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted">Grupo sanguíneo</span>
+                                    <strong>{{ paciente.grupoSanguineo || 'No registrado' }}</strong>
+                                </div>
+
+                                <div class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted">Sexo</span>
+                                    <strong>{{ paciente.sexo || 'No registrado' }}</strong>
+                                </div>
+
+                                <div class="list-group-item px-0">
+                                    <span class="text-muted d-block">Dirección</span>
+                                    <strong>{{ paciente.direccion || 'No registrada' }}</strong>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-success rounded-pill w-100 mt-3" data-bs-toggle="modal"
+                                data-bs-target="#modalEditarPerfil">
+                                <i class="fa-solid fa-user-pen me-2"></i>
+                                Editar mis datos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="mis-citas">
+        <div class="container-fluid">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 rounded-top-4 p-4">
+                    <div class="row align-items-center g-3">
+                        <div class="col-lg-6">
+                            <h4 class="fw-bold mb-1">
+                                <i class="fa-solid fa-notes-medical text-success me-2"></i>
+                                Mis citas médicas
+                            </h4>
+                            <p class="text-muted mb-0">
+                                Historial y estado de tus citas registradas en el sistema.
+                            </p>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Buscar especialidad o médico"
+                                        [(ngModel)]="buscarCita">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <select class="form-select" [(ngModel)]="filtroEstadoCita">
+                                        <option value="">Todos los estados</option>
+                                        <option value="pendiente">Pendiente</option>
+                                        <option value="confirmada">Confirmada</option>
+                                        <option value="atendida">Atendida</option>
+                                        <option value="cancelada">Cancelada</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Especialidad</th>
+                                    <th>Médico</th>
+                                    <th>Motivo</th>
+                                    <th>Estado</th>
+                                    <th class="text-end pe-4">Acción</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @for (cita of citasFiltradas; track cita.id) {
+                                <tr>
+                                    <td class="ps-4">{{ cita.fecha }}</td>
+                                    <td>{{ cita.hora }}</td>
+                                    <td>{{ cita.especialidad }}</td>
+                                    <td>{{ cita.medico }}</td>
+                                    <td>{{ cita.motivo }}</td>
+                                    <td>
+                                        <span class="badge" [ngClass]="claseEstado(cita.estado)">
+                                            {{ cita.estado }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#modalDetalleCita"
+                                            (click)="verDetalle(cita)">
+                                            <i class="fa-solid fa-eye me-1"></i>
+                                            Ver
+                                        </button>
+                                    </td>
+                                </tr>
+                                } @empty {
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">
+                                        No se encontraron citas con los filtros seleccionados.
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div class="modal fade" id="modalNuevaCita" tabindex="-1" aria-labelledby="tituloNuevaCita" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <div class="modal-header bg-clinica text-white rounded-top-4">
+                <div>
+                    <h4 class="modal-title fw-bold" id="tituloNuevaCita">
+                        <i class="fa-solid fa-calendar-plus me-2"></i>
+                        Solicitar nueva cita
+                    </h4>
+                    <p class="mb-0 small opacity-75">
+                        Selecciona especialidad, médico, fecha y horario disponible.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form [formGroup]="nuevaCitaForm" (ngSubmit)="guardarNuevaCita()">
+                <div class="modal-body bg-light">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label for="id_especialidad" class="form-label">Especialidad</label>
+                            <select class="form-select form-select-lg" id="id_especialidad"
+                                formControlName="id_especialidad"
+                                [class.is-invalid]="campoInvalidoFormularioCita('id_especialidad')">
+                                <option value="">Seleccione especialidad</option>
+                                @for (especialidad of especialidades; track especialidad.id) {
+                                <option [value]="especialidad.id">{{ especialidad.nombre }}</option>
+                                }
+                            </select>
+                            @if (campoInvalidoFormularioCita('id_especialidad')) {
+                            <div class="invalid-feedback">Seleccione una especialidad.</div>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_medico" class="form-label">Médico</label>
+                            <select class="form-select form-select-lg" id="id_medico" formControlName="id_medico"
+                                [class.is-invalid]="campoInvalidoFormularioCita('id_medico')">
+                                <option value="">Seleccione médico</option>
+                                @for (medico of medicos; track medico.id) {
+                                <option [value]="medico.id">{{ medico.nombre }}</option>
+                                }
+                            </select>
+                            @if (campoInvalidoFormularioCita('id_medico')) {
+                            <div class="invalid-feedback">Seleccione un médico.</div>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="fecha_cita" class="form-label">Fecha de cita</label>
+                            <input type="date" class="form-control form-control-lg" id="fecha_cita"
+                                formControlName="fecha_cita"
+                                [class.is-invalid]="campoInvalidoFormularioCita('fecha_cita')">
+                            @if (campoInvalidoFormularioCita('fecha_cita')) {
+                            <div class="invalid-feedback">Seleccione una fecha.</div>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_horario" class="form-label">Horario disponible</label>
+                            <select class="form-select form-select-lg" id="id_horario" formControlName="id_horario"
+                                [class.is-invalid]="campoInvalidoFormularioCita('id_horario')">
+                                <option value="">Seleccione horario</option>
+                                @for (horario of horarios; track horario.id) {
+                                <option [value]="horario.id">{{ horario.hora }}</option>
+                                }
+                            </select>
+                            @if (campoInvalidoFormularioCita('id_horario')) {
+                            <div class="invalid-feedback">Seleccione un horario.</div>
+                            }
+                        </div>
+
+                        <div class="col-12">
+                            <label for="motivo_cita" class="form-label">Motivo de la cita</label>
+                            <textarea class="form-control" id="motivo_cita" rows="3" maxlength="250"
+                                placeholder="Describe brevemente el motivo de la consulta" formControlName="motivo_cita"
+                                [class.is-invalid]="campoInvalidoFormularioCita('motivo_cita')"></textarea>
+                            @if (campoInvalidoFormularioCita('motivo_cita')) {
+                            <div class="invalid-feedback">Ingrese el motivo de la cita.</div>
+                            }
+                        </div>
+
+                        <div class="col-12">
+                            <label for="observacion_cita" class="form-label">Observación adicional</label>
+                            <textarea class="form-control" id="observacion_cita" rows="2" maxlength="250"
+                                placeholder="Opcional" formControlName="observacion_cita"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-success rounded-4 mt-4 mb-0">
+                        <strong>Nota:</strong> el sistema debe guardar la cita con el
+                        <strong>id_paciente</strong> de la sesión activa y el estado inicial
+                        <strong>Pendiente</strong>.
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white border-0 rounded-bottom-4">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-clinica rounded-pill px-4">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Guardar cita
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-labelledby="tituloEditarPerfil" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <div class="modal-header bg-clinica text-white rounded-top-4">
+                <div>
+                    <h4 class="modal-title fw-bold" id="tituloEditarPerfil">
+                        <i class="fa-solid fa-user-pen me-2"></i>
+                        Editar mis datos
+                    </h4>
+                    <p class="mb-0 small opacity-75">
+                        Actualiza tu información personal registrada como paciente.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form [formGroup]="editarPerfilForm" (ngSubmit)="actualizarPerfil()">
+                <div class="modal-body bg-light">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label for="editar_nombres_paciente" class="form-label">Nombres</label>
+                            <input type="text" class="form-control form-control-lg" id="editar_nombres_paciente"
+                                formControlName="nombres_paciente"
+                                [class.is-invalid]="campoInvalidoPerfil('nombres_paciente')">
+                            @if (campoInvalidoPerfil('nombres_paciente')) {
+                            <div class="invalid-feedback">Ingrese los nombres.</div>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="editar_apellidos_paciente" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control form-control-lg" id="editar_apellidos_paciente"
+                                formControlName="apellidos_paciente"
+                                [class.is-invalid]="campoInvalidoPerfil('apellidos_paciente')">
+                            @if (campoInvalidoPerfil('apellidos_paciente')) {
+                            <div class="invalid-feedback">Ingrese los apellidos.</div>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="editar_tipo_documento_paciente" class="form-label">Tipo documento</label>
+                            <select class="form-select form-select-lg" id="editar_tipo_documento_paciente"
+                                formControlName="tipo_documento_paciente">
+                                <option value="DNI">DNI</option>
+                                <option value="Carné de Extranjería">Carné de Extranjería</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="editar_numero_documento_paciente" class="form-label">N.° documento</label>
+                            <input type="text" class="form-control form-control-lg"
+                                id="editar_numero_documento_paciente" formControlName="numero_documento_paciente"
+                                [class.is-invalid]="campoInvalidoPerfil('numero_documento_paciente')">
+                            @if (campoInvalidoPerfil('numero_documento_paciente')) {
+                            <div class="invalid-feedback">Ingrese el número de documento.</div>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="editar_fecha_nacimiento_paciente" class="form-label">Fecha nacimiento</label>
+                            <input type="date" class="form-control form-control-lg"
+                                id="editar_fecha_nacimiento_paciente" formControlName="fecha_nacimiento_paciente">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="editar_sexo_paciente" class="form-label">Sexo</label>
+                            <select class="form-select form-select-lg" id="editar_sexo_paciente"
+                                formControlName="sexo_paciente">
+                                <option value="Femenino">Femenino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="editar_grupo_sanguineo_paciente" class="form-label">Grupo sanguíneo</label>
+                            <select class="form-select form-select-lg" id="editar_grupo_sanguineo_paciente"
+                                formControlName="grupo_sanguineo_paciente">
+                                <option value="">Seleccione</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="editar_telefono_paciente" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control form-control-lg" id="editar_telefono_paciente"
+                                formControlName="telefono_paciente">
+                        </div>
+
+                        <div class="col-12">
+                            <label for="editar_direccion_paciente" class="form-label">Dirección</label>
+                            <input type="text" class="form-control form-control-lg" id="editar_direccion_paciente"
+                                formControlName="direccion_paciente">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-white border-0 rounded-bottom-4">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-clinica rounded-pill px-4">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Actualizar datos
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetalleCita" tabindex="-1" aria-labelledby="tituloDetalleCita" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <div class="modal-header bg-clinica text-white rounded-top-4">
+                <h5 class="modal-title fw-bold" id="tituloDetalleCita">
+                    <i class="fa-solid fa-file-medical me-2"></i>
+                    Detalle de cita médica
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body bg-light">
+                @if (citaSeleccionada) {
+                <div class="list-group list-group-flush rounded-4">
+                    <div class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Especialidad</span>
+                        <strong>{{ citaSeleccionada.especialidad }}</strong>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Médico</span>
+                        <strong>{{ citaSeleccionada.medico }}</strong>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Fecha</span>
+                        <strong>{{ citaSeleccionada.fecha }}</strong>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Hora</span>
+                        <strong>{{ citaSeleccionada.hora }}</strong>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Estado</span>
+                        <span class="badge" [ngClass]="claseEstado(citaSeleccionada.estado)">
+                            {{ citaSeleccionada.estado }}
+                        </span>
+                    </div>
+
+                    <div class="list-group-item">
+                        <span class="text-muted d-block">Motivo</span>
+                        <strong>{{ citaSeleccionada.motivo }}</strong>
+                    </div>
+
+                    <div class="list-group-item">
+                        <span class="text-muted d-block">Observación</span>
+                        <strong>{{ citaSeleccionada.observacion }}</strong>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="modal-footer bg-white border-0 rounded-bottom-4">
+                <button type="button" class="btn btn-clinica rounded-pill px-4" data-bs-dismiss="modal">
+                    Entendido
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

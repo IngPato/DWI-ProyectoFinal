@@ -1,0 +1,1308 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-clinica" [class.navbar-shadow]="navbarConSombra">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#inicio">
+      <span class="logo-clinica">
+        <i class="fa-solid fa-hospital"></i>
+      </span>
+      <div>
+        <strong>Clínica Neill Roman Robles</strong>
+        <small class="d-block">Sistema de Citas Médicas</small>
+      </div>
+    </a>
+
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menuPrincipal">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#inicio">
+            <i class="fa-solid fa-house me-1"></i> Inicio
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#roles">
+            <i class="fa-solid fa-users me-1"></i> Usuarios
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#servicios">
+            <i class="fa-solid fa-stethoscope me-1"></i> Especialidades
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#proceso">
+            <i class="fa-solid fa-list-check me-1"></i> Proceso
+          </a>
+        </li>
+
+        <li class="nav-item ms-lg-3">
+          <a class="btn btn-light btn-sm px-4 rounded-pill" href="#acceso">
+            <i class="fa-solid fa-right-to-bracket me-1"></i> Ingresar
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="inicio" class="hero-section">
+  <div class="container">
+    <div class="row align-items-center min-vh-100 pt-5">
+      <div class="col-lg-6">
+        <span class="badge badge-soft mb-3">
+          <i class="fa-solid fa-shield-heart me-2"></i>
+          Atención médica rápida, segura y organizada
+        </span>
+
+        <h1 class="display-5 fw-bold text-white mb-4">
+          Gestiona tus citas médicas de forma moderna y eficiente
+        </h1>
+
+        <p class="lead text-white-50 mb-4">
+          Plataforma digital para pacientes, médicos y personal administrativo.
+          Agenda citas, consulta horarios, revisa especialidades y mejora la atención
+          en la Clínica Neill Roman Robles.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#acceso" class="btn btn-primary-custom btn-lg rounded-pill px-4">
+            <i class="fa-solid fa-calendar-check me-2"></i>
+            Reservar una cita
+          </a>
+
+          <a href="#roles" class="btn btn-outline-light btn-lg rounded-pill px-4">
+            <i class="fa-solid fa-user-gear me-2"></i>
+            Ver paneles de usuario
+          </a>
+        </div>
+
+        <div class="row mt-5 g-3">
+          <div class="col-6 col-md-4">
+            <div class="mini-stat">
+              <h4><i class="fa-solid fa-clock me-2"></i>24/7</h4>
+              <p>Acceso al sistema</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4">
+            <div class="mini-stat">
+              <h4><i class="fa-solid fa-briefcase-medical me-2"></i>+10</h4>
+              <p>Especialidades</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4">
+            <div class="mini-stat">
+              <h4><i class="fa-solid fa-laptop-medical me-2"></i>100%</h4>
+              <p>Gestión digital</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mt-5 mt-lg-0">
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div>
+              <h5 class="mb-0">
+                <i class="fa-solid fa-calendar-plus text-success me-2"></i>
+                Nueva cita médica
+              </h5>
+              <small>Vista rápida del sistema</small>
+            </div>
+            <span class="status-dot"></span>
+          </div>
+
+          <div class="appointment-box mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-muted">
+                  <i class="fa-solid fa-user me-1"></i> Paciente
+                </small>
+                <h6 class="mb-0">María Fernández López</h6>
+              </div>
+
+              <span class="badge bg-success-subtle text-success">
+                <i class="fa-solid fa-circle-check me-1"></i>
+                Confirmada
+              </span>
+            </div>
+
+            <hr>
+            <div class="row g-3">
+              <div class="col-6">
+                <small class="text-muted">
+                  <i class="fa-solid fa-stethoscope me-1"></i> Especialidad
+                </small>
+                <p class="mb-0 fw-semibold">Medicina General</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">
+                  <i class="fa-solid fa-user-doctor me-1"></i> Médico
+                </small>
+                <p class="mb-0 fw-semibold">Dr. Carlos Ramírez</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">
+                  <i class="fa-solid fa-calendar-days me-1"></i> Fecha
+                </small>
+                <p class="mb-0 fw-semibold">18 Junio 2026</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">
+                  <i class="fa-solid fa-clock me-1"></i> Hora
+                </small>
+                <p class="mb-0 fw-semibold">09:30 a.m.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="schedule-list mt-4">
+            <div class="schedule-item">
+              <span>
+                <i class="fa-regular fa-clock me-1"></i>08:00
+              </span>
+              <p>Consulta disponible</p>
+            </div>
+
+            <div class="schedule-item active">
+              <span>
+                <i class="fa-solid fa-circle-check me-1"></i>09:30
+              </span>
+              <p>Cita confirmada</p>
+            </div>
+
+            <div class="schedule-item">
+              <span>
+                <i class="fa-solid fa-calendar-xmark me-1"></i>11:00
+              </span>
+              <p>Horario reservado</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ROLES -->
+<section id="roles" class="section-padding bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-label">
+        <i class="fa-solid fa-id-card me-2"></i>
+        Acceso por tipo de usuario
+      </span>
+      <h2 class="fw-bold mt-2">Paneles diseñados según el rol</h2>
+      <p class="text-muted">
+        El sistema se adapta a pacientes, médicos, recepcionistas y personal administrativo.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="role-card" [class.role-active]="rolSeleccionado === 'paciente'"
+          (click)="seleccionarRol('paciente')">
+          <div class="role-icon">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h4>Paciente</h4>
+          <p>
+            Agenda citas, consulta el estado de tus reservas y revisa tus
+            próximas atenciones médicas.
+          </p>
+          <ul>
+            <li><i class="fa-solid fa-calendar-check me-2 text-success"></i>Reservar cita médica</li>
+            <li><i class="fa-solid fa-clock-rotate-left me-2 text-success"></i>Ver historial de citas</li>
+            <li><i class="fa-solid fa-user-pen me-2 text-success"></i>Actualizar datos personales</li>
+          </ul>
+          <button type="button" class="btn btn-role w-100">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>
+            Ingresar como paciente
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="role-card" [class.role-active]="rolSeleccionado === 'medico'" (click)="seleccionarRol('medico')">
+          <div class="role-icon">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <h4>Médico</h4>
+          <p>
+            Revisa citas asignadas, pacientes programados y organiza tus
+            horarios de atención.
+          </p>
+          <ul>
+            <li><i class="fa-solid fa-calendar-day me-2 text-success"></i>Ver citas del día</li>
+            <li><i class="fa-solid fa-clock me-2 text-success"></i>Gestionar horarios</li>
+            <li><i class="fa-solid fa-hospital-user me-2 text-success"></i>Revisar pacientes</li>
+          </ul>
+          <button type="button" class="btn btn-role w-100">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>
+            Ingresar como médico
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="role-card" [class.role-active]="rolSeleccionado === 'recepcionista'"
+          (click)="seleccionarRol('recepcionista')">
+          <div class="role-icon">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <h4>Recepcionista</h4>
+          <p>
+            Registra citas, verifica pacientes, consulta horarios médicos y
+            apoya en la atención diaria.
+          </p>
+          <ul>
+            <li><i class="fa-solid fa-calendar-plus me-2 text-success"></i>Registrar citas</li>
+            <li><i class="fa-solid fa-user-check me-2 text-success"></i>Verificar pacientes</li>
+            <li><i class="fa-solid fa-clipboard-list me-2 text-success"></i>Consultar programación</li>
+          </ul>
+          <button type="button" class="btn btn-role w-100">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>
+            Ingresar como recepcionista
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="role-card" [class.role-active]="rolSeleccionado === 'administrador'"
+          (click)="seleccionarRol('administrador')">
+          <div class="role-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <h4>Administrador</h4>
+          <p>
+            Controla usuarios, médicos, especialidades, roles y la configuración
+            general del sistema.
+          </p>
+          <ul>
+            <li><i class="fa-solid fa-users-gear me-2 text-success"></i>Gestionar usuarios</li>
+            <li><i class="fa-solid fa-user-doctor me-2 text-success"></i>Registrar médicos</li>
+            <li><i class="fa-solid fa-briefcase-medical me-2 text-success"></i>Controlar especialidades</li>
+          </ul>
+          <button type="button" class="btn btn-role w-100">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>
+            Ingresar como administrador
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALIDADES -->
+<section id="servicios" class="section-padding">
+  <div class="container">
+    <div class="row align-items-center mb-5">
+      <div class="col-lg-6">
+        <span class="section-label">
+          <i class="fa-solid fa-stethoscope me-2"></i>
+          Especialidades médicas
+        </span>
+        <h2 class="fw-bold mt-2">Atención organizada por especialidad</h2>
+      </div>
+
+      <div class="col-lg-6">
+        <p class="text-muted mb-0">
+          De acuerdo con la base de datos, el sistema permite registrar
+          especialidades, médicos, horarios y citas relacionadas para una
+          gestión médica clara y ordenada.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3">
+        <div class="service-card">
+          <span class="service-icon">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </span>
+          <h5>Cardiología</h5>
+          <p>Control y evaluación del sistema cardiovascular.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="service-card">
+          <span class="service-icon">
+            <i class="fa-solid fa-baby"></i>
+          </span>
+          <h5>Pediatría</h5>
+          <p>Atención médica integral para niños y adolescentes.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="service-card">
+          <span class="service-icon">
+            <i class="fa-solid fa-user-doctor"></i>
+          </span>
+          <h5>Medicina General</h5>
+          <p>Consulta primaria, diagnóstico y orientación médica.</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="service-card">
+          <span class="service-icon">
+            <i class="fa-solid fa-tooth"></i>
+          </span>
+          <h5>Odontología</h5>
+          <p>Evaluación, prevención y tratamiento dental.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso" class="section-padding bg-soft">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-label">
+        <i class="fa-solid fa-route me-2"></i>
+        Proceso de atención
+      </span>
+      <h2 class="fw-bold mt-2">Reserva tu cita en pocos pasos</h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="step-card">
+          <div class="step-number">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <h5>Registro</h5>
+          <p>El paciente crea su usuario y registra sus datos personales.</p>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="step-card">
+          <div class="step-number">
+            <i class="fa-solid fa-briefcase-medical"></i>
+          </div>
+          <h5>Especialidad</h5>
+          <p>Selecciona la especialidad médica que necesita consultar.</p>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="step-card">
+          <div class="step-number">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <h5>Horario</h5>
+          <p>Elige un médico, fecha y hora disponible para su atención.</p>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="step-card">
+          <div class="step-number">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <h5>Confirmación</h5>
+          <p>La cita queda registrada con su estado correspondiente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESO -->
+<section id="acceso" class="section-padding">
+  <div class="container">
+    <div class="access-card">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="section-label">
+            <i class="fa-solid fa-lock me-2"></i>
+            Acceso al sistema
+          </span>
+          <h2 class="fw-bold mt-2">Ingresa a tu cuenta</h2>
+          <p class="text-muted">
+            Accede con tu usuario y contraseña según tu rol asignado:
+            paciente, médico o administrador.
+          </p>
+
+          <div class="info-panel">
+            <h6>
+              <i class="fa-solid fa-database me-2 text-success"></i>
+              Modelo de datos relacionado
+            </h6>
+            <p class="mb-0">
+              Usuarios, roles, pacientes, médicos, especialidades, horarios,
+              citas y estados de cita.
+            </p>
+          </div>
+
+          <div class="mt-4">
+            <p class="mb-2 fw-semibold">¿Aún no tienes una cuenta?</p>
+            <button type="button" class="btn btn-outline-success rounded-pill px-4" data-bs-toggle="modal"
+              data-bs-target="#modalRegistrarPaciente">
+              <i class="fa-solid fa-user-plus me-2"></i>
+              Registrar paciente
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <form class="login-box" [formGroup]="loginForm" (ngSubmit)="ingresarSistema()">
+            <div class="mb-3">
+              <label for="usuario" class="form-label">
+                <i class="fa-solid fa-user me-1"></i>
+                Usuario o correo
+              </label>
+              <input type="text" class="form-control form-control-lg" id="usuario" formControlName="usuario"
+                placeholder="Ingrese su usuario">
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">
+                <i class="fa-solid fa-key me-1"></i>
+                Contraseña
+              </label>
+
+              <div class="input-group input-group-lg password-login-group">
+                <input [type]="verPasswordLogin ? 'text' : 'password'" class="form-control" id="password"
+                  formControlName="password" placeholder="Ingrese su contraseña">
+
+                <button type="button" class="btn btn-outline-secondary btn-ver-password"
+                  (click)="alternarVerPasswordLogin()" tabindex="-1">
+
+                  @if (verPasswordLogin) {
+                  <i class="fa-solid fa-eye-slash"></i>
+                  } @else {
+                  <i class="fa-solid fa-eye"></i>
+                  }
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="rol" class="form-label">
+                <i class="fa-solid fa-id-badge me-1"></i>
+                Tipo de acceso
+              </label>
+              <select class="form-select form-select-lg" id="rol" formControlName="rol">
+                <option value="">Seleccione un rol</option>
+                <option value="paciente">Paciente</option>
+                <option value="medico">Médico</option>
+                <option value="administrador">Administrador</option>
+                <option value="recepcionista">Recepcionista</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary-custom btn-lg w-100 rounded-pill">
+              <i class="fa-solid fa-right-to-bracket me-2"></i>
+              Ingresar al sistema
+            </button>
+
+            <div class="text-center mt-3">
+              <a href="javascript:void(0)" class="text-decoration-none" data-bs-toggle="modal"
+                data-bs-target="#modalRecuperarPassword" (click)="limpiarRecuperacionPassword()">
+                <i class="fa-solid fa-circle-question me-1"></i>
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL REGISTRAR PACIENTE -->
+<div class="modal fade" id="modalRegistrarPaciente" tabindex="-1" aria-labelledby="modalRegistrarPacienteLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content border-0 rounded-4 overflow-hidden modal-registro-paciente">
+
+      <div class="modal-header registro-header text-white">
+        <div>
+          <h5 class="modal-title fw-bold mb-1" id="modalRegistrarPacienteLabel">
+            <i class="fa-solid fa-user-plus me-2"></i>
+            Registro de paciente
+          </h5>
+          <p class="mb-0 small opacity-75">
+            Validación segura antes de crear la cuenta del paciente.
+          </p>
+        </div>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+          (click)="limpiarRegistroPaciente()">
+        </button>
+      </div>
+
+      <div class="modal-body p-0">
+        <div class="registro-layout">
+
+          <!-- LATERAL -->
+          <aside class="registro-aside">
+            <div class="registro-logo">
+              <i class="fa-solid fa-hospital-user"></i>
+            </div>
+
+            <h4 class="fw-bold mb-2">Crear cuenta paciente</h4>
+            <p class="mb-4 opacity-75">
+              El sistema validará primero el documento, luego el usuario y correo,
+              y finalmente registrará los datos del paciente.
+            </p>
+
+            <div class="registro-step" [class.active]="pasoRegistroPaciente === 1"
+              [class.done]="pasoRegistroPaciente > 1">
+              <span>1</span>
+              <div>
+                <strong>Validar documento</strong>
+                <small>Evita duplicar pacientes</small>
+              </div>
+            </div>
+
+            <div class="registro-step" [class.active]="pasoRegistroPaciente === 2"
+              [class.done]="pasoRegistroPaciente > 2">
+              <span>2</span>
+              <div>
+                <strong>Datos de usuario</strong>
+                <small>Usuario, correo y contraseña</small>
+              </div>
+            </div>
+
+            <div class="registro-step" [class.active]="pasoRegistroPaciente === 3">
+              <span>3</span>
+              <div>
+                <strong>Datos del paciente</strong>
+                <small>Información personal y clínica</small>
+              </div>
+            </div>
+          </aside>
+
+          <!-- CONTENIDO -->
+          <section class="registro-content">
+
+            <!-- PASO 1 -->
+            @if (pasoRegistroPaciente === 1) {
+            <div class="registro-card">
+              <span class="section-label mb-3">
+                <i class="fa-solid fa-id-card me-2"></i>
+                Paso 1 de 3
+              </span>
+
+              <h3 class="fw-bold mb-2">Validar documento del paciente</h3>
+              <p class="text-muted mb-4">
+                Seleccione el tipo de documento e ingrese el número para verificar
+                si el paciente ya se encuentra registrado.
+              </p>
+
+              <form [formGroup]="validarDniForm" (ngSubmit)="validarDniPaciente()">
+                <div class="row g-3">
+
+                  <div class="col-md-4">
+                    <label for="tipoDocumentoPaciente" class="form-label">
+                      Tipo documento
+                    </label>
+                    <select class="form-select form-select-lg" id="tipoDocumentoPaciente"
+                      formControlName="tipoDocumentoPaciente" (change)="cambiarTipoDocumentoPaciente()">
+                      <option value="DNI">DNI</option>
+                      <option value="CEDULA">Cédula</option>
+                      <option value="PASAPORTE">Pasaporte</option>
+                      <option value="OTRO">Otro</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-8">
+                    <label for="numeroDocumentoPaciente" class="form-label">
+                      Número de documento
+                    </label>
+                    <input type="text" maxlength="20" class="form-control form-control-lg" id="numeroDocumentoPaciente"
+                      formControlName="numeroDocumentoPaciente" placeholder="Ingrese el número de documento"
+                      [class.is-invalid]="campoInvalidoRegistro(validarDniForm, 'numeroDocumentoPaciente')">
+
+                    @if (campoInvalidoRegistro(validarDniForm, 'numeroDocumentoPaciente')) {
+                    <div class="invalid-feedback">
+                      {{ mensajeDocumentoInvalido() }}
+                    </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="alert alert-info rounded-4 mt-4">
+                  <i class="fa-solid fa-circle-info me-2"></i>
+                  Se consultará la tabla <strong>pacientes</strong> por el campo
+                  <strong>numero_documento_paciente</strong>, según el número ingresado.
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                  <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal"
+                    (click)="limpiarRegistroPaciente()">
+                    Cancelar
+                  </button>
+
+                  <button type="submit" class="btn btn-primary-custom rounded-pill px-4" [disabled]="validandoDni">
+
+                    @if (validandoDni) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Validando...
+                    } @else {
+                    <i class="fa-solid fa-magnifying-glass me-2"></i>
+                    Validar documento
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+            }
+
+            <!-- PASO 2 -->
+            @if (pasoRegistroPaciente === 2) {
+            <div class="registro-card">
+              <span class="section-label mb-3">
+                <i class="fa-solid fa-user-lock me-2"></i>
+                Paso 2 de 3
+              </span>
+
+              <h3 class="fw-bold mb-2">Crear datos de acceso</h3>
+              <p class="text-muted mb-4">
+                Complete el usuario, correo y contraseña. El sistema validará que no existan duplicados.
+              </p>
+
+              <form [formGroup]="registroUsuarioForm" (ngSubmit)="validarUsuarioPaciente()">
+                <div class="row g-3">
+
+                  <div class="col-md-6">
+                    <label for="usernameRegistro" class="form-label">Usuario</label>
+                    <input type="text" class="form-control form-control-lg" id="usernameRegistro"
+                      formControlName="username" placeholder="Ejemplo: jperez"
+                      [class.is-invalid]="campoInvalidoRegistro(registroUsuarioForm, 'username')">
+
+                    @if (campoInvalidoRegistro(registroUsuarioForm, 'username')) {
+                    <div class="invalid-feedback">
+                      Ingrese un usuario mínimo de 4 caracteres.
+                    </div>
+                    }
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="correoRegistro" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control form-control-lg" id="correoRegistro"
+                      formControlName="correo" placeholder="correo@ejemplo.com"
+                      [class.is-invalid]="campoInvalidoRegistro(registroUsuarioForm, 'correo')">
+
+                    @if (campoInvalidoRegistro(registroUsuarioForm, 'correo')) {
+                    <div class="invalid-feedback">
+                      Ingrese un correo válido.
+                    </div>
+                    }
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="passwordRegistro" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control form-control-lg" id="passwordRegistro"
+                      formControlName="password" placeholder="Mínimo 6 caracteres"
+                      [class.is-invalid]="campoInvalidoRegistro(registroUsuarioForm, 'password')">
+
+                    @if (campoInvalidoRegistro(registroUsuarioForm, 'password')) {
+                    <div class="invalid-feedback">
+                      La contraseña debe tener mínimo 6 caracteres.
+                    </div>
+                    }
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="confirmarPasswordRegistro" class="form-label">Repetir contraseña</label>
+                    <input type="password" class="form-control form-control-lg" id="confirmarPasswordRegistro"
+                      formControlName="confirmarPassword" placeholder="Repita la contraseña"
+                      [class.is-invalid]="registroUsuarioForm.hasError('passwordsNoCoinciden') && registroUsuarioForm.get('confirmarPassword')?.touched">
+
+                    @if (registroUsuarioForm.hasError('passwordsNoCoinciden') &&
+                    registroUsuarioForm.get('confirmarPassword')?.touched) {
+                    <div class="invalid-feedback">
+                      Las contraseñas no coinciden.
+                    </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="alert alert-success rounded-4 mt-4">
+                  <i class="fa-solid fa-shield-halved me-2"></i>
+                  Este usuario se registrará con el rol <strong>PACIENTE</strong>.
+                </div>
+
+                <div class="d-flex justify-content-between gap-2 mt-4">
+                  <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                    (click)="volverPasoRegistro()">
+                    <i class="fa-solid fa-arrow-left me-2"></i>
+                    Volver
+                  </button>
+
+                  <button type="submit" class="btn btn-primary-custom rounded-pill px-4" [disabled]="validandoUsuario">
+
+                    @if (validandoUsuario) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Validando...
+                    } @else {
+                    <i class="fa-solid fa-arrow-right me-2"></i>
+                    Continuar
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+            }
+
+            <!-- PASO 3 -->
+            @if (pasoRegistroPaciente === 3) {
+            <div class="registro-card">
+              <span class="section-label mb-3">
+                <i class="fa-solid fa-hospital-user me-2"></i>
+                Paso 3 de 3
+              </span>
+
+              <h3 class="fw-bold mb-2">Datos personales del paciente</h3>
+              <p class="text-muted mb-4">
+                Complete la información que corresponde a la tabla pacientes.
+              </p>
+
+              <form [formGroup]="registroPacienteForm" (ngSubmit)="registrarPaciente()">
+                <div class="row g-3">
+
+                  <div class="col-md-6">
+                    <label class="form-label">Nombres</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="nombresPaciente"
+                      [class.is-invalid]="campoInvalidoRegistro(registroPacienteForm, 'nombresPaciente')">
+
+                    @if (campoInvalidoRegistro(registroPacienteForm, 'nombresPaciente')) {
+                    <div class="invalid-feedback">Ingrese los nombres.</div>
+                    }
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label">Apellidos</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="apellidosPaciente"
+                      [class.is-invalid]="campoInvalidoRegistro(registroPacienteForm, 'apellidosPaciente')">
+
+                    @if (campoInvalidoRegistro(registroPacienteForm, 'apellidosPaciente')) {
+                    <div class="invalid-feedback">Ingrese los apellidos.</div>
+                    }
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">Tipo documento</label>
+                    <select class="form-select form-select-lg" formControlName="tipoDocumentoPaciente">
+                      <option value="DNI">DNI</option>
+                      <option value="CEDULA">Cédula</option>
+                      <option value="PASAPORTE">Pasaporte</option>
+                      <option value="OTRO">Otro</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">N.° documento</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="numeroDocumentoPaciente"
+                      readonly>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">Fecha nacimiento</label>
+                    <input type="date" class="form-control form-control-lg" formControlName="fechaNacimientoPaciente"
+                      [class.is-invalid]="campoInvalidoRegistro(registroPacienteForm, 'fechaNacimientoPaciente')">
+
+                    @if (campoInvalidoRegistro(registroPacienteForm, 'fechaNacimientoPaciente')) {
+                    <div class="invalid-feedback">Seleccione la fecha de nacimiento.</div>
+                    }
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">Sexo</label>
+                    <select class="form-select form-select-lg" formControlName="sexoPaciente"
+                      [class.is-invalid]="campoInvalidoRegistro(registroPacienteForm, 'sexoPaciente')">
+                      <option value="">Seleccione</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+
+                    @if (campoInvalidoRegistro(registroPacienteForm, 'sexoPaciente')) {
+                    <div class="invalid-feedback">Seleccione el sexo.</div>
+                    }
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">Grupo sanguíneo</label>
+                    <select class="form-select form-select-lg" formControlName="grupoSanguineoPaciente">
+                      <option value="">Seleccione</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">Teléfono</label>
+                    <input type="text" maxlength="9" class="form-control form-control-lg"
+                      formControlName="telefonoPaciente" placeholder="999888777"
+                      [class.is-invalid]="campoInvalidoRegistro(registroPacienteForm, 'telefonoPaciente')">
+
+                    @if (campoInvalidoRegistro(registroPacienteForm, 'telefonoPaciente')) {
+                    <div class="invalid-feedback">Ingrese un teléfono válido de 9 dígitos.</div>
+                    }
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="direccionPaciente"
+                      placeholder="Dirección del paciente">
+                  </div>
+                </div>
+
+                <div class="alert alert-info rounded-4 mt-4">
+                  <i class="fa-solid fa-database me-2"></i>
+                  Se registrará primero el usuario con rol paciente y luego su información en la tabla
+                  <strong>pacientes</strong>.
+                </div>
+
+                <div class="d-flex justify-content-between gap-2 mt-4">
+                  <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                    (click)="volverPasoRegistro()">
+                    <i class="fa-solid fa-arrow-left me-2"></i>
+                    Volver
+                  </button>
+
+                  <button type="submit" class="btn btn-primary-custom rounded-pill px-4"
+                    [disabled]="registrandoPaciente">
+
+                    @if (registrandoPaciente) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Registrando...
+                    } @else {
+                    <i class="fa-solid fa-floppy-disk me-2"></i>
+                    Registrar paciente
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+            }
+
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAMBIAR CONTRASEÑA OBLIGATORIA -->
+<div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-labelledby="modalCambiarPasswordLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 overflow-hidden modal-password">
+
+      <div class="modal-header password-header text-white">
+        <div class="d-flex align-items-center gap-3">
+          <div class="password-icon">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold mb-1" id="modalCambiarPasswordLabel">
+              Cambiar contraseña
+            </h5>
+            <p class="mb-0 small opacity-75">
+              Actualice su contraseña para continuar.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="cambiarPasswordForm" (ngSubmit)="cambiarPasswordObligatorio()">
+        <div class="modal-body p-4">
+
+          <div class="alert alert-warning rounded-4 mb-4">
+            <i class="fa-solid fa-shield-halved me-2"></i>
+            Por seguridad, debe registrar una nueva contraseña antes de ingresar al sistema.
+          </div>
+
+          <div class="mb-3">
+            <label for="nuevaPassword" class="form-label fw-semibold">
+              Nueva contraseña
+            </label>
+
+            <div class="input-group input-group-lg password-input-group">
+              <input [type]="verNuevaPassword ? 'text' : 'password'" class="form-control" id="nuevaPassword"
+                formControlName="nuevaPassword" placeholder="Mínimo 6 caracteres y un número"
+                [class.is-invalid]="campoInvalidoCambioPassword('nuevaPassword')">
+
+              <button type="button" class="btn btn-outline-secondary" (click)="alternarVerNuevaPassword()">
+                @if (verNuevaPassword) {
+                <i class="fa-solid fa-eye-slash"></i>
+                } @else {
+                <i class="fa-solid fa-eye"></i>
+                }
+              </button>
+
+              @if (campoInvalidoCambioPassword('nuevaPassword')) {
+              <div class="invalid-feedback">
+                La contraseña debe tener mínimo 6 caracteres, incluir letras y números.
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label for="confirmarNuevaPassword" class="form-label fw-semibold">
+              Confirmar contraseña
+            </label>
+
+            <div class="input-group input-group-lg password-input-group">
+              <input [type]="verConfirmarNuevaPassword ? 'text' : 'password'" class="form-control"
+                id="confirmarNuevaPassword" formControlName="confirmarNuevaPassword"
+                placeholder="Repita la nueva contraseña"
+                [class.is-invalid]="cambiarPasswordForm.hasError('passwordsCambioNoCoinciden') && cambiarPasswordForm.get('confirmarNuevaPassword')?.touched">
+
+              <button type="button" class="btn btn-outline-secondary" (click)="alternarVerConfirmarNuevaPassword()">
+                @if (verConfirmarNuevaPassword) {
+                <i class="fa-solid fa-eye-slash"></i>
+                } @else {
+                <i class="fa-solid fa-eye"></i>
+                }
+              </button>
+
+              @if (cambiarPasswordForm.hasError('passwordsCambioNoCoinciden') &&
+              cambiarPasswordForm.get('confirmarNuevaPassword')?.touched) {
+              <div class="invalid-feedback">
+                Las contraseñas no coinciden.
+              </div>
+              }
+            </div>
+          </div>
+
+          <small class="text-muted d-block mt-3">
+            <i class="fa-solid fa-circle-info me-1"></i>
+            No use la misma contraseña temporal asignada por el sistema.
+          </small>
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4">
+          <button type="submit" class="btn btn-primary-custom btn-lg rounded-pill w-100" [disabled]="cambiandoPassword">
+
+            @if (cambiandoPassword) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Actualizando contraseña...
+            } @else {
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+            Guardar nueva contraseña
+            }
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RECUPERAR CONTRASEÑA -->
+<div
+  class="modal fade"
+  id="modalRecuperarPassword"
+  tabindex="-1"
+  aria-labelledby="modalRecuperarPasswordLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content border-0 rounded-4 overflow-hidden modal-recuperar-password">
+
+      <div class="modal-header recuperar-header text-white">
+        <div class="d-flex align-items-center gap-3">
+          <div class="recuperar-icon">
+            <i class="fa-solid fa-unlock-keyhole"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold mb-1" id="modalRecuperarPasswordLabel">
+              Recuperar contraseña
+            </h5>
+            <p class="mb-0 small opacity-75">
+              Valide sus datos para registrar una nueva contraseña.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          (click)="limpiarRecuperacionPassword()">
+        </button>
+      </div>
+
+      <div class="modal-body p-0">
+        <div class="recuperar-layout">
+
+          <aside class="recuperar-aside">
+            <div
+              class="recuperar-step"
+              [class.active]="pasoRecuperarPassword === 1"
+              [class.done]="pasoRecuperarPassword > 1">
+              <span>1</span>
+              <div>
+                <strong>Validar usuario</strong>
+                <small>Paciente o médico registrado</small>
+              </div>
+            </div>
+
+            <div
+              class="recuperar-step"
+              [class.active]="pasoRecuperarPassword === 2">
+              <span>2</span>
+              <div>
+                <strong>Nueva contraseña</strong>
+                <small>Crear acceso seguro</small>
+              </div>
+            </div>
+
+            <div class="alert alert-light rounded-4 mt-4 mb-0 small">
+              <i class="fa-solid fa-shield-halved me-1"></i>
+              Sus datos serán verificados antes de permitir el cambio.
+            </div>
+          </aside>
+
+          <section class="recuperar-content">
+
+            @if (pasoRecuperarPassword === 1) {
+              <form [formGroup]="recuperarPasswordForm" (ngSubmit)="validarUsuarioParaRecuperarPassword()">
+                <div class="recuperar-card">
+                  <span class="section-label mb-3">
+                    <i class="fa-solid fa-user-check me-2"></i>
+                    Paso 1 de 2
+                  </span>
+
+                  <h4 class="fw-bold mb-2">Validar datos del usuario</h4>
+                  <p class="text-muted mb-4">
+                    Seleccione el tipo de usuario y complete los datos requeridos para continuar.
+                  </p>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">Tipo de usuario</label>
+                    <select
+                      class="form-select form-select-lg"
+                      formControlName="tipoUsuario"
+                      (change)="cambiarTipoRecuperacion()">
+                      <option value="paciente">Paciente</option>
+                      <option value="medico">Médico</option>
+                    </select>
+                  </div>
+
+                  @if (recuperarPasswordForm.value.tipoUsuario === 'paciente') {
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                          Documento
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control form-control-lg"
+                          formControlName="documento"
+                          placeholder="Número de documento">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                          Fecha de nacimiento
+                        </label>
+                        <input
+                          type="date"
+                          class="form-control form-control-lg"
+                          formControlName="fechaNacimientoPaciente">
+                      </div>
+                    </div>
+                  }
+
+                  @if (recuperarPasswordForm.value.tipoUsuario === 'medico') {
+                    <div class="mb-3">
+                      <label class="form-label fw-semibold">
+                        CMP del médico
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        formControlName="cmpMedico"
+                        placeholder="Ejemplo: CMP123456">
+                    </div>
+                  }
+
+                  <div class="d-flex justify-content-end mt-4">
+                    <button
+                      type="submit"
+                      class="btn btn-primary-custom rounded-pill px-4"
+                      [disabled]="validandoRecuperacion">
+
+                      @if (validandoRecuperacion) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Validando...
+                      } @else {
+                        <i class="fa-solid fa-magnifying-glass me-2"></i>
+                        Validar datos
+                      }
+                    </button>
+                  </div>
+                </div>
+              </form>
+            }
+
+            @if (pasoRecuperarPassword === 2) {
+              <form
+                [formGroup]="nuevaPasswordRecuperacionForm"
+                (ngSubmit)="actualizarPasswordRecuperacion()">
+                <div class="recuperar-card">
+                  <span class="section-label mb-3">
+                    <i class="fa-solid fa-key me-2"></i>
+                    Paso 2 de 2
+                  </span>
+
+                  <h4 class="fw-bold mb-2">Registrar nueva contraseña</h4>
+                  <p class="text-muted mb-4">
+                    Cree una contraseña segura para recuperar el acceso al sistema.
+                  </p>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      Nueva contraseña
+                    </label>
+
+                    <div class="input-group input-group-lg password-login-group">
+                      <input
+                        [type]="verNuevaPasswordRecuperacion ? 'text' : 'password'"
+                        class="form-control"
+                        id="nuevaPasswordRecuperacion"
+                        formControlName="nuevaPassword"
+                        placeholder="Mínimo 6 caracteres y un número"
+                        [class.is-invalid]="campoInvalidoRecuperacion('nuevaPassword')">
+
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary btn-ver-password"
+                        (click)="alternarVerNuevaPasswordRecuperacion()">
+                        @if (verNuevaPasswordRecuperacion) {
+                          <i class="fa-solid fa-eye-slash"></i>
+                        } @else {
+                          <i class="fa-solid fa-eye"></i>
+                        }
+                      </button>
+
+                      @if (campoInvalidoRecuperacion('nuevaPassword')) {
+                        <div class="invalid-feedback">
+                          La contraseña debe tener mínimo 6 caracteres, letras y números.
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      Confirmar contraseña
+                    </label>
+
+                    <div class="input-group input-group-lg password-login-group">
+                      <input
+                        [type]="verConfirmarPasswordRecuperacion ? 'text' : 'password'"
+                        class="form-control"
+                        formControlName="confirmarPassword"
+                        placeholder="Repita la contraseña"
+                        [class.is-invalid]="nuevaPasswordRecuperacionForm.hasError('passwordsRecuperacionNoCoinciden') &&
+                          nuevaPasswordRecuperacionForm.get('confirmarPassword')?.touched">
+
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary btn-ver-password"
+                        (click)="alternarVerConfirmarPasswordRecuperacion()">
+                        @if (verConfirmarPasswordRecuperacion) {
+                          <i class="fa-solid fa-eye-slash"></i>
+                        } @else {
+                          <i class="fa-solid fa-eye"></i>
+                        }
+                      </button>
+
+                      @if (nuevaPasswordRecuperacionForm.hasError('passwordsRecuperacionNoCoinciden') &&
+                      nuevaPasswordRecuperacionForm.get('confirmarPassword')?.touched) {
+                        <div class="invalid-feedback">
+                          Las contraseñas no coinciden.
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-between mt-4">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-pill px-4"
+                      (click)="pasoRecuperarPassword = 1">
+                      <i class="fa-solid fa-arrow-left me-2"></i>
+                      Volver
+                    </button>
+
+                    <button
+                      type="submit"
+                      class="btn btn-primary-custom rounded-pill px-4"
+                      [disabled]="actualizandoPasswordRecuperacion">
+
+                      @if (actualizandoPasswordRecuperacion) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Actualizando...
+                      } @else {
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Cambiar contraseña
+                      }
+                    </button>
+                  </div>
+                </div>
+              </form>
+            }
+
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-clinica">
+  <div class="container">
+    <div class="row align-items-center g-3">
+      <div class="col-md-6">
+        <h5>
+          <i class="fa-solid fa-hospital me-2"></i>
+          Clínica Neill Roman Robles
+        </h5>
+        <p class="mb-0">Sistema de Gestión de Citas Médicas</p>
+      </div>
+
+      <div class="col-md-6 text-md-end">
+        <p class="mb-0">
+          © 2026 Todos los derechos reservados
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

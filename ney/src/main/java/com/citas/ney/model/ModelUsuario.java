@@ -39,6 +39,9 @@ public class ModelUsuario {
 
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
+    
+    @Column(name = "cambiar_contraseña", nullable = false)
+    private Boolean cambiarContraseña;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private ModelPacientes paciente;
@@ -105,6 +108,14 @@ public class ModelUsuario {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public Boolean getCambiarContraseña() {
+        return cambiarContraseña;
+    }
+
+    public void setCambiarContraseña(Boolean cambiarContraseña) {
+        this.cambiarContraseña = cambiarContraseña;
+    }
+
     public ModelPacientes getPaciente() {
         return paciente;
     }
@@ -120,4 +131,6 @@ public class ModelUsuario {
     public void setMedico(ModelMedicos medico) {
         this.medico = medico;
     }
+
+   
 }

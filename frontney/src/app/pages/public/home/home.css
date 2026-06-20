@@ -1,0 +1,785 @@
+:root {
+  --primary: #0f766e;
+  --primary-dark: #134e4a;
+  --secondary: #2563eb;
+  --accent: #22c55e;
+  --dark: #0f172a;
+  --muted: #64748b;
+  --soft: #f1f5f9;
+  --white: #ffffff;
+  --radius: 24px;
+  --shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--dark);
+  background-color: #ffffff;
+}
+
+/* NAVBAR */
+.navbar-clinica {
+  background: rgba(15, 78, 74, 0.92);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+}
+
+.navbar-clinica .navbar-brand,
+.navbar-clinica .nav-link {
+  color: #ffffff;
+}
+
+.navbar-clinica .nav-link {
+  font-weight: 500;
+  margin: 0 6px;
+  opacity: 0.9;
+}
+
+.navbar-clinica .nav-link:hover,
+.navbar-clinica .nav-link.active {
+  color: #bbf7d0;
+}
+
+.logo-clinica {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #22c55e, #2563eb);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
+}
+
+.navbar-brand small {
+  font-size: 0.72rem;
+  color: #d1fae5;
+}
+
+/* HERO */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(120deg, rgba(15, 78, 74, 0.96), rgba(15, 23, 42, 0.88)),
+    url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: -120px;
+  top: 80px;
+  background: rgba(34, 197, 94, 0.16);
+  border-radius: 50%;
+  filter: blur(8px);
+}
+
+.hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.badge-soft {
+  background: rgba(255, 255, 255, 0.14);
+  color: #dcfce7;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.btn-primary-custom {
+  background: linear-gradient(135deg, #22c55e, #2563eb);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+  transition: 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  color: #ffffff;
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.35);
+}
+
+.mini-stat {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.mini-stat h4 {
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.mini-stat p {
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+/* HERO CARD */
+.hero-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 32px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.hero-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-card-header small {
+  color: var(--muted);
+}
+
+.status-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.15);
+}
+
+.appointment-box {
+  background: #f8fafc;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.schedule-list {
+  display: grid;
+  gap: 12px;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.schedule-item span {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.schedule-item p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.schedule-item.active {
+  background: linear-gradient(135deg, #ecfdf5, #eff6ff);
+  border-color: #86efac;
+}
+
+/* SECTIONS */
+.section-padding {
+  padding: 95px 0;
+}
+
+.section-label {
+  display: inline-block;
+  color: var(--primary);
+  font-weight: 700;
+  background: #ecfdf5;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.bg-soft {
+  background: linear-gradient(180deg, #f8fafc, #ecfdf5);
+}
+
+/* ROLES */
+.role-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px;
+  height: 100%;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.role-card:hover,
+.role-card.role-active {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.role-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #ecfdf5, #dbeafe);
+  margin-bottom: 22px;
+}
+
+.role-card h4 {
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.role-card p {
+  color: var(--muted);
+}
+
+.role-card ul {
+  padding-left: 18px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.role-card li {
+  margin-bottom: 8px;
+}
+
+.btn-role {
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.role-card:hover .btn-role,
+.role-card.role-active .btn-role {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* SERVICIOS */
+.service-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  height: 100%;
+  transition: 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+}
+
+.service-card span {
+  font-size: 2.4rem;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.service-card h5 {
+  font-weight: 800;
+}
+
+.service-card p {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+/* PASOS */
+.step-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 30px;
+  height: 100%;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.step-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #2563eb);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.step-card h5 {
+  font-weight: 800;
+}
+
+.step-card p {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+/* ACCESO */
+.access-card {
+  background: #ffffff;
+  border-radius: 34px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+  border: 1px solid #e2e8f0;
+}
+
+.info-panel {
+  background: #f8fafc;
+  border-left: 5px solid var(--primary);
+  border-radius: 18px;
+  padding: 20px;
+  margin-top: 28px;
+}
+
+.login-box {
+  background: linear-gradient(180deg, #f8fafc, #ffffff);
+  padding: 30px;
+  border-radius: 28px;
+  border: 1px solid #e2e8f0;
+}
+
+.form-control,
+.form-select {
+  border-radius: 16px;
+  border-color: #cbd5e1;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.15);
+}
+
+/* FOOTER */
+.footer-clinica {
+  background: var(--dark);
+  color: #ffffff;
+  padding: 35px 0;
+}
+
+.footer-clinica p {
+  color: #94a3b8;
+}
+
+/* ALERTA */
+.alerta-sistema {
+  position: fixed;
+  top: 95px;
+  right: 24px;
+  z-index: 9999;
+  min-width: 280px;
+  border-radius: 16px;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: 0.3s ease;
+}
+
+.alerta-sistema.mostrar {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.navbar-shadow {
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.25);
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+  .hero-section {
+    padding-top: 90px;
+  }
+
+  .section-padding {
+    padding: 70px 0;
+  }
+
+  .access-card {
+    padding: 28px;
+  }
+}
+
+.logo-clinica i {
+  font-size: 1.35rem;
+}
+
+.role-icon {
+  color: var(--primary);
+}
+
+.role-icon i {
+  font-size: 2rem;
+}
+
+.role-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.role-card li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.service-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  color: var(--primary);
+  background: linear-gradient(135deg, #ecfdf5, #dbeafe);
+  margin-bottom: 18px;
+}
+
+.step-number i {
+  font-size: 1.15rem;
+}
+
+.form-label i,
+.nav-link i,
+.section-label i {
+  opacity: 0.95;
+}
+
+.hero-card h5 i,
+.info-panel h6 i {
+  vertical-align: middle;
+}
+.modal-registro-paciente {
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+}
+
+.registro-header {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  border: none;
+  padding: 22px 28px;
+}
+
+.registro-layout {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  min-height: 620px;
+}
+
+.registro-aside {
+  background:
+    linear-gradient(145deg, rgba(15, 78, 74, 0.96), rgba(15, 23, 42, 0.94)),
+    url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80");
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  padding: 34px 28px;
+}
+
+.registro-logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+.registro-step {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0.7;
+  transition: 0.25s ease;
+}
+
+.registro-step span {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  font-weight: 800;
+}
+
+.registro-step small {
+  display: block;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.registro-step.active {
+  opacity: 1;
+  background: rgba(34, 197, 94, 0.25);
+  border: 1px solid rgba(187, 247, 208, 0.35);
+}
+
+.registro-step.done {
+  opacity: 1;
+  background: rgba(37, 99, 235, 0.25);
+}
+
+.registro-step.done span {
+  background: #22c55e;
+}
+
+.registro-content {
+  background: #f8fafc;
+  padding: 34px;
+}
+
+.registro-card {
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 30px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.07);
+}
+
+@media (max-width: 991px) {
+  .registro-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .registro-aside {
+    padding: 26px;
+  }
+
+  .registro-content {
+    padding: 22px;
+  }
+
+  .registro-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 575px) {
+  .registro-header {
+    padding: 18px;
+  }
+
+  .registro-aside {
+    padding: 22px 18px;
+  }
+
+  .registro-content {
+    padding: 18px;
+  }
+
+  .registro-card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .registro-step {
+    padding: 12px;
+  }
+}
+.modal-password {
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+}
+
+.password-header {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  padding: 24px;
+  border: none;
+}
+
+.password-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 1.35rem;
+}
+
+.password-input-group .form-control {
+  border-radius: 16px 0 0 16px;
+}
+
+.password-input-group .btn {
+  border-radius: 0 16px 16px 0;
+}
+
+.password-input-group .invalid-feedback {
+  display: block;
+}
+
+@media (max-width: 575px) {
+  .password-header {
+    padding: 20px;
+  }
+
+  .password-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+  .password-login-group .form-control {
+  border-radius: 16px 0 0 16px;
+}
+
+.password-login-group .btn-ver-password {
+  border-radius: 0 16px 16px 0;
+  border-color: #cbd5e1;
+  color: #64748b;
+  background: #ffffff;
+}
+
+.password-login-group .btn-ver-password:hover {
+  color: var(--primary);
+  background: #ecfdf5;
+  border-color: var(--primary);
+}
+
+.password-login-group .btn-ver-password:focus {
+  box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.15);
+}
+}
+.modal-recuperar-password {
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+}
+
+.recuperar-header {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  border: none;
+  padding: 24px 28px;
+}
+
+.recuperar-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 1.35rem;
+}
+
+.recuperar-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 470px;
+}
+
+.recuperar-aside {
+  background:
+    linear-gradient(145deg, rgba(15, 78, 74, 0.96), rgba(15, 23, 42, 0.94)),
+    url("https://images.unsplash.com/photo-1588776814546-daab30f310ce?auto=format&fit=crop&w=900&q=80");
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  padding: 28px;
+}
+
+.recuperar-step {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0.72;
+  transition: 0.25s ease;
+}
+
+.recuperar-step span {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  font-weight: 800;
+}
+
+.recuperar-step small {
+  display: block;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.recuperar-step.active {
+  opacity: 1;
+  background: rgba(34, 197, 94, 0.25);
+  border: 1px solid rgba(187, 247, 208, 0.35);
+}
+
+.recuperar-step.done {
+  opacity: 1;
+  background: rgba(37, 99, 235, 0.25);
+}
+
+.recuperar-step.done span {
+  background: #22c55e;
+}
+
+.recuperar-content {
+  background: #f8fafc;
+  padding: 30px;
+}
+
+.recuperar-card {
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.07);
+}
+
+@media (max-width: 991px) {
+  .recuperar-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .recuperar-aside {
+    padding: 24px;
+  }
+
+  .recuperar-content {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 575px) {
+  .recuperar-header {
+    padding: 20px;
+  }
+
+  .recuperar-card {
+    padding: 22px;
+    border-radius: 22px;
+  }
+}

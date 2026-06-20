@@ -6,6 +6,7 @@
 package com.citas.ney.repository;
 
 import com.citas.ney.model.ModelPacientes;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +40,7 @@ public interface PacienteRepository extends JpaRepository<ModelPacientes, Intege
     Optional<ModelPacientes> findByNumeroDocumentoPaciente(String numeroDocumentoPaciente);
 
     boolean existsByNumeroDocumentoPaciente(String numeroDocumentoPaciente);
+    
+    Optional<ModelPacientes> findByNumeroDocumentoPacienteAndFechaNacimientoPaciente(String numeroDocumentoPaciente,LocalDate fechaNacimientoPaciente);
 
 }
