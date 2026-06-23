@@ -117,6 +117,7 @@ public class MedicosService {
             usuario.setPasswordHash(passwordEncoder.encode(contrasena));
             usuario.setFechaCreacion(LocalDateTime.now());
             usuario.setEstadoUsario(1);
+            usuario.setCambiarContraseña(Boolean.TRUE);
             usuario.setRol(rol);
 
             ModelMedicos medico = new ModelMedicos();
