@@ -1,0 +1,123 @@
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.admin-wrapper {
+  padding: 100px 24px 40px;
+}
+
+.bg-clinica {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+}
+
+.text-clinica {
+  color: #0f766e;
+}
+
+.btn-clinica {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-clinica:hover {
+  color: #ffffff;
+  opacity: 0.92;
+}
+
+.logo-admin {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.admin-hero {
+  padding: 36px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.95), rgba(37, 99, 235, 0.92)),
+    url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1400&q=80");
+  background-size: cover;
+  background-position: center;
+}
+
+.stat-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  font-size: 1.7rem;
+}
+
+.card {
+  transition: 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.nav-pills .nav-link {
+  color: #0f766e;
+  background: #ecfdf5;
+  font-weight: 600;
+}
+
+.nav-pills .nav-link.active {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  color: #ffffff;
+}
+
+.table th {
+  font-size: 0.88rem;
+  color: #475569;
+  font-weight: 700;
+}
+
+.table td {
+  font-size: 0.93rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.15);
+}
+
+.alerta-admin {
+  position: fixed;
+  top: 90px;
+  right: 24px;
+  z-index: 9999;
+  min-width: 300px;
+  border-radius: 16px;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: 0.3s ease;
+}
+
+.alerta-admin.mostrar {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .admin-wrapper {
+    padding: 90px 12px 30px;
+  }
+
+  .admin-hero {
+    padding: 26px;
+  }
+}

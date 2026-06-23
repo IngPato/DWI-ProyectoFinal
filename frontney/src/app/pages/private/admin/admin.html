@@ -1,0 +1,1057 @@
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-clinica fixed-top"
+  [class.shadow]="navbarConSombra">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="javascript:void(0)">
+      <span class="logo-admin">
+        <i class="fa-solid fa-user-shield"></i>
+      </span>
+
+      <div>
+        <strong>Clínica Neill Roman Robles</strong>
+        <small class="d-block text-white-50">Panel del Administrador</small>
+      </div>
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarAdmin">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarAdmin">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#resumen">
+            <i class="fa-solid fa-chart-line me-1"></i>
+            Resumen
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#gestion">
+            <i class="fa-solid fa-table-list me-1"></i>
+            Gestión
+          </a>
+        </li>
+
+        <li class="nav-item ms-lg-3">
+          <button
+            type="button"
+            class="btn btn-light btn-sm rounded-pill px-4"
+            (click)="cerrarSesion()">
+            <i class="fa-solid fa-right-from-bracket me-2"></i>
+            Cerrar sesión
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="admin-wrapper bg-light">
+
+  <!-- RESUMEN -->
+  <section id="resumen" class="mb-4">
+    <div class="container-fluid">
+      <div class="admin-hero rounded-4 shadow-sm">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <span class="badge bg-white text-clinica rounded-pill mb-3">
+              <i class="fa-solid fa-lock me-1"></i>
+              Administración general del sistema
+            </span>
+
+            <h1 class="fw-bold text-white mb-2">
+              Bienvenido, Administrador
+            </h1>
+
+            <p class="text-white-50 mb-0">
+              Desde este panel puedes visualizar usuarios, médicos, pacientes,
+              especialidades y citas registradas en el sistema.
+            </p>
+          </div>
+
+          <div class="col-lg-5 text-lg-end">
+            <button
+              type="button"
+              class="btn btn-light btn-lg rounded-pill px-4 me-lg-2 mb-2 mb-lg-0"
+              (click)="abrirCrearMedico()">
+              <i class="fa-solid fa-user-doctor me-2"></i>
+              Registrar médico
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-outline-light btn-lg rounded-pill px-4"
+              (click)="abrirCrearEspecialidad()">
+              <i class="fa-solid fa-briefcase-medical me-2"></i>
+              Nueva especialidad
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARJETAS RESUMEN -->
+  <section class="mb-4">
+    <div class="container-fluid">
+      <div class="row g-4">
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Usuarios</p>
+                  <h3 class="fw-bold mb-0">{{ totalUsuarios() }}</h3>
+                </div>
+                <div class="stat-icon bg-dark-subtle text-dark">
+                  <i class="fa-solid fa-users-gear"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Médicos</p>
+                  <h3 class="fw-bold mb-0">{{ totalMedicos() }}</h3>
+                </div>
+                <div class="stat-icon bg-primary-subtle text-primary">
+                  <i class="fa-solid fa-user-doctor"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Pacientes</p>
+                  <h3 class="fw-bold mb-0">{{ totalPacientes() }}</h3>
+                </div>
+                <div class="stat-icon bg-success-subtle text-success">
+                  <i class="fa-solid fa-hospital-user"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="text-muted mb-1">Especialidades</p>
+                  <h3 class="fw-bold mb-0">{{ totalEspecialidades() }}</h3>
+                </div>
+                <div class="stat-icon bg-info-subtle text-info">
+                  <i class="fa-solid fa-briefcase-medical"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- GESTIÓN -->
+  <section id="gestion">
+    <div class="container-fluid">
+      <div class="card border-0 rounded-4 shadow-sm">
+
+        <div class="card-header bg-white border-0 rounded-top-4 p-4">
+          <div class="row align-items-center g-3">
+            <div class="col-lg-7">
+              <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-database me-2 text-clinica"></i>
+                Gestión del sistema
+              </h4>
+              <p class="text-muted mb-0">
+                Listado de información principal consumida desde Spring Boot con token JWT.
+              </p>
+            </div>
+
+            <div class="col-lg-5 text-lg-end">
+              <button
+                type="button"
+                class="btn btn-outline-success rounded-pill px-4 me-2 mb-2 mb-lg-0"
+                (click)="abrirCrearEspecialidad()">
+                <i class="fa-solid fa-plus me-2"></i>
+                Nueva especialidad
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-clinica rounded-pill px-4"
+                (click)="abrirCrearMedico()">
+                <i class="fa-solid fa-user-plus me-2"></i>
+                Nuevo médico
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4">
+
+          <!-- TABS -->
+          <ul class="nav nav-pills gap-2 mb-4">
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link rounded-pill px-4"
+                [class.active]="tabActual === 'usuarios'"
+                (click)="cambiarTab('usuarios')">
+                <i class="fa-solid fa-users me-2"></i>
+                Usuarios
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link rounded-pill px-4"
+                [class.active]="tabActual === 'medicos'"
+                (click)="cambiarTab('medicos')">
+                <i class="fa-solid fa-user-doctor me-2"></i>
+                Médicos
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link rounded-pill px-4"
+                [class.active]="tabActual === 'pacientes'"
+                (click)="cambiarTab('pacientes')">
+                <i class="fa-solid fa-hospital-user me-2"></i>
+                Pacientes
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link rounded-pill px-4"
+                [class.active]="tabActual === 'especialidades'"
+                (click)="cambiarTab('especialidades')">
+                <i class="fa-solid fa-briefcase-medical me-2"></i>
+                Especialidades
+              </button>
+            </li>
+
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link rounded-pill px-4"
+                [class.active]="tabActual === 'citas'"
+                (click)="cambiarTab('citas')">
+                <i class="fa-solid fa-calendar-check me-2"></i>
+                Citas
+              </button>
+            </li>
+          </ul>
+
+          <!-- USUARIOS -->
+          @if (tabActual === 'usuarios') {
+            <div>
+              <div class="row g-3 mb-3">
+                <div class="col-lg-8">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Buscar usuario, correo o rol"
+                    [(ngModel)]="buscarUsuarios">
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                  <button
+                    type="button"
+                    class="btn btn-clinica rounded-pill px-4"
+                    (click)="cargarUsuarios()">
+                    <i class="fa-solid fa-rotate me-2"></i>
+                    Actualizar usuarios
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive admin-table-wrap">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Usuario</th>
+                      <th>Correo</th>
+                      <th>Rol</th>
+                      <th>Fecha creación</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @if (cargandoUsuarios) {
+                      <tr>
+                        <td colspan="5" class="text-center py-4">
+                          <span class="spinner-border spinner-border-sm me-2"></span>
+                          Cargando usuarios...
+                        </td>
+                      </tr>
+                    } @else {
+                      @for (usuario of usuariosFiltrados; track usuario.idusuario) {
+                        <tr>
+                          <td class="fw-semibold">{{ usuario.username }}</td>
+                          <td>{{ usuario.correo }}</td>
+                          <td>
+                            <span class="badge bg-primary rounded-pill">
+                              {{ usuario.nombreRol }}
+                            </span>
+                          </td>
+                          <td>{{ formatearFecha(usuario.fechaCreacion) }}</td>
+                          <td>
+                            <span class="badge rounded-pill" [ngClass]="estadoBadgeClass(usuario.estado)">
+                              {{ estadoBadge(usuario.estado) }}
+                            </span>
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="5" class="text-center text-muted py-4">
+                            No se encontraron usuarios.
+                          </td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+
+          <!-- MÉDICOS -->
+          @if (tabActual === 'medicos') {
+            <div>
+              <div class="row g-3 mb-3">
+                <div class="col-lg-8">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Buscar por médico, CMP, usuario o especialidad"
+                    [(ngModel)]="buscarMedicos">
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                  <button
+                    type="button"
+                    class="btn btn-clinica rounded-pill px-4"
+                    (click)="cargarMedicos()">
+                    <i class="fa-solid fa-rotate me-2"></i>
+                    Actualizar médicos
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive admin-table-wrap">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Médico</th>
+                      <th>CMP</th>
+                      <th>Especialidad</th>
+                      <th>Teléfono</th>
+                      <th>Usuario</th>
+                      <th>Estado</th>
+                      <th class="text-end">Acción</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @if (cargandoMedicos) {
+                      <tr>
+                        <td colspan="7" class="text-center py-4">
+                          <span class="spinner-border spinner-border-sm me-2"></span>
+                          Cargando médicos...
+                        </td>
+                      </tr>
+                    } @else {
+                      @for (medico of medicosFiltrados; track medico.idusuario) {
+                        <tr>
+                          <td>
+                            <div class="fw-semibold">
+                              {{ medico.nombresMedico }} {{ medico.apellidosMedico }}
+                            </div>
+                            <small class="text-muted">{{ medico.correoMedico }}</small>
+                          </td>
+                          <td>{{ medico.cmpMedico }}</td>
+                          <td>{{ medico.especialidad }}</td>
+                          <td>{{ medico.telefonoMedico }}</td>
+                          <td>{{ medico.usuarioMedico }}</td>
+                          <td>
+                            <span class="badge rounded-pill" [ngClass]="estadoBadgeClass(medico.estadoMedico)">
+                              {{ estadoBadge(medico.estadoMedico) }}
+                            </span>
+                          </td>
+                          <td class="text-end">
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                              (click)="abrirEditarMedico(medico)">
+                              <i class="fa-solid fa-pen-to-square me-1"></i>
+                              Editar
+                            </button>
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="7" class="text-center text-muted py-4">
+                            No se encontraron médicos.
+                          </td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <small class="text-muted">
+                  Página {{ (pageMedicos?.number ?? 0) + 1 }} de {{ pageMedicos?.totalPages || 1 }}
+                </small>
+
+                <div class="btn-group">
+                  <button
+                    class="btn btn-outline-secondary rounded-start-pill"
+                    [disabled]="pageMedicos?.first"
+                    (click)="anteriorMedicos()">
+                    Anterior
+                  </button>
+
+                  <button
+                    class="btn btn-outline-secondary rounded-end-pill"
+                    [disabled]="pageMedicos?.last"
+                    (click)="siguienteMedicos()">
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- PACIENTES -->
+          @if (tabActual === 'pacientes') {
+            <div>
+              <div class="row g-3 mb-3">
+                <div class="col-lg-8">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Buscar por paciente, documento, usuario o correo"
+                    [(ngModel)]="buscarPacientes">
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                  <button
+                    type="button"
+                    class="btn btn-clinica rounded-pill px-4"
+                    (click)="cargarPacientes()">
+                    <i class="fa-solid fa-rotate me-2"></i>
+                    Actualizar pacientes
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive admin-table-wrap">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Paciente</th>
+                      <th>Documento</th>
+                      <th>Sexo</th>
+                      <th>Teléfono</th>
+                      <th>Grupo</th>
+                      <th>Usuario</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @if (cargandoPacientes) {
+                      <tr>
+                        <td colspan="7" class="text-center py-4">
+                          <span class="spinner-border spinner-border-sm me-2"></span>
+                          Cargando pacientes...
+                        </td>
+                      </tr>
+                    } @else {
+                      @for (paciente of pacientesFiltrados; track paciente.idusuario) {
+                        <tr>
+                          <td>
+                            <div class="fw-semibold">
+                              {{ paciente.nombresPaciente }} {{ paciente.apellidosPaciente }}
+                            </div>
+                            <small class="text-muted">{{ paciente.correoPaciente }}</small>
+                          </td>
+                          <td>
+                            {{ paciente.tipoDocumentoPaciente }}:
+                            {{ paciente.numeroDocumentoPaciente }}
+                          </td>
+                          <td>{{ paciente.sexoPaciente }}</td>
+                          <td>{{ paciente.telefonoPaciente }}</td>
+                          <td>{{ paciente.grupoSanguineoPaciente }}</td>
+                          <td>{{ paciente.usuarioPaciente }}</td>
+                          <td>
+                            <span class="badge rounded-pill" [ngClass]="estadoBadgeClass(paciente.estadoPaciente)">
+                              {{ estadoBadge(paciente.estadoPaciente) }}
+                            </span>
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="7" class="text-center text-muted py-4">
+                            No se encontraron pacientes.
+                          </td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <small class="text-muted">
+                  Página {{ (pagePacientes?.number ?? 0) + 1 }} de {{ pagePacientes?.totalPages || 1 }}
+                </small>
+
+                <div class="btn-group">
+                  <button
+                    class="btn btn-outline-secondary rounded-start-pill"
+                    [disabled]="pagePacientes?.first"
+                    (click)="anteriorPacientes()">
+                    Anterior
+                  </button>
+
+                  <button
+                    class="btn btn-outline-secondary rounded-end-pill"
+                    [disabled]="pagePacientes?.last"
+                    (click)="siguientePacientes()">
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ESPECIALIDADES -->
+          @if (tabActual === 'especialidades') {
+            <div>
+              <div class="row g-3 mb-3">
+                <div class="col-lg-8">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Buscar especialidad"
+                    [(ngModel)]="buscarEspecialidades">
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                  <button
+                    type="button"
+                    class="btn btn-clinica rounded-pill px-4"
+                    (click)="abrirCrearEspecialidad()">
+                    <i class="fa-solid fa-plus me-2"></i>
+                    Nueva especialidad
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive admin-table-wrap">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Especialidad</th>
+                      <th>Descripción</th>
+                      <th>Estado</th>
+                      <th class="text-end">Acción</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @if (cargandoEspecialidades) {
+                      <tr>
+                        <td colspan="4" class="text-center py-4">
+                          <span class="spinner-border spinner-border-sm me-2"></span>
+                          Cargando especialidades...
+                        </td>
+                      </tr>
+                    } @else {
+                      @for (especialidad of especialidadesFiltradas; track $index) {
+                        <tr>
+                          <td class="fw-semibold">{{ nombreEspecialidad(especialidad) }}</td>
+                          <td>{{ descripcionEspecialidad(especialidad) }}</td>
+                          <td>
+                            <span
+                              class="badge rounded-pill"
+                              [class.bg-success]="estadoEspecialidad(especialidad) === 1"
+                              [class.bg-secondary]="estadoEspecialidad(especialidad) !== 1">
+                              {{ estadoEspecialidad(especialidad) === 1 ? 'Activa' : 'Inactiva' }}
+                            </span>
+                          </td>
+                          <td class="text-end">
+                            <div class="btn-group">
+                              <button
+                                type="button"
+                                class="btn btn-sm btn-outline-primary rounded-start-pill px-3"
+                                (click)="abrirEditarEspecialidad(especialidad)">
+                                <i class="fa-solid fa-pen-to-square me-1"></i>
+                                Editar
+                              </button>
+
+                              <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger rounded-end-pill px-3"
+                                (click)="confirmarCambioEstadoEspecialidad(especialidad)">
+                                <i class="fa-solid fa-power-off me-1"></i>
+                                Estado
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="4" class="text-center text-muted py-4">
+                            No se encontraron especialidades.
+                          </td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+
+          <!-- CITAS -->
+          @if (tabActual === 'citas') {
+            <div>
+              <div class="row g-3 mb-3">
+                <div class="col-lg-8">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Buscar cita por paciente, médico, especialidad o motivo"
+                    [(ngModel)]="buscarCitas">
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                  <button
+                    type="button"
+                    class="btn btn-clinica rounded-pill px-4"
+                    (click)="cargarCitas()">
+                    <i class="fa-solid fa-rotate me-2"></i>
+                    Actualizar citas
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive admin-table-wrap">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Paciente</th>
+                      <th>Médico</th>
+                      <th>Especialidad</th>
+                      <th>Motivo</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @if (cargandoCitas) {
+                      <tr>
+                        <td colspan="7" class="text-center py-4">
+                          <span class="spinner-border spinner-border-sm me-2"></span>
+                          Cargando citas...
+                        </td>
+                      </tr>
+                    } @else {
+                      @for (cita of citasFiltradas; track $index) {
+                        <tr>
+                          <td>{{ fechaCita(cita) }}</td>
+                          <td>{{ horaCita(cita) }}</td>
+                          <td>{{ cita.paciente || '-' }}</td>
+                          <td>{{ cita.medico || '-' }}</td>
+                          <td>{{ cita.especialidad || '-' }}</td>
+                          <td>{{ motivoCita(cita) }}</td>
+                          <td>
+                            <span class="badge bg-info text-dark rounded-pill">
+                              {{ cita.estado || 'Sin estado' }}
+                            </span>
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="7" class="text-center text-muted py-4">
+                            No se encontraron citas o el endpoint aún no está disponible.
+                          </td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL MÉDICO -->
+<div
+  class="modal fade"
+  id="modalMedicoAdmin"
+  tabindex="-1"
+  aria-labelledby="modalMedicoAdminLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content border-0 rounded-4 overflow-hidden admin-modal">
+
+      <div class="modal-header admin-modal-header text-white">
+        <div class="d-flex align-items-center gap-3">
+          <div class="modal-icon">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+
+          <div>
+            <h5 class="modal-title fw-bold mb-1" id="modalMedicoAdminLabel">
+              {{ modoMedico === 'crear' ? 'Registrar médico' : 'Actualizar médico' }}
+            </h5>
+            <p class="mb-0 small opacity-75">
+              Complete los datos de acceso y la información profesional del médico.
+            </p>
+          </div>
+        </div>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form [formGroup]="formMedico" (ngSubmit)="guardarMedico()">
+        <div class="modal-body bg-light p-4">
+
+          <div class="card border-0 rounded-4 shadow-sm mb-4">
+            <div class="card-header bg-white border-0 rounded-top-4">
+              <h5 class="fw-bold text-clinica mb-0">
+                <i class="fa-solid fa-user-lock me-2"></i>
+                Datos de usuario
+              </h5>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+
+                <div class="col-md-4">
+                  <label class="form-label">Usuario</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    formControlName="username"
+                    placeholder="Ejemplo: jperez"
+                    [class.is-invalid]="campoInvalidoMedico('username')">
+
+                  @if (campoInvalidoMedico('username')) {
+                    <div class="invalid-feedback">
+                      Ingrese un usuario válido.
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Correo</label>
+                  <input
+                    type="email"
+                    class="form-control form-control-lg"
+                    formControlName="correo"
+                    placeholder="correo@clinica.com"
+                    [class.is-invalid]="campoInvalidoMedico('correo')">
+
+                  @if (campoInvalidoMedico('correo')) {
+                    <div class="invalid-feedback">
+                      Ingrese un correo válido.
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Rol</label>
+                  <select class="form-select form-select-lg" formControlName="idRol">
+                    <option [ngValue]="2">Médico</option>
+                  </select>
+                </div>
+
+              </div>
+
+              @if (modoMedico === 'crear') {
+                <div class="alert alert-info rounded-4 mt-3 mb-0">
+                  <i class="fa-solid fa-circle-info me-2"></i>
+                  El sistema generará la contraseña inicial del médico y la mostrará al finalizar el registro.
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card-header bg-white border-0 rounded-top-4">
+              <h5 class="fw-bold text-clinica mb-0">
+                <i class="fa-solid fa-briefcase-medical me-2"></i>
+                Datos profesionales
+              </h5>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+
+                <div class="col-md-6">
+                  <label class="form-label">Nombres</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    formControlName="nombresMedico"
+                    placeholder="Nombres del médico"
+                    [class.is-invalid]="campoInvalidoMedico('nombresMedico')">
+
+                  @if (campoInvalidoMedico('nombresMedico')) {
+                    <div class="invalid-feedback">
+                      Ingrese los nombres.
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Apellidos</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    formControlName="apellidosMedico"
+                    placeholder="Apellidos del médico"
+                    [class.is-invalid]="campoInvalidoMedico('apellidosMedico')">
+
+                  @if (campoInvalidoMedico('apellidosMedico')) {
+                    <div class="invalid-feedback">
+                      Ingrese los apellidos.
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">CMP</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    formControlName="cmpMedico"
+                    placeholder="CMP123456"
+                    [class.is-invalid]="campoInvalidoMedico('cmpMedico')">
+
+                  @if (campoInvalidoMedico('cmpMedico')) {
+                    <div class="invalid-feedback">
+                      Ingrese el CMP del médico.
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Teléfono</label>
+                  <input
+                    type="text"
+                    maxlength="9"
+                    class="form-control form-control-lg"
+                    formControlName="telefonoMedico"
+                    placeholder="987654321"
+                    [class.is-invalid]="campoInvalidoMedico('telefonoMedico')">
+
+                  @if (campoInvalidoMedico('telefonoMedico')) {
+                    <div class="invalid-feedback">
+                      Ingrese un teléfono válido de 9 dígitos.
+                    </div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Especialidad</label>
+                  <select
+                    class="form-select form-select-lg"
+                    formControlName="idespecialidad"
+                    [class.is-invalid]="campoInvalidoMedico('idespecialidad')">
+
+                    <option [ngValue]="null">Seleccione</option>
+
+                    @for (especialidad of especialidades; track $index) {
+                      <option [ngValue]="idEspecialidad(especialidad)">
+                        {{ nombreEspecialidad(especialidad) }}
+                      </option>
+                    }
+                  </select>
+
+                  @if (campoInvalidoMedico('idespecialidad')) {
+                    <div class="invalid-feedback">
+                      Seleccione una especialidad.
+                    </div>
+                  }
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-0 bg-white p-4">
+          <button
+            type="button"
+            class="btn btn-outline-secondary rounded-pill px-4"
+            data-bs-dismiss="modal">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-clinica rounded-pill px-4"
+            [disabled]="guardandoMedico">
+
+            @if (guardandoMedico) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Guardando...
+            } @else {
+              <i class="fa-solid fa-floppy-disk me-2"></i>
+              {{ modoMedico === 'crear' ? 'Registrar médico' : 'Actualizar médico' }}
+            }
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ESPECIALIDAD -->
+<div
+  class="modal fade"
+  id="modalEspecialidadAdmin"
+  tabindex="-1"
+  aria-labelledby="modalEspecialidadAdminLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-sm-down">
+    <div class="modal-content border-0 rounded-4 overflow-hidden admin-modal">
+
+      <div class="modal-header admin-modal-header text-white">
+        <div class="d-flex align-items-center gap-3">
+          <div class="modal-icon">
+            <i class="fa-solid fa-briefcase-medical"></i>
+          </div>
+
+          <div>
+            <h5 class="modal-title fw-bold mb-1" id="modalEspecialidadAdminLabel">
+              {{ modoEspecialidad === 'crear' ? 'Registrar especialidad' : 'Actualizar especialidad' }}
+            </h5>
+            <p class="mb-0 small opacity-75">
+              Administra las especialidades médicas disponibles.
+            </p>
+          </div>
+        </div>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form [formGroup]="formEspecialidad" (ngSubmit)="guardarEspecialidad()">
+        <div class="modal-body bg-light p-4">
+
+          <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre de especialidad</label>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  formControlName="nombreEspecialidad"
+                  placeholder="Ejemplo: Medicina General"
+                  [class.is-invalid]="campoInvalidoEspecialidad('nombreEspecialidad')">
+
+                @if (campoInvalidoEspecialidad('nombreEspecialidad')) {
+                  <div class="invalid-feedback">
+                    Ingrese el nombre de la especialidad.
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Descripción</label>
+                <textarea
+                  class="form-control"
+                  rows="4"
+                  formControlName="descripcionEspecialidad"
+                  placeholder="Descripción de la especialidad"
+                  [class.is-invalid]="campoInvalidoEspecialidad('descripcionEspecialidad')"></textarea>
+
+                @if (campoInvalidoEspecialidad('descripcionEspecialidad')) {
+                  <div class="invalid-feedback">
+                    Ingrese la descripción.
+                  </div>
+                }
+              </div>
+
+              <div class="mb-0">
+                <label class="form-label fw-semibold">Estado</label>
+                <select class="form-select form-select-lg" formControlName="estadoEspecialidad">
+                  <option [ngValue]="1">Activa</option>
+                  <option [ngValue]="0">Inactiva</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-0 bg-white p-4">
+          <button
+            type="button"
+            class="btn btn-outline-secondary rounded-pill px-4"
+            data-bs-dismiss="modal">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-clinica rounded-pill px-4"
+            [disabled]="guardandoEspecialidad">
+
+            @if (guardandoEspecialidad) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Guardando...
+            } @else {
+              <i class="fa-solid fa-floppy-disk me-2"></i>
+              {{ modoEspecialidad === 'crear' ? 'Registrar especialidad' : 'Actualizar especialidad' }}
+            }
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

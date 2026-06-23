@@ -14,6 +14,7 @@ import com.citas.ney.service.UsuarioService;
 import java.time.LocalDate;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -94,18 +95,41 @@ public class AuthRestController {
     }
 
     @GetMapping("/validar-paciente")
-    ResponseEntity<ApiResponse<?>> validadpaciente(@RequestParam String documento, @RequestParam LocalDate fechaNacimientoPaciente) {
-        return pacienteService.validarPaciente(documento, fechaNacimientoPaciente) != 0
-                ? ResponseEntity.ok(ApiResponse.ok("paciente correcto", Map.of(
-                        "idusuario", pacienteService.validarPaciente(documento, fechaNacimientoPaciente)
-                )))
-                : ResponseEntity.badRequest().body(ApiResponse.error("no existe los datos del paciente"));
+    public ResponseEntity<ApiResponse<?>> validarPaciente(
+            @RequestParam String documento,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaNacimientoPaciente
+    ) {
+        try {
+            Integer idusuario = pacienteService.validarPaciente(documento, fechaNacimientoPaciente);
+
+            return ResponseEntity.ok(
+                    ApiResponse.ok("Paciente correcto", Map.of(
+                            "idusuario", idusuario
+                    ))
+            );
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.error(e.getMessage())
+            );
+        }
     }
 
     @GetMapping("/validar-medico")
     ResponseEntity<ApiResponse<?>> validadpaciente(@RequestParam String cmpMedico) {
-        return medicosService.validarMedico(cmpMedico) != 0
-                ? ResponseEntity.ok(ApiResponse.ok("medico correcto",Map.of("idusuario", medicosService.validarMedico(cmpMedico))))
-                : ResponseEntity.badRequest().body(ApiResponse.error("no existe CMP del medico"));
+           try {
+            Integer idusuario = medicosService.validarMedico(cmpMedico);
+
+            return ResponseEntity.ok(
+                    ApiResponse.ok("Medico correcto", Map.of(
+                            "idusuario", idusuario
+                    ))
+            );
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.error(e.getMessage())
+            );
+        }
     }
 }

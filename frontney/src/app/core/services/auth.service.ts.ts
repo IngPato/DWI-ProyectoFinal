@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { map, Observable, tap } from 'rxjs';
 import { API_ENDPOINTS } from '../config/api.config';
 
 import {
@@ -20,7 +21,14 @@ export class AuthService {
   private readonly TOKEN_KEY = 'access_token';
   private readonly USER_KEY = 'usuario_sesion';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  private esNavegador(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
   login(request: LoginRequest): Observable<ApiResponse<LoginResponse>> {
     return this.http.post<ApiResponse<LoginResponse>>(API_ENDPOINTS.auth.login, request).pipe(
@@ -33,17 +41,38 @@ export class AuthService {
   }
 
   guardarSesion(usuario: LoginResponse): void {
+    if (!this.esNavegador()) {
+      return;
+    }
+
     localStorage.setItem(this.TOKEN_KEY, usuario.token);
     localStorage.setItem(this.USER_KEY, JSON.stringify(usuario));
   }
 
   getToken(): string | null {
+    if (!this.esNavegador()) {
+      return null;
+    }
+
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
   getUsuario(): LoginResponse | null {
+    if (!this.esNavegador()) {
+      return null;
+    }
+
     const usuario = localStorage.getItem(this.USER_KEY);
-    return usuario ? JSON.parse(usuario) : null;
+
+    if (!usuario) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(usuario) as LoginResponse;
+    } catch {
+      return null;
+    }
   }
 
   getRol(): string | null {
@@ -55,9 +84,14 @@ export class AuthService {
   }
 
   logout(): void {
+    if (!this.esNavegador()) {
+      return;
+    }
+
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
   }
+
   validarDniPaciente(documento: string) {
     return this.http
       .get<any>(`${API_ENDPOINTS.auth.validarDoc}?doc=${encodeURIComponent(documento)}`)
@@ -107,6 +141,7 @@ export class AuthService {
   registrarPaciente(request: PacienteRegistroRequest): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(API_ENDPOINTS.auth.registrarPaciente, request);
   }
+
   validarPacienteRecuperacion(documento: string, fechaNacimientoPaciente: string) {
     return this.http.get<any>(
       `${API_ENDPOINTS.auth.validarPacienteRecuperacion}?documento=${encodeURIComponent(documento)}&fechaNacimientoPaciente=${encodeURIComponent(fechaNacimientoPaciente)}`,

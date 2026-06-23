@@ -123,7 +123,12 @@ public class PacienteService {
     }
 
     public Integer validarPaciente(String dni, LocalDate fechaNacimientoPaciente) {
-        ModelPacientes paciente = pacienteRepository.findByNumeroDocumentoPacienteAndFechaNacimientoPaciente(dni, fechaNacimientoPaciente).get();
+        ModelPacientes paciente = pacienteRepository.findByNumeroDocumentoPacienteAndFechaNacimientoPaciente(dni, fechaNacimientoPaciente)
+                .orElseThrow(() -> new RuntimeException("Paciente no existe"));
+        if (paciente.getUsuario() == null) {
+            throw new RuntimeException("El paciente no tiene usuario asignado");
+        }
+
         return paciente.getUsuario().getIdusuario();
     }
 
