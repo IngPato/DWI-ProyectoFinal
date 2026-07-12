@@ -12,25 +12,25 @@ import { adminGuard } from './core/guards/admin-guard-guard-guard';
 export const routes: Routes = [
   {
     path: '',
-    component: Home
+    component: Home,
   },
   {
     path: 'paciente',
     component: Paciente,
-    canActivate: [pacienteGuard]
+    canActivate: [pacienteGuard],
   },
   {
     path: 'medico',
     component: Medico,
-    canActivate: [medicoGuard]
+    canActivate: [medicoGuard],
   },
   {
     path: 'admin',
     component: Admin,
-    canActivate: [adminGuard]
+    canActivate: [adminGuard],
   },
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];

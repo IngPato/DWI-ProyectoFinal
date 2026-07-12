@@ -31,6 +31,7 @@
 .logo-paciente {
   width: 44px;
   height: 44px;
+  min-width: 44px;
   border-radius: 14px;
   display: grid;
   place-items: center;
@@ -42,6 +43,21 @@
 
 .logo-paciente i {
   font-size: 1.25rem;
+}
+
+.navbar button.nav-link {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar button.nav-link:hover,
+.navbar button.nav-link.active {
+  color: #ffffff;
+}
+
+.navbar button.nav-link:focus {
+  box-shadow: none;
 }
 
 .patient-hero {
@@ -56,6 +72,7 @@
 .stat-icon {
   width: 58px;
   height: 58px;
+  min-width: 58px;
   border-radius: 18px;
   display: grid;
   place-items: center;
@@ -71,6 +88,7 @@
 .profile-avatar {
   width: 62px;
   height: 62px;
+  min-width: 62px;
   border-radius: 20px;
   background: linear-gradient(135deg, #0f766e, #2563eb);
   color: #ffffff;
@@ -92,10 +110,24 @@
   font-size: 0.88rem;
   color: #475569;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .table td {
   font-size: 0.93rem;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  cursor: pointer;
+}
+
+.table-active {
+  --bs-table-bg-state: rgba(15, 118, 110, 0.08);
+}
+
+.form-check-input {
+  cursor: pointer;
 }
 
 .form-control,
@@ -126,6 +158,16 @@
   transform: translateX(0);
 }
 
+@media (max-width: 991px) {
+  .patient-wrapper {
+    padding: 95px 16px 32px;
+  }
+
+  .patient-hero .btn {
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .patient-wrapper {
     padding: 90px 12px 30px;
@@ -133,5 +175,237 @@
 
   .patient-hero {
     padding: 26px;
+  }
+
+  .navbar-brand strong {
+    font-size: 0.9rem;
+  }
+
+  .navbar-brand small {
+    font-size: 0.7rem;
+  }
+
+  .logo-paciente {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  .alerta-paciente {
+    left: 12px;
+    right: 12px;
+    min-width: auto;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.84rem;
+  }
+}
+.doctor-option {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: 0.25s ease;
+}
+
+.doctor-option:hover,
+.doctor-option.active {
+  border-color: #0f766e;
+  background: #ecfdf5;
+  box-shadow: 0 12px 25px rgba(15, 118, 110, 0.12);
+}
+
+.doctor-avatar {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+}
+
+.calendar-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-align: center;
+  margin-bottom: 14px;
+  color: #0f172a;
+}
+
+.calendar-week,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-week span {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.calendar-day {
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #94a3b8;
+  font-weight: 700;
+  transition: 0.25s ease;
+}
+
+.calendar-day.empty {
+  visibility: hidden;
+}
+
+.calendar-day.available {
+  color: #0f766e;
+  border-color: #99f6e4;
+  background: #ecfdf5;
+}
+
+.calendar-day.available:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.16);
+}
+
+.calendar-day.selected {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+}
+
+.calendar-day:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.time-option {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 700;
+  color: #0f766e;
+  transition: 0.25s ease;
+}
+
+.time-option:hover,
+.time-option.active {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.2);
+}
+
+@media (max-width: 768px) {
+  .time-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-day {
+    height: 38px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+}
+/* SCROLL CORRECTO PARA MODAL NUEVA CITA */
+#modalNuevaCita .modal-dialog {
+  height: calc(100vh - 24px);
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+#modalNuevaCita .modal-content {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalNuevaCita .nueva-cita-form {
+  min-height: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalNuevaCita .modal-body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: none;
+  padding-bottom: 24px !important;
+}
+
+#modalNuevaCita .modal-footer {
+  flex: 0 0 auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  background: #ffffff;
+  box-shadow: 0 -10px 25px rgba(15, 23, 42, 0.08);
+}
+
+/* Scroll más elegante */
+#modalNuevaCita .modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+#modalNuevaCita .modal-body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+#modalNuevaCita .modal-body::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+#modalNuevaCita .modal-body::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Responsive celular */
+@media (max-width: 575px) {
+  #modalNuevaCita .modal-dialog {
+    height: 100vh;
+    margin: 0;
+  }
+
+  #modalNuevaCita .modal-content {
+    min-height: 100vh;
+    border-radius: 0 !important;
+  }
+
+  #modalNuevaCita .modal-body {
+    padding: 18px !important;
+  }
+
+  #modalNuevaCita .modal-footer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 18px !important;
+  }
+
+  #modalNuevaCita .modal-footer .btn {
+    width: 100%;
   }
 }

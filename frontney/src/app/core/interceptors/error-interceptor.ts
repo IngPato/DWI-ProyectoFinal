@@ -1,14 +1,9 @@
-import { inject } from '@angular/core';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
 export const errorInterceptor: HttpInterceptorFn = (request, next) => {
-  const router = inject(Router);
-
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
-
       const esValidacionRegistro =
         request.url.includes('/api/auth/validarDoc') ||
         request.url.includes('/api/auth/validarDni') ||
@@ -25,19 +20,14 @@ export const errorInterceptor: HttpInterceptorFn = (request, next) => {
       }
 
       if (error.status === 400) {
-        mensaje = error.error?.message || error.error?.mensaje || 'La solicitud enviada no es válida.';
+        mensaje =
+          error.error?.message ||
+          error.error?.mensaje ||
+          'La solicitud enviada no es válida.';
       }
 
       if (error.status === 401) {
-        mensaje = 'Sesión vencida o credenciales incorrectas.';
-
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('usuario_sesion');
-          localStorage.removeItem('auth_user');
-        }
-
-        router.navigate(['/']);
+        mensaje = 'No autorizado. Verifique su sesión o sus credenciales.';
       }
 
       if (error.status === 403) {
@@ -49,24 +39,43 @@ export const errorInterceptor: HttpInterceptorFn = (request, next) => {
       }
 
       if (error.status === 409) {
-        mensaje = error.error?.message || error.error?.mensaje || 'Existe un conflicto con la información enviada.';
+        mensaje =
+          error.error?.message ||
+          error.error?.mensaje ||
+          'Existe un conflicto con la información enviada.';
       }
 
       if (error.status === 500) {
         mensaje = 'Error interno del servidor. Intente nuevamente más tarde.';
       }
 
-      console.error('Error HTTP:', {
-        url: request.url,
-        status: error.status,
-        message: mensaje,
-        error
-      });
+      const esDisponibilidadSinHorarios =
+        request.url.includes('/api/citas/disponibilidad') &&
+        error.status === 400 &&
+        String(
+          error.error?.message ||
+            error.error?.mensaje ||
+            mensaje ||
+            '',
+        )
+          .toLowerCase()
+          .includes('no existen horarios disponibles');
 
-      return throwError(() => ({
-        ...error,
-        mensajePersonalizado: mensaje
-      }));
-    })
+      if (!esDisponibilidadSinHorarios) {
+        console.error('Error HTTP:', {
+          url: request.url,
+          status: error.status,
+          message: mensaje,
+          error,
+        });
+      }
+
+      return throwError(() =>
+        Object.assign(error, {
+          mensajePersonalizado: mensaje,
+          esDisponibilidadSinHorarios,
+        }),
+      );
+    }),
   );
 };

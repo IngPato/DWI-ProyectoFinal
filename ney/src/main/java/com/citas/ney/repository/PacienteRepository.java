@@ -42,5 +42,7 @@ public interface PacienteRepository extends JpaRepository<ModelPacientes, Intege
     boolean existsByNumeroDocumentoPaciente(String numeroDocumentoPaciente);
     
     Optional<ModelPacientes> findByNumeroDocumentoPacienteAndFechaNacimientoPaciente(String numeroDocumentoPaciente,LocalDate fechaNacimientoPaciente);
+    
+     Optional<ModelPacientes> findByUsuarioIdusuario(Integer idUsuario);
 
 }

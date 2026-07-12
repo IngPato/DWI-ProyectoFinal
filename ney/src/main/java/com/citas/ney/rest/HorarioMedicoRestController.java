@@ -9,8 +9,13 @@ import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.HorarioMedicoRequest;
 import com.citas.ney.dto.HorarioMedicoResponse;
 import com.citas.ney.service.HorarioMedicoService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,18 +33,23 @@ import org.springframework.web.bind.annotation.RestController;
  * @author kevin
  */
 @RestController
-@RequestMapping("/app/horarioMedico")
+@RequestMapping("/api/horarioMedico")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class HorarioMedicoRestController {
 
     private final HorarioMedicoService horarioMedicoService;
 
-    @GetMapping("/activos")
-    public ResponseEntity<ApiResponse<List<HorarioMedicoResponse>>> listarHorarioMedicosActivos() {
-        return horarioMedicoService.listarHorarioMedico().size() != 0
-                ? ResponseEntity.ok(ApiResponse.ok("horarios encontrados", horarioMedicoService.listarHorarioMedico()))
-                : ResponseEntity.badRequest().body(ApiResponse.error("Horarios no encontrados"));
+    @GetMapping("{idmedico}")
+    public Page<HorarioMedicoResponse> listarHorarioMedicosPaginados(
+            @PathVariable Integer idmedico,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @PageableDefault(size = 10, sort = "idhorariosMedico") Pageable pageable) {
+        try {
+            return horarioMedicoService.listarHorarioMedico(idmedico, fecha, pageable);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @PostMapping

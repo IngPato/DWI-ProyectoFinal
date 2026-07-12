@@ -7,7 +7,10 @@ package com.citas.ney.rest;
 import com.citas.ney.dto.ApiResponse;
 import com.citas.ney.dto.MedicoRequest;
 import com.citas.ney.dto.MedicoResponse;
+import com.citas.ney.dto.MedicoUnicoResponse;
+import com.citas.ney.model.ModelMedicos;
 import com.citas.ney.service.MedicosService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +46,21 @@ public class MedicoRestController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<MedicoUnicoResponse>> listaunicamedico(@PathVariable Integer id){
+        try {
+            MedicoUnicoResponse medico = medicosService.listarMedicoUnico(id);
+            if(medico!=null){
+                 return ResponseEntity.ok(ApiResponse.ok("medico",medico));
+            }else{
+                return ResponseEntity.ok(ApiResponse.error("medico sin datos"));
+            }
+           
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        
+    }
     @PostMapping
     public ResponseEntity<ApiResponse<?>> crearNuevoMedico(@RequestBody MedicoRequest request) {
         try {

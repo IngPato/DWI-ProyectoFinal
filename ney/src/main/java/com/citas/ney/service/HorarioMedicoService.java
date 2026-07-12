@@ -10,9 +10,12 @@ import com.citas.ney.model.ModelHorariosMedico;
 import com.citas.ney.model.ModelMedicos;
 import com.citas.ney.repository.HorarioMedicoRepository;
 import com.citas.ney.repository.MedicosRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,9 +43,9 @@ public class HorarioMedicoService {
         return response;
     }
 
-    public List<HorarioMedicoResponse> listarHorarioMedico() {
-        List<ModelHorariosMedico> horariosMedico = horarioMedicoRepository.findByEstado(1);
-        return horariosMedico.stream().map(this::convertirHorarioMedico).collect(Collectors.toList());
+    public Page<HorarioMedicoResponse> listarHorarioMedico(Integer id,LocalDate fecha, Pageable pageable) {
+        Page<ModelHorariosMedico> horariosMedico = horarioMedicoRepository.listarHorarioMedicoPaginada(id,fecha, pageable);
+        return horariosMedico.map(this::convertirHorarioMedico);
     }
 
     public boolean registrarHorarioMedico(HorarioMedicoRequest request) {

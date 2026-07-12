@@ -33,7 +33,15 @@ public class PacienteController {
             @PageableDefault(size = 10, sort = "idpacientes") Pageable pageable) {
         return pacienteService.listarPacientesActivosPaginados(filtro, pageable);
     }
-
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> listarpacienteunico(@PathVariable Integer id){
+        try {
+            return ResponseEntity.ok(ApiResponse.ok("paciente", pacienteService.pacienteunico(id)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
     @PostMapping
     public ResponseEntity<ApiResponse<?>> crearNuevopaciente(@RequestBody RegistrarPacienteRequest pacienteRequest) {
         return pacienteService.registrarPaciente(pacienteRequest) == true

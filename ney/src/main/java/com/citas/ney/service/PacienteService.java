@@ -6,16 +6,19 @@ package com.citas.ney.service;
 
 import com.citas.ney.dto.RegistrarPacienteRequest;
 import com.citas.ney.dto.PacienteResponse;
+import com.citas.ney.dto.PacienteUnicoResponse;
 import com.citas.ney.model.ModelPacientes;
 import com.citas.ney.model.ModelUsuario;
 import com.citas.ney.repository.PacienteRepository;
 import com.citas.ney.repository.UsuarioRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -64,6 +67,23 @@ public class PacienteService {
     public Page<PacienteResponse> listarPacientesActivosPaginados(String filtro, Pageable pageable) {
         Page<ModelPacientes> response = pacienteRepository.BuscarPacientesActivosPaginado(filtro, pageable);
         return response.map(this::convertirAResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public PacienteUnicoResponse pacienteunico(Integer idpaciente) {
+        ModelPacientes paciente = pacienteRepository.findByUsuarioIdusuario(idpaciente).orElseThrow(() -> new RuntimeException(""));
+        return PacienteUnicoResponse.builder()
+                .idpacientes(paciente.getIdpacientes())
+                .idusuario(paciente.getUsuario().getIdusuario())
+                .nombresPaciente(paciente.getNombresPaciente() + " " + paciente.getApellidosPaciente())
+                .tipoDocumentoPaciente(paciente.getTipoDocumentoPaciente())
+                .numeroDocumentoPaciente(paciente.getNumeroDocumentoPaciente())
+                .fechaNacimientoPaciente(paciente.getFechaNacimientoPaciente())
+                .sexoPaciente(paciente.getSexoPaciente())
+                .telefonoPaciente(paciente.getTelefonoPaciente())
+                .direccionPaciente(paciente.getDireccionPaciente())
+                .grupoSanguineoPaciente(paciente.getGrupoSanguineoPaciente())
+                .build();
     }
 
     public boolean registrarPaciente(RegistrarPacienteRequest request) {

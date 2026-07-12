@@ -1,8 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  inject,
+} from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, Subject, takeUntil } from 'rxjs';
 
 import { AdminService } from '../../../core/services/admin';
 import {
@@ -28,32 +36,107 @@ declare const bootstrap: any;
   templateUrl: './admin.html',
   styleUrl: './admin.css',
 })
-export class Admin implements OnInit {
+export class Admin implements OnInit, OnDestroy {
   private readonly adminService = inject(AdminService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly esNavegador = isPlatformBrowser(this.platformId);
+
+  private readonly destroy$ = new Subject<void>();
+
+  private readonly buscarUsuarios$ = new Subject<string>();
+  private readonly buscarMedicos$ = new Subject<string>();
+  private readonly buscarPacientes$ = new Subject<string>();
+  private readonly buscarEspecialidades$ = new Subject<string>();
+  private readonly buscarCitas$ = new Subject<string>();
+
+  private busquedasConfiguradas = false;
 
   navbarConSombra = false;
-
+  seccionActual: 'resumen' | 'gestion' = 'resumen';
   tabActual: TabAdmin = 'usuarios';
 
   usuarios: UsuarioAdmin[] = [];
   medicos: MedicoAdmin[] = [];
   pacientes: PacienteAdmin[] = [];
   especialidades: EspecialidadAdmin[] = [];
+  especialidadesActivasCombo: EspecialidadAdmin[] = [];
   citas: CitaAdmin[] = [];
 
   cargandoUsuarios = false;
   cargandoMedicos = false;
   cargandoPacientes = false;
   cargandoEspecialidades = false;
+  cargandoEspecialidadesActivas = false;
   cargandoCitas = false;
 
-  buscarUsuarios = '';
-  buscarMedicos = '';
-  buscarPacientes = '';
-  buscarEspecialidades = '';
-  buscarCitas = '';
+  private _buscarUsuarios = '';
+  private _buscarMedicos = '';
+  private _buscarPacientes = '';
+  private _buscarEspecialidades = '';
+  private _buscarCitas = '';
+
+  get buscarUsuarios(): string {
+    return this._buscarUsuarios;
+  }
+
+  set buscarUsuarios(valor: string) {
+    this._buscarUsuarios = valor ?? '';
+
+    if (this.busquedasConfiguradas) {
+      this.buscarUsuarios$.next(this._buscarUsuarios);
+    }
+  }
+
+  get buscarMedicos(): string {
+    return this._buscarMedicos;
+  }
+
+  set buscarMedicos(valor: string) {
+    this._buscarMedicos = valor ?? '';
+
+    if (this.busquedasConfiguradas) {
+      this.buscarMedicos$.next(this._buscarMedicos);
+    }
+  }
+
+  get buscarPacientes(): string {
+    return this._buscarPacientes;
+  }
+
+  set buscarPacientes(valor: string) {
+    this._buscarPacientes = valor ?? '';
+
+    if (this.busquedasConfiguradas) {
+      this.buscarPacientes$.next(this._buscarPacientes);
+    }
+  }
+
+  get buscarEspecialidades(): string {
+    return this._buscarEspecialidades;
+  }
+
+  set buscarEspecialidades(valor: string) {
+    this._buscarEspecialidades = valor ?? '';
+
+    if (this.busquedasConfiguradas) {
+      this.buscarEspecialidades$.next(this._buscarEspecialidades);
+    }
+  }
+
+  get buscarCitas(): string {
+    return this._buscarCitas;
+  }
+
+  set buscarCitas(valor: string) {
+    this._buscarCitas = valor ?? '';
+
+    if (this.busquedasConfiguradas) {
+      this.buscarCitas$.next(this._buscarCitas);
+    }
+  }
 
   pageUsuarios: AdminPage<UsuarioAdmin> | null = null;
   pageMedicos: AdminPage<MedicoAdmin> | null = null;
@@ -61,6 +144,7 @@ export class Admin implements OnInit {
   pageEspecialidades: AdminPage<EspecialidadAdmin> | null = null;
   pageCitas: AdminPage<CitaAdmin> | null = null;
 
+  pageUsuariosActual = 0;
   pageMedicosActual = 0;
   pagePacientesActual = 0;
   pageEspecialidadesActual = 0;
@@ -104,41 +188,110 @@ export class Admin implements OnInit {
   });
 
   ngOnInit(): void {
-    this.cargarTodo();
+    if (!this.esNavegador) {
+      return;
+    }
+
+    this.configurarBusquedas();
+    this.cargarDatosInicialesAdmin();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   @HostListener('window:scroll')
   onScroll(): void {
+    if (!this.esNavegador) {
+      return;
+    }
+
     this.navbarConSombra = window.scrollY > 80;
   }
 
-  cargarTodo(): void {
-    this.cargarUsuarios(true);
-    this.cargarMedicos(0, true);
-    this.cargarPacientes(0, true);
-    this.cargarEspecialidades(0, true);
+  private cargarDatosInicialesAdmin(): void {
+    this.cargarUsuarios(0, true);
+    this.cargarEspecialidadesActivas(true);
 
-    // No se carga citas al iniciar para evitar demora o 403.
-    // Las citas se cargarán solo cuando se entre al tab "Citas".
+    setTimeout(() => {
+      this.cargarMedicos(0, true);
+      this.cargarPacientes(0, true);
+      this.cargarEspecialidades(0, true);
+      this.cargarCitas(0, true);
+    }, 0);
+  }
+
+  private configurarBusquedas(): void {
+    this.buscarUsuarios$
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.pageUsuariosActual = 0;
+        this.datosCargados.usuarios = false;
+        this.cargarUsuarios(0, true);
+      });
+
+    this.buscarMedicos$
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.pageMedicosActual = 0;
+        this.datosCargados.medicos = false;
+        this.cargarMedicos(0, true);
+      });
+
+    this.buscarPacientes$
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.pagePacientesActual = 0;
+        this.datosCargados.pacientes = false;
+        this.cargarPacientes(0, true);
+      });
+
+    this.buscarEspecialidades$
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.pageEspecialidadesActual = 0;
+        this.datosCargados.especialidades = false;
+        this.cargarEspecialidades(0, true);
+      });
+
+    this.buscarCitas$
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.pageCitasActual = 0;
+        this.datosCargados.citas = false;
+        this.cargarCitas(0, true);
+      });
+
+    this.busquedasConfiguradas = true;
+  }
+
+  cargarTodo(): void {
+    this.cargarDatosInicialesAdmin();
   }
 
   cambiarTab(tab: TabAdmin): void {
     this.tabActual = tab;
+    this.refrescarVista();
 
     if (tab === 'usuarios') {
-      this.cargarUsuarios(false);
+      this.cargarUsuarios(this.pageUsuariosActual, false);
+      return;
     }
 
     if (tab === 'medicos') {
       this.cargarMedicos(this.pageMedicosActual, false);
+      return;
     }
 
     if (tab === 'pacientes') {
       this.cargarPacientes(this.pagePacientesActual, false);
+      return;
     }
 
     if (tab === 'especialidades') {
       this.cargarEspecialidades(this.pageEspecialidadesActual, false);
+      return;
     }
 
     if (tab === 'citas') {
@@ -146,8 +299,8 @@ export class Admin implements OnInit {
     }
   }
 
-  cargarUsuarios(forzar = true): void {
-    if (this.cargandoUsuarios) {
+  cargarUsuarios(page = this.pageUsuariosActual, forzar = true): void {
+    if (!this.esNavegador || this.cargandoUsuarios) {
       return;
     }
 
@@ -156,27 +309,36 @@ export class Admin implements OnInit {
     }
 
     this.cargandoUsuarios = true;
+    this.pageUsuariosActual = Math.max(page, 0);
+    this.refrescarVista();
 
     this.adminService
-      .listarUsuariosActivos()
-      .pipe(finalize(() => (this.cargandoUsuarios = false)))
+      .listarUsuariosActivos(this.pageUsuariosActual, this.size, this.buscarUsuarios)
+      .pipe(
+        finalize(() => {
+          this.cargandoUsuarios = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
-        next: (page) => {
-          this.pageUsuarios = page;
-          this.usuarios = page.content ?? [];
+        next: (pageData) => {
+          this.pageUsuarios = pageData;
+          this.usuarios = pageData.content ?? [];
           this.datosCargados.usuarios = true;
+          this.refrescarVista();
         },
         error: (error) => {
           this.usuarios = [];
           this.pageUsuarios = this.paginaVacia<UsuarioAdmin>();
           this.datosCargados.usuarios = false;
           this.mostrarError('No se pudo cargar usuarios.', error);
+          this.refrescarVista();
         },
       });
   }
 
   cargarMedicos(page = this.pageMedicosActual, forzar = true): void {
-    if (this.cargandoMedicos) {
+    if (!this.esNavegador || this.cargandoMedicos) {
       return;
     }
 
@@ -185,28 +347,36 @@ export class Admin implements OnInit {
     }
 
     this.cargandoMedicos = true;
-    this.pageMedicosActual = page;
+    this.pageMedicosActual = Math.max(page, 0);
+    this.refrescarVista();
 
     this.adminService
-      .listarMedicos(page, this.size)
-      .pipe(finalize(() => (this.cargandoMedicos = false)))
+      .listarMedicos(this.pageMedicosActual, this.size, this.buscarMedicos)
+      .pipe(
+        finalize(() => {
+          this.cargandoMedicos = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (data) => {
           this.pageMedicos = data;
           this.medicos = data.content ?? [];
           this.datosCargados.medicos = true;
+          this.refrescarVista();
         },
         error: (error) => {
           this.medicos = [];
           this.pageMedicos = this.paginaVacia<MedicoAdmin>();
           this.datosCargados.medicos = false;
           this.mostrarError('No se pudo cargar médicos.', error);
+          this.refrescarVista();
         },
       });
   }
 
   cargarPacientes(page = this.pagePacientesActual, forzar = true): void {
-    if (this.cargandoPacientes) {
+    if (!this.esNavegador || this.cargandoPacientes) {
       return;
     }
 
@@ -215,28 +385,36 @@ export class Admin implements OnInit {
     }
 
     this.cargandoPacientes = true;
-    this.pagePacientesActual = page;
+    this.pagePacientesActual = Math.max(page, 0);
+    this.refrescarVista();
 
     this.adminService
-      .listarPacientes(page, this.size)
-      .pipe(finalize(() => (this.cargandoPacientes = false)))
+      .listarPacientes(this.pagePacientesActual, this.size, this.buscarPacientes)
+      .pipe(
+        finalize(() => {
+          this.cargandoPacientes = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (data) => {
           this.pagePacientes = data;
           this.pacientes = data.content ?? [];
           this.datosCargados.pacientes = true;
+          this.refrescarVista();
         },
         error: (error) => {
           this.pacientes = [];
           this.pagePacientes = this.paginaVacia<PacienteAdmin>();
           this.datosCargados.pacientes = false;
           this.mostrarError('No se pudo cargar pacientes.', error);
+          this.refrescarVista();
         },
       });
   }
 
   cargarEspecialidades(page = this.pageEspecialidadesActual, forzar = true): void {
-    if (this.cargandoEspecialidades) {
+    if (!this.esNavegador || this.cargandoEspecialidades) {
       return;
     }
 
@@ -245,28 +423,69 @@ export class Admin implements OnInit {
     }
 
     this.cargandoEspecialidades = true;
-    this.pageEspecialidadesActual = page;
+    this.pageEspecialidadesActual = Math.max(page, 0);
+    this.refrescarVista();
 
     this.adminService
-      .listarEspecialidades(page, this.size)
-      .pipe(finalize(() => (this.cargandoEspecialidades = false)))
+      .listarEspecialidades(this.pageEspecialidadesActual, this.size, this.buscarEspecialidades)
+      .pipe(
+        finalize(() => {
+          this.cargandoEspecialidades = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (data) => {
           this.pageEspecialidades = data;
           this.especialidades = data.content ?? [];
           this.datosCargados.especialidades = true;
+          this.refrescarVista();
         },
         error: (error) => {
-          console.error('No se pudo cargar especialidades.', error);
-          this.pageEspecialidades = this.paginaVacia<EspecialidadAdmin>();
           this.especialidades = [];
+          this.pageEspecialidades = this.paginaVacia<EspecialidadAdmin>();
           this.datosCargados.especialidades = false;
+          this.mostrarError('No se pudo cargar especialidades.', error);
+          this.refrescarVista();
+        },
+      });
+  }
+
+  cargarEspecialidadesActivas(forzar = false): void {
+    if (!this.esNavegador || this.cargandoEspecialidadesActivas) {
+      return;
+    }
+
+    if (!forzar && this.especialidadesActivasCombo.length > 0) {
+      return;
+    }
+
+    this.cargandoEspecialidadesActivas = true;
+    this.refrescarVista();
+
+    this.adminService
+      .listarEspecialidadesActivas()
+      .pipe(
+        finalize(() => {
+          this.cargandoEspecialidadesActivas = false;
+          this.refrescarVista();
+        }),
+      )
+      .subscribe({
+        next: (data) => {
+          this.especialidadesActivasCombo = data ?? [];
+          this.refrescarVista();
+        },
+        error: (error) => {
+          this.especialidadesActivasCombo = [];
+          this.mostrarError('No se pudo cargar especialidades activas.', error);
+          this.refrescarVista();
         },
       });
   }
 
   cargarCitas(page = this.pageCitasActual, forzar = true): void {
-    if (this.cargandoCitas) {
+    if (!this.esNavegador || this.cargandoCitas) {
       return;
     }
 
@@ -275,94 +494,64 @@ export class Admin implements OnInit {
     }
 
     this.cargandoCitas = true;
-    this.pageCitasActual = page;
+    this.pageCitasActual = Math.max(page, 0);
+    this.refrescarVista();
 
     this.adminService
-      .listarCitas(page, this.size)
-      .pipe(finalize(() => (this.cargandoCitas = false)))
+      .listarCitas(this.pageCitasActual, this.size, this.buscarCitas)
+      .pipe(
+        finalize(() => {
+          this.cargandoCitas = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (data) => {
           this.pageCitas = data;
           this.citas = data.content ?? [];
           this.datosCargados.citas = true;
+          this.refrescarVista();
         },
         error: (error) => {
-          console.error('No se pudo cargar citas.', error);
-          this.pageCitas = this.paginaVacia<CitaAdmin>();
           this.citas = [];
+          this.pageCitas = this.paginaVacia<CitaAdmin>();
           this.datosCargados.citas = false;
+          this.mostrarError('No se pudo cargar citas.', error);
+          this.refrescarVista();
         },
       });
   }
 
   get usuariosFiltrados(): UsuarioAdmin[] {
-    const texto = this.buscarUsuarios.toLowerCase().trim();
-
-    if (!texto) {
-      return this.usuarios;
-    }
-
-    return this.usuarios.filter((u) =>
-      `${u.username ?? ''} ${u.correo ?? ''} ${u.nombreRol ?? ''}`
-        .toLowerCase()
-        .includes(texto),
-    );
+    return this.usuarios;
   }
 
   get medicosFiltrados(): MedicoAdmin[] {
-    const texto = this.buscarMedicos.toLowerCase().trim();
-
-    if (!texto) {
-      return this.medicos;
-    }
-
-    return this.medicos.filter((m) =>
-      `${m.nombresMedico ?? ''} ${m.apellidosMedico ?? ''} ${m.cmpMedico ?? ''} ${m.especialidad ?? ''} ${m.usuarioMedico ?? ''} ${m.correoMedico ?? ''}`
-        .toLowerCase()
-        .includes(texto),
-    );
+    return this.medicos;
   }
 
   get pacientesFiltrados(): PacienteAdmin[] {
-    const texto = this.buscarPacientes.toLowerCase().trim();
-
-    if (!texto) {
-      return this.pacientes;
-    }
-
-    return this.pacientes.filter((p) =>
-      `${p.nombresPaciente ?? ''} ${p.apellidosPaciente ?? ''} ${p.numeroDocumentoPaciente ?? ''} ${p.usuarioPaciente ?? ''} ${p.correoPaciente ?? ''}`
-        .toLowerCase()
-        .includes(texto),
-    );
+    return this.pacientes;
   }
 
   get especialidadesFiltradas(): EspecialidadAdmin[] {
-    const texto = this.buscarEspecialidades.toLowerCase().trim();
-
-    if (!texto) {
-      return this.especialidades;
-    }
-
-    return this.especialidades.filter((e) =>
-      `${this.nombreEspecialidad(e)} ${this.descripcionEspecialidad(e)}`
-        .toLowerCase()
-        .includes(texto),
-    );
+    return this.especialidades;
   }
 
   get citasFiltradas(): CitaAdmin[] {
-    const texto = this.buscarCitas.toLowerCase().trim();
+    return this.citas;
+  }
 
-    if (!texto) {
-      return this.citas;
+  siguienteUsuarios(): void {
+    if (!this.pageUsuarios?.last) {
+      this.cargarUsuarios(this.pageUsuariosActual + 1, true);
     }
+  }
 
-    return this.citas.filter((c) =>
-      `${c.paciente ?? ''} ${c.medico ?? ''} ${c.especialidad ?? ''} ${c.motivoCita ?? c.motivo_cita ?? ''} ${c.estado ?? ''}`
-        .toLowerCase()
-        .includes(texto),
-    );
+  anteriorUsuarios(): void {
+    if (!this.pageUsuarios?.first) {
+      this.cargarUsuarios(this.pageUsuariosActual - 1, true);
+    }
   }
 
   siguienteMedicos(): void {
@@ -417,8 +606,8 @@ export class Admin implements OnInit {
     this.modoMedico = 'crear';
     this.medicoSeleccionado = null;
 
-    if (this.especialidades.length === 0) {
-      this.cargarEspecialidades(0, true);
+    if (this.especialidadesActivasCombo.length === 0) {
+      this.cargarEspecialidadesActivas(true);
     }
 
     this.formMedico.reset({
@@ -432,6 +621,7 @@ export class Admin implements OnInit {
       correo: '',
     });
 
+    this.refrescarVista();
     this.abrirModal('modalMedicoAdmin');
   }
 
@@ -439,8 +629,8 @@ export class Admin implements OnInit {
     this.modoMedico = 'editar';
     this.medicoSeleccionado = medico;
 
-    if (this.especialidades.length === 0) {
-      this.cargarEspecialidades(0, true);
+    if (this.especialidadesActivasCombo.length === 0) {
+      this.cargarEspecialidadesActivas(true);
     }
 
     this.formMedico.reset({
@@ -454,6 +644,7 @@ export class Admin implements OnInit {
       correo: medico.correoMedico ?? '',
     });
 
+    this.refrescarVista();
     this.abrirModal('modalMedicoAdmin');
   }
 
@@ -506,9 +697,15 @@ export class Admin implements OnInit {
     }
 
     this.guardandoMedico = true;
+    this.refrescarVista();
 
     peticion
-      .pipe(finalize(() => (this.guardandoMedico = false)))
+      .pipe(
+        finalize(() => {
+          this.guardandoMedico = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (response) => {
           if (response?.success !== true) {
@@ -532,21 +729,20 @@ export class Admin implements OnInit {
             this.cerrarModal('modalMedicoAdmin');
 
             this.tabActual = 'medicos';
-            this.buscarMedicos = '';
+            this._buscarMedicos = '';
             this.pageMedicosActual = 0;
             this.datosCargados.medicos = false;
             this.datosCargados.usuarios = false;
 
             this.cargarMedicos(0, true);
-            this.cargarUsuarios(true);
+            this.cargarUsuarios(0, true);
+            this.cargarEspecialidadesActivas(true);
+            this.refrescarVista();
           });
         },
 
         error: (error) => {
-          const mensaje = this.mensajeErrorLimpio(
-            error,
-            'No se pudo guardar el médico.',
-          );
+          const mensaje = this.mensajeErrorLimpio(error, 'No se pudo guardar el médico.');
 
           Swal.fire({
             icon: 'error',
@@ -554,6 +750,8 @@ export class Admin implements OnInit {
             text: mensaje,
             confirmButtonText: 'Aceptar',
           });
+
+          this.refrescarVista();
         },
       });
   }
@@ -568,6 +766,7 @@ export class Admin implements OnInit {
       estadoEspecialidad: 1,
     });
 
+    this.refrescarVista();
     this.abrirModal('modalEspecialidadAdmin');
   }
 
@@ -581,6 +780,7 @@ export class Admin implements OnInit {
       estadoEspecialidad: this.estadoEspecialidad(especialidad),
     });
 
+    this.refrescarVista();
     this.abrirModal('modalEspecialidadAdmin');
   }
 
@@ -628,9 +828,15 @@ export class Admin implements OnInit {
     }
 
     this.guardandoEspecialidad = true;
+    this.refrescarVista();
 
     peticion
-      .pipe(finalize(() => (this.guardandoEspecialidad = false)))
+      .pipe(
+        finalize(() => {
+          this.guardandoEspecialidad = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (response) => {
           if (response?.success !== true) {
@@ -657,19 +863,18 @@ export class Admin implements OnInit {
             this.cerrarModal('modalEspecialidadAdmin');
 
             this.tabActual = 'especialidades';
-            this.buscarEspecialidades = '';
+            this._buscarEspecialidades = '';
             this.pageEspecialidadesActual = 0;
             this.datosCargados.especialidades = false;
 
             this.cargarEspecialidades(0, true);
+            this.cargarEspecialidadesActivas(true);
+            this.refrescarVista();
           });
         },
 
         error: (error) => {
-          const mensaje = this.mensajeErrorLimpio(
-            error,
-            'No se pudo guardar la especialidad.',
-          );
+          const mensaje = this.mensajeErrorLimpio(error, 'No se pudo guardar la especialidad.');
 
           Swal.fire({
             icon: 'error',
@@ -677,6 +882,8 @@ export class Admin implements OnInit {
             text: mensaje,
             confirmButtonText: 'Aceptar',
           });
+
+          this.refrescarVista();
         },
       });
   }
@@ -716,10 +923,16 @@ export class Admin implements OnInit {
 
   private cambiarEstadoEspecialidad(id: number, estado: number): void {
     this.cambiandoEstadoEspecialidad = true;
+    this.refrescarVista();
 
     this.adminService
       .cambiarEstadoEspecialidad(id, estado)
-      .pipe(finalize(() => (this.cambiandoEstadoEspecialidad = false)))
+      .pipe(
+        finalize(() => {
+          this.cambiandoEstadoEspecialidad = false;
+          this.refrescarVista();
+        }),
+      )
       .subscribe({
         next: (response) => {
           if (response?.success !== true) {
@@ -737,19 +950,18 @@ export class Admin implements OnInit {
             icon: 'success',
             title: 'Estado actualizado',
             text: response.message || 'El estado fue actualizado correctamente.',
-            timer: 1200,
+            timer: 500,
             showConfirmButton: false,
           });
 
           this.datosCargados.especialidades = false;
           this.cargarEspecialidades(0, true);
+          this.cargarEspecialidadesActivas(true);
+          this.refrescarVista();
         },
 
         error: (error) => {
-          const mensaje = this.mensajeErrorLimpio(
-            error,
-            'No se pudo cambiar el estado.',
-          );
+          const mensaje = this.mensajeErrorLimpio(error, 'No se pudo cambiar el estado.');
 
           Swal.fire({
             icon: 'error',
@@ -757,6 +969,8 @@ export class Admin implements OnInit {
             text: mensaje,
             confirmButtonText: 'Aceptar',
           });
+
+          this.refrescarVista();
         },
       });
   }
@@ -781,10 +995,7 @@ export class Admin implements OnInit {
 
   nombreEspecialidad(e: EspecialidadAdmin): string {
     return (
-      e.nombreEspecialidad ??
-      e.nombre_especialidad ??
-      (e as any).nombreespecialidad ??
-      'Sin nombre'
+      e.nombreEspecialidad ?? e.nombre_especialidad ?? (e as any).nombreespecialidad ?? 'Sin nombre'
     );
   }
 
@@ -801,9 +1012,7 @@ export class Admin implements OnInit {
 
   estadoEspecialidad(especialidad: EspecialidadAdmin | null): number {
     return Number(
-      especialidad?.estadoEspecialidad ??
-        (especialidad as any)?.estadoespecialidad ??
-        1,
+      especialidad?.estadoEspecialidad ?? (especialidad as any)?.estadoespecialidad ?? 1,
     );
   }
 
@@ -860,12 +1069,36 @@ export class Admin implements OnInit {
     return this.pageEspecialidades?.totalElements ?? this.especialidades.length;
   }
 
-  cerrarSesion(): void {
+  async cerrarSesion(): Promise<void> {
+    const respuesta = await Swal.fire({
+      icon: 'question',
+      title: '¿Cerrar sesión?',
+      text: 'Se cerrará tu sesión actual.',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+    });
+
+    if (!respuesta.isConfirmed) {
+      return;
+    }
+
+    this.limpiarSesion();
+
+    await this.router.navigateByUrl('/', {
+      replaceUrl: true,
+    });
+  }
+
+  private limpiarSesion(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('auth_user');
     localStorage.removeItem('usuario_sesion');
 
-    this.router.navigate(['/']);
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('auth_user');
+    sessionStorage.removeItem('usuario_sesion');
   }
 
   private paginaVacia<T>(): AdminPage<T> {
@@ -889,6 +1122,8 @@ export class Admin implements OnInit {
       text: this.mensajeErrorLimpio(error, mensaje),
       confirmButtonText: 'Aceptar',
     });
+
+    this.refrescarVista();
   }
 
   private mensajeErrorLimpio(error: any, mensajeDefault: string): string {
@@ -899,10 +1134,7 @@ export class Admin implements OnInit {
       error?.message ||
       mensajeDefault;
 
-    if (
-      String(mensaje).includes('Duplicate entry') ||
-      String(mensaje).includes('constraint')
-    ) {
+    if (String(mensaje).includes('Duplicate entry') || String(mensaje).includes('constraint')) {
       return 'El dato ingresado ya existe en el sistema. Verifique CMP, usuario o correo.';
     }
 
@@ -933,6 +1165,10 @@ export class Admin implements OnInit {
 
     const modal = bootstrap.Modal.getInstance(modalElemento) || new bootstrap.Modal(modalElemento);
     modal.show();
+
+    setTimeout(() => {
+      this.refrescarVista();
+    }, 0);
   }
 
   private cerrarModal(idModal: string): void {
@@ -944,5 +1180,55 @@ export class Admin implements OnInit {
 
     const modal = bootstrap.Modal.getInstance(modalElemento) || new bootstrap.Modal(modalElemento);
     modal.hide();
+
+    setTimeout(() => {
+      this.refrescarVista();
+    }, 0);
+  }
+
+  irASeccion(seccion: 'resumen' | 'gestion'): void {
+    this.seccionActual = seccion;
+
+    const elemento = document.getElementById(seccion);
+
+    if (!elemento) {
+      return;
+    }
+
+    const alturaNavbar = 90;
+    const posicion = elemento.offsetTop - alturaNavbar;
+
+    window.scrollTo({
+      top: posicion,
+      behavior: 'smooth',
+    });
+
+    this.cerrarNavbarMovil();
+  }
+
+  private cerrarNavbarMovil(): void {
+    const navbarElemento = document.getElementById('navbarAdmin');
+
+    if (!navbarElemento) {
+      return;
+    }
+
+    const collapse =
+      bootstrap.Collapse.getInstance(navbarElemento) ||
+      new bootstrap.Collapse(navbarElemento, { toggle: false });
+
+    collapse.hide();
+  }
+
+  private refrescarVista(): void {
+    if (!this.esNavegador) {
+      return;
+    }
+
+    try {
+      this.cdr.detectChanges();
+    } catch {
+      // Evita errores si Angular ya cerró o destruyó la vista.
+    }
   }
 }

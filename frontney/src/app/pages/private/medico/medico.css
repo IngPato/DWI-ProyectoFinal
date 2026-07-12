@@ -28,6 +28,25 @@
   opacity: 0.92;
 }
 
+.navbar .nav-link {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  transition: 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.navbar .nav-link:focus {
+  box-shadow: none;
+}
+
 .logo-medico {
   width: 44px;
   height: 44px;
@@ -78,6 +97,7 @@
   place-items: center;
   font-weight: 800;
   font-size: 1.2rem;
+  flex: 0 0 auto;
 }
 
 .card {
@@ -92,10 +112,16 @@
   font-size: 0.88rem;
   color: #475569;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .table td {
   font-size: 0.93rem;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  cursor: default;
 }
 
 .form-control,
@@ -109,21 +135,43 @@
   box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.15);
 }
 
-.alerta-medico {
-  position: fixed;
-  top: 90px;
-  right: 24px;
-  z-index: 9999;
-  min-width: 300px;
-  border-radius: 16px;
-  opacity: 0;
-  transform: translateX(30px);
-  transition: 0.3s ease;
+.badge {
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-.alerta-medico.mostrar {
-  opacity: 1;
-  transform: translateX(0);
+.modal-content {
+  overflow: hidden;
+}
+
+.modal-header {
+  border-bottom: 0;
+}
+
+.modal-footer {
+  border-top: 0;
+}
+
+.filtro-fecha-horario {
+  max-width: 210px;
+}
+
+.btn-group .btn {
+  white-space: nowrap;
+}
+
+.list-group-item {
+  border-color: #e5e7eb;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+@media (max-width: 992px) {
+  .filtro-fecha-horario {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -133,5 +181,19 @@
 
   .hero-medico {
     padding: 26px;
+  }
+
+  .navbar .nav-link {
+    width: 100%;
+    text-align: left;
+    border-radius: 12px;
+  }
+
+  .profile-box {
+    align-items: flex-start;
+  }
+
+  .table {
+    min-width: 780px;
   }
 }

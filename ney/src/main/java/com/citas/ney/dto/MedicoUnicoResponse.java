@@ -4,7 +4,6 @@
  */
 package com.citas.ney.dto;
 
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +15,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class MedicoResponse {
+public class MedicoUnicoResponse {
+    private Integer idmedicos;
     private Integer idusuario;
-    private String usuarioMedico;
-    private String correoMedico;
-    private Integer idespecialidad;
+    private Integer idespecilidad;
     private String especialidad;
     private String nombresMedico;
-    private String apellidosMedico;
     private String cmpMedico;
     private String telefonoMedico;
-    private LocalDateTime fecha_creacion;
-    private Integer estadoMedico;
+
 }

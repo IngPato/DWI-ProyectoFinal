@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 /**
  *
  * @author kevin
@@ -16,6 +19,9 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "citas")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ModelCitas {
 
     @Id
@@ -60,103 +66,4 @@ public class ModelCitas {
 
     @Column(name = "fecha_actualizacion_cita")
     private LocalDateTime fechaActualizacionCita;
-
-    public ModelCitas() {
-    }
-
-    public Integer getIdcitas() {
-        return idcitas;
-    }
-
-    public void setIdcitas(Integer idcitas) {
-        this.idcitas = idcitas;
-    }
-
-    public ModelPacientes getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(ModelPacientes paciente) {
-        this.paciente = paciente;
-    }
-
-    public ModelMedicos getMedico() {
-        return medico;
-    }
-
-    public void setMedico(ModelMedicos medico) {
-        this.medico = medico;
-    }
-
-    public ModelEspecialidades getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(ModelEspecialidades especialidad) {
-        this.especialidad = especialidad;
-    }
-
-    public ModelHorariosMedico getHorario() {
-        return horario;
-    }
-
-    public void setHorario(ModelHorariosMedico horario) {
-        this.horario = horario;
-    }
-
-    public ModelEstadosCita getEstadoCita() {
-        return estadoCita;
-    }
-
-    public void setEstadoCita(ModelEstadosCita estadoCita) {
-        this.estadoCita = estadoCita;
-    }
-
-    public LocalDate getFechaCita() {
-        return fechaCita;
-    }
-
-    public void setFechaCita(LocalDate fechaCita) {
-        this.fechaCita = fechaCita;
-    }
-
-    public LocalTime getHoraCita() {
-        return horaCita;
-    }
-
-    public void setHoraCita(LocalTime horaCita) {
-        this.horaCita = horaCita;
-    }
-
-    public String getMotivoCita() {
-        return motivoCita;
-    }
-
-    public void setMotivoCita(String motivoCita) {
-        this.motivoCita = motivoCita;
-    }
-
-    public String getObservacionCita() {
-        return observacionCita;
-    }
-
-    public void setObservacionCita(String observacionCita) {
-        this.observacionCita = observacionCita;
-    }
-
-    public LocalDateTime getFechaRegistroCita() {
-        return fechaRegistroCita;
-    }
-
-    public void setFechaRegistroCita(LocalDateTime fechaRegistroCita) {
-        this.fechaRegistroCita = fechaRegistroCita;
-    }
-
-    public LocalDateTime getFechaActualizacionCita() {
-        return fechaActualizacionCita;
-    }
-
-    public void setFechaActualizacionCita(LocalDateTime fechaActualizacionCita) {
-        this.fechaActualizacionCita = fechaActualizacionCita;
-    }
 }

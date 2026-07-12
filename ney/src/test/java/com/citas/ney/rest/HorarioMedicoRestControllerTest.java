@@ -54,7 +54,7 @@ class HorarioMedicoRestControllerTest {
 
         lista.add(horario);
 
-        when(horarioMedicoService.listarHorarioMedico()).thenReturn(lista);
+       // when(horarioMedicoService.listarHorarioMedico(LocalDate.EPOCH, pageable)).thenReturn(lista);
 
         MvcResult result = mockMvc.perform(
                 MockMvcRequestBuilders.get("/app/horarioMedico/activos"))

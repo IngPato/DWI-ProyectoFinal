@@ -1,62 +1,48 @@
-@if (alertaMensaje) {
-  <div
-    class="alert alerta-medico shadow"
-    [class.mostrar]="alertaVisible"
-    [ngClass]="'alert-' + alertaTipo"
-    role="alert">
-    <i class="fa-solid fa-circle-info me-2"></i>
-    {{ alertaMensaje }}
-  </div>
-}
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-clinica fixed-top shadow-sm">
   <div class="container-fluid px-4">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="#resumen">
+    <button type="button" class="navbar-brand d-flex align-items-center gap-2 btn btn-link text-decoration-none p-0"
+      (click)="irASeccion('resumen')">
       <span class="logo-medico">
         <i class="fa-solid fa-hospital"></i>
       </span>
-      <div>
+      <div class="text-start">
         <strong>Clínica Neill Roman Robles</strong>
         <small class="d-block text-white-50">Panel del Médico</small>
       </div>
-    </a>
+    </button>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarMedico">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMedico">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarMedico">
       <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item">
-          <a class="nav-link active" href="#resumen">
+          <button type="button" class="nav-link" [class.active]="seccionActual === 'resumen'"
+            (click)="irASeccion('resumen')">
             <i class="fa-solid fa-chart-pie me-1"></i>
             Resumen
-          </a>
+          </button>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#citas">
+          <button type="button" class="nav-link" [class.active]="seccionActual === 'citas'"
+            (click)="irASeccion('citas')">
             <i class="fa-solid fa-calendar-check me-1"></i>
             Citas
-          </a>
+          </button>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#horarios">
+          <button type="button" class="nav-link" [class.active]="seccionActual === 'horarios'"
+            (click)="irASeccion('horarios')">
             <i class="fa-solid fa-clock me-1"></i>
             Horarios
-          </a>
+          </button>
         </li>
 
         <li class="nav-item ms-lg-3">
-          <button
-            type="button"
-            class="btn btn-light btn-sm rounded-pill px-4"
-            (click)="cerrarSesion()">
+          <button type="button" class="btn btn-light btn-sm rounded-pill px-4" (click)="cerrarSesion()">
             <i class="fa-solid fa-right-from-bracket me-1"></i>
             Cerrar sesión
           </button>
@@ -89,11 +75,7 @@
           </div>
 
           <div class="col-lg-4 text-lg-end">
-            <button
-              type="button"
-              class="btn btn-light btn-lg rounded-pill px-4"
-              data-bs-toggle="modal"
-              data-bs-target="#modalHorario">
+            <button type="button" class="btn btn-light btn-lg rounded-pill px-4" (click)="abrirCrearHorario()">
               <i class="fa-solid fa-calendar-plus me-2"></i>
               Agregar horario
             </button>
@@ -204,33 +186,40 @@
                   </thead>
 
                   <tbody>
+                    @if (cargandoCitas) {
+                    <tr>
+                      <td colspan="6" class="text-center py-4">
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Cargando citas...
+                      </td>
+                    </tr>
+                    } @else {
                     @for (cita of citasHoy; track cita.idcitas) {
-                      <tr>
-                        <td class="ps-4">{{ cita.hora_cita }}</td>
-                        <td>{{ cita.paciente }}</td>
-                        <td>{{ cita.especialidad }}</td>
-                        <td>{{ cita.motivo }}</td>
-                        <td>
-                          <span class="badge" [ngClass]="claseEstado(cita.estado)">
-                            {{ cita.estado }}
-                          </span>
-                        </td>
-                        <td class="text-end pe-4">
-                          <button
-                            class="btn btn-sm btn-outline-primary rounded-pill"
-                            type="button"
-                            (click)="abrirDetalleCita(cita)">
-                            <i class="fa-solid fa-user-check me-1"></i>
-                            Atender
-                          </button>
-                        </td>
-                      </tr>
+                    <tr>
+                      <td class="ps-4">{{ formatearHora(cita.hora_cita) }}</td>
+                      <td>{{ cita.paciente }}</td>
+                      <td>{{ cita.especialidad }}</td>
+                      <td>{{ cita.motivo }}</td>
+                      <td>
+                        <span class="badge" [ngClass]="claseEstado(cita.estado)">
+                          {{ estadoTexto(cita.estado) }}
+                        </span>
+                      </td>
+                      <td class="text-end pe-4">
+                        <button class="btn btn-sm btn-outline-primary rounded-pill" type="button"
+                          (click)="abrirDetalleCita(cita)">
+                          <i class="fa-solid fa-user-check me-1"></i>
+                          Atender
+                        </button>
+                      </td>
+                    </tr>
                     } @empty {
-                      <tr>
-                        <td colspan="6" class="text-center text-muted py-4">
-                          No tiene citas programadas para hoy.
-                        </td>
-                      </tr>
+                    <tr>
+                      <td colspan="6" class="text-center text-muted py-4">
+                        No tiene citas programadas para hoy.
+                      </td>
+                    </tr>
+                    }
                     }
                   </tbody>
                 </table>
@@ -250,28 +239,34 @@
             </div>
 
             <div class="card-body p-4">
+              @if (cargandoPerfilMedico) {
+              <div class="text-center py-4">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Cargando perfil médico...
+              </div>
+              } @else {
               <div class="profile-box mb-3">
                 <div class="profile-avatar">{{ inicialesMedico }}</div>
                 <div>
                   <h5 class="fw-bold mb-0">{{ nombreCompletoMedico }}</h5>
-                  <small class="text-muted">CMP: {{ medico.cmp }}</small>
+                  <small class="text-muted">CMP: {{ medico.cmp || 'No registrado' }}</small>
                 </div>
               </div>
 
               <div class="list-group list-group-flush">
                 <div class="list-group-item px-0 d-flex justify-content-between">
                   <span class="text-muted">Especialidad</span>
-                  <strong>{{ medico.especialidad }}</strong>
+                  <strong>{{ medico.especialidad || 'No registrada' }}</strong>
                 </div>
 
                 <div class="list-group-item px-0 d-flex justify-content-between">
                   <span class="text-muted">Teléfono</span>
-                  <strong>{{ medico.telefono }}</strong>
+                  <strong>{{ medico.telefono || 'No registrado' }}</strong>
                 </div>
 
                 <div class="list-group-item px-0 d-flex justify-content-between">
                   <span class="text-muted">Usuario</span>
-                  <strong>{{ medico.username }}</strong>
+                  <strong>{{ medico.username || 'No registrado' }}</strong>
                 </div>
 
                 <div class="list-group-item px-0 d-flex justify-content-between">
@@ -279,10 +274,7 @@
                   <span class="badge bg-success rounded-pill">{{ medico.estado }}</span>
                 </div>
               </div>
-
-              <div class="alert alert-success rounded-4 mt-3 mb-0">
-                Este perfil está relacionado con la tabla <strong>medicos</strong> y la tabla <strong>usuario</strong>.
-              </div>
+              }
             </div>
           </div>
         </div>
@@ -309,20 +301,18 @@
             <div class="col-lg-6">
               <div class="row g-2">
                 <div class="col-md-6">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Buscar paciente o motivo"
-                    [(ngModel)]="buscarCita">
+                  <input type="text" class="form-control" placeholder="Buscar paciente, apellidos o DNI"
+                    [ngModel]="buscarCita" (ngModelChange)="buscarCitasServidor($event)">
                 </div>
 
                 <div class="col-md-6">
-                  <select class="form-select" [(ngModel)]="filtroEstado">
+                  <select class="form-select" [ngModel]="filtroEstado" (ngModelChange)="cambiarFiltroEstado($event)">
                     <option value="">Todos los estados</option>
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Confirmada">Confirmada</option>
-                    <option value="Atendida">Atendida</option>
-                    <option value="Cancelada">Cancelada</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="CONFIRMADA">Confirmada</option>
+                    <option value="ATENDIDA">Atendida</option>
+                    <option value="CANCELADA">Cancelada</option>
+                    <option value="NO_ASISTIO">No asistió</option>
                   </select>
                 </div>
               </div>
@@ -338,47 +328,68 @@
                   <th class="ps-4">Fecha</th>
                   <th>Hora</th>
                   <th>Paciente</th>
-                  <th>Documento</th>
                   <th>Especialidad</th>
-                  <th>Motivo</th>
                   <th>Estado</th>
                   <th class="text-end pe-4">Acción</th>
                 </tr>
               </thead>
 
               <tbody>
+                @if (cargandoCitas) {
+                <tr>
+                  <td colspan="7" class="text-center py-4">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Cargando citas médicas...
+                  </td>
+                </tr>
+                } @else {
                 @for (cita of citasFiltradas; track cita.idcitas) {
-                  <tr>
-                    <td class="ps-4">{{ formatearFecha(cita.fecha_cita) }}</td>
-                    <td>{{ cita.hora_cita }}</td>
-                    <td>{{ cita.paciente }}</td>
-                    <td>{{ cita.documento }}</td>
-                    <td>{{ cita.especialidad }}</td>
-                    <td>{{ cita.motivo }}</td>
-                    <td>
-                      <span class="badge" [ngClass]="claseEstado(cita.estado)">
-                        {{ cita.estado }}
-                      </span>
-                    </td>
-                    <td class="text-end pe-4">
-                      <button
-                        class="btn btn-sm btn-outline-primary rounded-pill"
-                        type="button"
-                        (click)="abrirDetalleCita(cita)">
-                        <i class="fa-solid fa-eye me-1"></i>
-                        Ver detalle
-                      </button>
-                    </td>
-                  </tr>
+                <tr>
+                  <td class="ps-4">{{ formatearFecha(cita.fecha_cita) }}</td>
+                  <td>{{ formatearHora(cita.hora_cita) }}</td>
+                  <td>{{ cita.paciente }}</td>
+                  <td>{{ cita.especialidad }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="claseEstado(cita.estado)">
+                      {{ estadoTexto(cita.estado) }}
+                    </span>
+                  </td>
+                  <td class="text-end pe-4">
+                    <button class="btn btn-sm btn-outline-primary rounded-pill" type="button"
+                      (click)="abrirDetalleCita(cita)">
+                      <i class="fa-solid fa-eye me-1"></i>
+                      Ver detalle
+                    </button>
+                  </td>
+                </tr>
                 } @empty {
-                  <tr>
-                    <td colspan="8" class="text-center text-muted py-4">
-                      No se encontraron citas con los filtros seleccionados.
-                    </td>
-                  </tr>
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-4">
+                    No se encontraron citas con los filtros seleccionados.
+                  </td>
+                </tr>
+                }
                 }
               </tbody>
             </table>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center p-4">
+            <small class="text-muted">
+              Página {{ (pageCitas?.number ?? 0) + 1 }} de {{ pageCitas?.totalPages || 1 }}
+            </small>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-secondary rounded-start-pill"
+                [disabled]="pageCitas?.first || cargandoCitas" (click)="anteriorCitas()">
+                Anterior
+              </button>
+
+              <button type="button" class="btn btn-outline-secondary rounded-end-pill"
+                [disabled]="pageCitas?.last || cargandoCitas" (click)="siguienteCitas()">
+                Siguiente
+              </button>
+            </div>
           </div>
         </div>
 
@@ -390,25 +401,28 @@
     <div class="container-fluid">
       <div class="card border-0 rounded-4 shadow-sm">
         <div class="card-header bg-white border-0 rounded-top-4 p-4">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <div>
+          <div class="row align-items-center g-3">
+            <div class="col-lg-6">
               <h4 class="fw-bold mb-1">
                 <i class="fa-solid fa-clock text-success me-2"></i>
                 Mis horarios disponibles
               </h4>
               <p class="text-muted mb-0">
-                Horarios registrados en la tabla horarios_medico.
+                Horarios registrados para el médico autenticado.
               </p>
             </div>
 
-            <button
-              class="btn btn-clinica rounded-pill px-4"
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#modalHorario">
-              <i class="fa-solid fa-plus me-2"></i>
-              Nuevo horario
-            </button>
+            <div class="col-lg-6">
+              <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                <input type="date" class="form-control filtro-fecha-horario" [ngModel]="filtroFechaHorario"
+                  (ngModelChange)="buscarHorariosServidor($event)">
+
+                <button class="btn btn-clinica rounded-pill px-4" type="button" (click)="abrirCrearHorario()">
+                  <i class="fa-solid fa-plus me-2"></i>
+                  Nuevo horario
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -420,41 +434,80 @@
                   <th class="ps-4">Fecha</th>
                   <th>Hora inicio</th>
                   <th>Hora fin</th>
+                  <th>Cupo</th>
                   <th>Estado</th>
                   <th class="text-end pe-4">Acción</th>
                 </tr>
               </thead>
 
               <tbody>
-                @for (horario of horariosMedico; track horario.idhorarios_medico) {
-                  <tr>
-                    <td class="ps-4">{{ formatearFecha(horario.fecha) }}</td>
-                    <td>{{ horario.hora_inicio }}</td>
-                    <td>{{ horario.hora_fin }}</td>
-                    <td>
-                      <span class="badge" [ngClass]="claseHorario(horario.estado)">
-                        {{ textoHorario(horario.estado) }}
-                      </span>
-                    </td>
-                    <td class="text-end pe-4">
-                      <button
-                        class="btn btn-sm btn-outline-danger rounded-pill"
-                        type="button"
-                        (click)="cambiarEstadoHorario(horario.idhorarios_medico)">
-                        <i class="fa-solid fa-rotate me-1"></i>
-                        Cambiar estado
+                @if (cargandoHorarios) {
+                <tr>
+                  <td colspan="6" class="text-center py-4">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Cargando horarios...
+                  </td>
+                </tr>
+                } @else {
+                @for (horario of horariosMedico; track idHorario(horario)) {
+                <tr>
+                  <td class="ps-4">{{ formatearFecha(horario.fecha) }}</td>
+                  <td>{{ formatearHora(horario.hora_inicio) }}</td>
+                  <td>{{ formatearHora(horario.hora_fin) }}</td>
+                  <td>{{ horario.cupo }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="claseHorario(horario.estado)">
+                      {{ textoHorario(horario.estado) }}
+                    </span>
+                  </td>
+                  <td class="text-end pe-4">
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary rounded-start-pill" type="button"
+                        [disabled]="horarioSinCupo(horario)"
+                        [title]="horarioSinCupo(horario) ? 'No se puede editar porque el cupo es 0' : 'Editar horario'"
+                        (click)="abrirEditarHorario(horario)">
+                        <i class="fa-solid fa-pen-to-square me-1"></i>
+                        Editar
                       </button>
-                    </td>
-                  </tr>
+
+                      <button class="btn btn-outline-danger rounded-end-pill" type="button"
+                        [disabled]="cambiandoEstadoHorario || horarioSinCupo(horario)"
+                        [title]="horarioSinCupo(horario) ? 'No se puede cambiar estado porque el cupo es 0' : 'Cambiar estado'"
+                        (click)="cambiarEstadoHorario(horario)">
+                        <i class="fa-solid fa-rotate me-1"></i>
+                        Estado
+                      </button>
+                    </div>
+                  </td>
+                </tr>
                 } @empty {
-                  <tr>
-                    <td colspan="5" class="text-center text-muted py-4">
-                      No hay horarios registrados.
-                    </td>
-                  </tr>
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-4">
+                    No hay horarios registrados.
+                  </td>
+                </tr>
+                }
                 }
               </tbody>
             </table>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center p-4">
+            <small class="text-muted">
+              Página {{ (pageHorarios?.number ?? 0) + 1 }} de {{ pageHorarios?.totalPages || 1 }}
+            </small>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-secondary rounded-start-pill"
+                [disabled]="pageHorarios?.first || cargandoHorarios" (click)="anteriorHorarios()">
+                Anterior
+              </button>
+
+              <button type="button" class="btn btn-outline-secondary rounded-end-pill"
+                [disabled]="pageHorarios?.last || cargandoHorarios" (click)="siguienteHorarios()">
+                Siguiente
+              </button>
+            </div>
           </div>
         </div>
 
@@ -481,76 +534,109 @@
 
       <form [formGroup]="actualizarEstadoForm" (ngSubmit)="actualizarEstadoCita()">
         <div class="modal-body bg-light">
+          @if (cargandoDetalleCita) {
+          <div class="text-center py-4">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Cargando detalle de la cita...
+          </div>
+          } @else {
           @if (citaSeleccionada) {
-            <div class="card border-0 rounded-4 shadow-sm mb-3">
-              <div class="card-body">
-                <h5 class="fw-bold text-clinica mb-3">Datos del paciente</h5>
+          <div class="card border-0 rounded-4 shadow-sm mb-3">
+            <div class="card-body">
+              <h5 class="fw-bold text-clinica mb-3">Datos del paciente</h5>
 
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <small class="text-muted">Paciente</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.paciente }}</p>
-                  </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <small class="text-muted">Paciente</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.paciente }}</p>
+                </div>
 
-                  <div class="col-md-6">
-                    <small class="text-muted">Documento</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.documento }}</p>
-                  </div>
+                <div class="col-md-4">
+                  <small class="text-muted">Documento</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.documento }}</p>
+                </div>
 
-                  <div class="col-md-6">
-                    <small class="text-muted">Teléfono</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.telefono }}</p>
-                  </div>
+                <div class="col-md-4">
+                  <small class="text-muted">Teléfono</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.telefono }}</p>
+                </div>
 
-                  <div class="col-md-6">
-                    <small class="text-muted">Especialidad</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.especialidad }}</p>
-                  </div>
+                <div class="col-md-4">
+                  <small class="text-muted">Direccion</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.direccionPaciente }}</p>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-muted">Grupo sanguíneo y sexo</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.grupoSanSexo }}</p>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="card border-0 rounded-4 shadow-sm">
-              <div class="card-body">
-                <h5 class="fw-bold text-clinica mb-3">Datos de la cita</h5>
+          <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card-body">
+              <h5 class="fw-bold text-clinica mb-3">Datos de la cita</h5>
 
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <small class="text-muted">Fecha</small>
-                    <p class="fw-semibold mb-0">{{ formatearFecha(citaSeleccionada.fecha_cita) }}</p>
-                  </div>
-
-                  <div class="col-md-6">
-                    <small class="text-muted">Hora</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.hora_cita }}</p>
-                  </div>
-
-                  <div class="col-12">
-                    <small class="text-muted">Motivo</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.motivo }}</p>
-                  </div>
-
-                  <div class="col-12">
-                    <small class="text-muted">Observación</small>
-                    <p class="fw-semibold mb-0">{{ citaSeleccionada.observacion }}</p>
-                  </div>
-
-                  <div class="col-md-6">
-                    <label for="detalleEstado" class="form-label">Actualizar estado</label>
-                    <select
-                      class="form-select form-select-lg"
-                      id="detalleEstado"
-                      formControlName="detalleEstado">
-                      <option value="Pendiente">Pendiente</option>
-                      <option value="Confirmada">Confirmada</option>
-                      <option value="Atendida">Atendida</option>
-                      <option value="Cancelada">Cancelada</option>
-                    </select>
-                  </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <small class="text-muted">Fecha</small>
+                  <p class="fw-semibold mb-0">{{ formatearFecha(citaSeleccionada.fecha_cita) }}</p>
                 </div>
 
+                <div class="col-md-6">
+                  <small class="text-muted">Hora</small>
+                  <p class="fw-semibold mb-0">
+                    {{ formatearHora(citaSeleccionada.horaInicio || citaSeleccionada.hora_cita) }}
+                    @if (citaSeleccionada.horaFin) {
+                    - {{ formatearHora(citaSeleccionada.horaFin) }}
+                    }
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-muted">Especialidad</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.especialidad }}</p>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-muted">Estado actual</small>
+                  <p class="mb-0">
+                    <span class="badge" [ngClass]="claseEstado(citaSeleccionada.estado)">
+                      {{ estadoTexto(citaSeleccionada.estado) }}
+                    </span>
+                  </p>
+                </div>
+
+                <div class="col-12">
+                  <small class="text-muted">Motivo</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.motivo }}</p>
+                </div>
+
+                <div class="col-12">
+                  <small class="text-muted">Observación</small>
+                  <p class="fw-semibold mb-0">{{ citaSeleccionada.observacion }}</p>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="idEstadoCita" class="form-label">Actualizar estado</label>
+                  <select class="form-select form-select-lg" id="idEstadoCita" formControlName="idEstadoCita"
+                    [class.is-invalid]="campoInvalidoEstado('idEstadoCita')">
+                    <option value="1">Pendiente</option>
+                    <option value="2">Confirmada</option>
+                    <option value="3">Atendida</option>
+                    <option value="4">Cancelada</option>
+                    <option value="5">No asistió</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="observacionEstado" class="form-label">Observación del estado</label>
+                  <textarea class="form-control" id="observacionEstado" rows="3" maxlength="250"
+                    placeholder="Detalle u observación" formControlName="observacion"></textarea>
+                </div>
               </div>
+
             </div>
+          </div>
+          }
           }
         </div>
 
@@ -558,9 +644,15 @@
           <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
             Cancelar
           </button>
-          <button type="submit" class="btn btn-clinica rounded-pill px-4">
+
+          <button type="submit" class="btn btn-clinica rounded-pill px-4" [disabled]="guardandoEstadoCita">
+            @if (guardandoEstadoCita) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Guardando...
+            } @else {
             <i class="fa-solid fa-floppy-disk me-2"></i>
             Guardar estado
+            }
           </button>
         </div>
       </form>
@@ -577,69 +669,50 @@
         <div>
           <h4 class="modal-title fw-bold" id="tituloHorario">
             <i class="fa-solid fa-calendar-plus me-2"></i>
-            Registrar horario
+            {{ modoHorario === 'crear' ? 'Registrar horario' : 'Editar horario' }}
           </h4>
-          <p class="mb-0 small opacity-75">Agrega una disponibilidad médica.</p>
+          <p class="mb-0 small opacity-75">
+            El cupo se registrará por defecto con valor 1.
+          </p>
         </div>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
-      <form [formGroup]="horarioForm" (ngSubmit)="registrarHorario()">
+      <form [formGroup]="horarioForm" (ngSubmit)="guardarHorario()">
         <div class="modal-body bg-light">
           <div class="row g-3">
             <div class="col-12">
               <label for="fechaHorario" class="form-label">Fecha</label>
-              <input
-                type="date"
-                class="form-control form-control-lg"
-                id="fechaHorario"
-                formControlName="fechaHorario"
+              <input type="date" class="form-control form-control-lg" id="fechaHorario" formControlName="fechaHorario"
                 [class.is-invalid]="campoInvalidoHorario('fechaHorario')">
               @if (campoInvalidoHorario('fechaHorario')) {
-                <div class="invalid-feedback">Seleccione una fecha.</div>
+              <div class="invalid-feedback">Seleccione una fecha.</div>
               }
             </div>
 
             <div class="col-md-6">
               <label for="horaInicio" class="form-label">Hora inicio</label>
-              <input
-                type="time"
-                class="form-control form-control-lg"
-                id="horaInicio"
-                formControlName="horaInicio"
+              <input type="time" class="form-control form-control-lg" id="horaInicio" formControlName="horaInicio"
                 [class.is-invalid]="campoInvalidoHorario('horaInicio')">
               @if (campoInvalidoHorario('horaInicio')) {
-                <div class="invalid-feedback">Ingrese la hora de inicio.</div>
+              <div class="invalid-feedback">Ingrese la hora de inicio.</div>
               }
             </div>
 
             <div class="col-md-6">
               <label for="horaFin" class="form-label">Hora fin</label>
-              <input
-                type="time"
-                class="form-control form-control-lg"
-                id="horaFin"
-                formControlName="horaFin"
+              <input type="time" class="form-control form-control-lg" id="horaFin" formControlName="horaFin"
                 [class.is-invalid]="campoInvalidoHorario('horaFin')">
               @if (campoInvalidoHorario('horaFin')) {
-                <div class="invalid-feedback">Ingrese la hora de fin.</div>
+              <div class="invalid-feedback">Ingrese la hora de fin.</div>
               }
-            </div>
-
-            <div class="col-12">
-              <label for="estadoHorario" class="form-label">Estado</label>
-              <select
-                class="form-select form-select-lg"
-                id="estadoHorario"
-                formControlName="estadoHorario">
-                <option value="1">Disponible</option>
-                <option value="0">No disponible</option>
-              </select>
             </div>
           </div>
 
           <div class="alert alert-success rounded-4 mt-4 mb-0">
-            El <strong>id_medico</strong> debe obtenerse desde la sesión activa del usuario médico.
+            <i class="fa-solid fa-circle-info me-2"></i>
+            El estado del horario se modifica únicamente desde el botón
+            <strong>Estado</strong> de la tabla.
           </div>
         </div>
 
@@ -647,9 +720,15 @@
           <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
             Cancelar
           </button>
-          <button type="submit" class="btn btn-clinica rounded-pill px-4">
+
+          <button type="submit" class="btn btn-clinica rounded-pill px-4" [disabled]="guardandoHorario">
+            @if (guardandoHorario) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Guardando...
+            } @else {
             <i class="fa-solid fa-floppy-disk me-2"></i>
-            Guardar horario
+            {{ modoHorario === 'crear' ? 'Guardar horario' : 'Actualizar horario' }}
+            }
           </button>
         </div>
       </form>

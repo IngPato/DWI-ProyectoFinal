@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/api/especialidades")
@@ -17,6 +20,14 @@ import lombok.RequiredArgsConstructor;
 public class EspecialidadRestController {
 
     private final EspecialidadService especialidadService;
+
+    @GetMapping
+    public Page<EspecialidadResponse> listarEspecialidadesActivasPaginado(
+            @RequestParam(required = false) String filtro,
+            @PageableDefault(size = 10, sort = "idespecialidades") Pageable pageable
+    ) {
+        return especialidadService.listarEspecialidadesPaginado(filtro, pageable);
+    }
 
     @GetMapping("/activos")
     public ResponseEntity<ApiResponse<List<EspecialidadResponse>>> listarActivos() {

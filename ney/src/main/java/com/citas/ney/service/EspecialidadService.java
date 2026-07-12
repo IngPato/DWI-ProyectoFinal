@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +26,23 @@ public class EspecialidadService {
         return response;
     }
 
+    public Page<EspecialidadResponse> listarEspecialidadesPaginado(
+            String filtro,
+            Pageable pageable
+    ) {
+        Page<ModelEspecialidades> especialidades
+                = especialidadRepository.buscarEspecialidadesPaginado(filtro, pageable);
+
+        return especialidades.map(this::convertirEspecialidad);
+    }
+
     public List<EspecialidadResponse> listarTodoEspecialidadActivos() {
         List<ModelEspecialidades> response = especialidadRepository.findByEstadoEspecialidad(1);
+        return response.stream().map(this::convertirEspecialidad).collect(Collectors.toList());
+    }
+
+    public List<EspecialidadResponse> listarTodoEspecialidades() {
+        List<ModelEspecialidades> response = especialidadRepository.findAll();
         return response.stream().map(this::convertirEspecialidad).collect(Collectors.toList());
     }
 

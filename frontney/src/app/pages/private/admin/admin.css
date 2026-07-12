@@ -494,3 +494,17 @@ textarea.form-control {
     flex: 1 1 100%;
   }
 }
+.navbar button.nav-link {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar button.nav-link:hover,
+.navbar button.nav-link.active {
+  color: #ffffff;
+}
+
+.navbar button.nav-link:focus {
+  box-shadow: none;
+}

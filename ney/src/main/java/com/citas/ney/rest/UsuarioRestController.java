@@ -4,6 +4,7 @@
  */
 package com.citas.ney.rest;
 
+import com.citas.ney.dto.ApiResponse;
 import com.citas.ney.dto.EstadoRequest;
 import com.citas.ney.dto.UsuarioRequest;
 import com.citas.ney.dto.UsuarioResponse;
@@ -26,8 +27,13 @@ public class UsuarioRestController {
     private final UsuarioService usuarioService;
 
     @GetMapping("/activos")
-    public ResponseEntity<List<UsuarioResponse>> ListarUsuariosActivos() {
-        return ResponseEntity.ok(usuarioService.listaUsuariosActivos());
+    public ResponseEntity<ApiResponse<List<UsuarioResponse>>> ListarUsuariosActivos() {
+        try {
+            return ResponseEntity.ok(ApiResponse.ok("usuarios activos", usuarioService.listaUsuariosActivos()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+
     }
 
     @PostMapping

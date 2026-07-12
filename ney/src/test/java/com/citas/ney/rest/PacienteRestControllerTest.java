@@ -7,16 +7,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +28,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import tools.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+@WebMvcTest(PacienteController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class PacienteControllerTest {
+class PacienteRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +43,6 @@ class PacienteControllerTest {
 
     @MockitoBean
     private PacienteService pacienteService;
-
     @Test
     public void testListarPacientesPaginadosConDatos() throws Exception {
 
